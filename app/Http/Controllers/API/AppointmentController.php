@@ -53,6 +53,7 @@ class AppointmentController extends BaseController
             'schedule_id' => 'required',
             'date_apt' => 'required',
             'user_id' => 'required',
+            'note' => 'required',
         ]);
 
         if($validator->fails()){
@@ -77,13 +78,15 @@ class AppointmentController extends BaseController
 
         $appointment->end_time = $schedule->end_time; 
 
+        $appointment->identifier = $this->unique_code(9);
+
         //$appointment->department_id = $request->input('department_id');
         
         //$department = Department::findOrFail($appointment->department_id);
 
         //$appointment->department_name = $department->name;
 
-        $appointment->apt_amount = 5000;
+        $appointment->apt_amount = 1;
 
         $appointment->doctor_id = $request->input('doctor_id');
 
@@ -157,60 +160,64 @@ class AppointmentController extends BaseController
             'schedule_id' => 'required',
             'date_apt' => 'required',
             'user_id' => 'required',
+            'note' => 'required',
         ]);
 
         if($validator->fails()){
             return $this->sendError('Validation Error.', $validator->errors());       
         }
 
-        $patient = Patient::where('user_id', $request->input('user_id'))->first();
+        if($appointment->status == 0){
 
-        $appointment->patient_user_id = $request->input('user_id');
+            $patient = Patient::where('user_id', $request->input('user_id'))->first();
 
-        $appointment->patient_id = $patient->id;
+            $appointment->patient_user_id = $request->input('user_id');
 
-        $appointment->date_apt = $request->input('date_apt');
+            $appointment->patient_id = $patient->id;
 
-        $appointment->schedule_id = $request->input('schedule_id');
+            $appointment->date_apt = $request->input('date_apt');
 
-        $schedule = Schedule::findOrFail($request->input('schedule_id'));
+            $appointment->schedule_id = $request->input('schedule_id');
 
-        $appointment->begin_time = $schedule->begin_time;
+            $schedule = Schedule::findOrFail($request->input('schedule_id'));
 
-        $appointment->end_time = $schedule->end_time; 
+            $appointment->begin_time = $schedule->begin_time;
 
-        $appointment->identifier = $this->unique_code(9);
+            $appointment->end_time = $schedule->end_time; 
 
-        //$appointment->department_id = $request->input('department_id');
-        
-        //$department = Department::findOrFail($appointment->department_id);
+            //$appointment->department_id = $request->input('department_id');
+            
+            //$department = Department::findOrFail($appointment->department_id);
 
-        //$appointment->department_name = $department->name;
+            //$appointment->department_name = $department->name;
 
-        $appointment->apt_amount = 5000;
+            $appointment->apt_amount = 1;
 
-        $appointment->doctor_id = $request->input('doctor_id');
+            $appointment->doctor_id = $request->input('doctor_id');
 
-        $appointment->note = $request->input('note');
+            $appointment->note = $request->input('note');
 
-        $doctor = Doctor::findOrFail($appointment->doctor_id);
+            $doctor = Doctor::findOrFail($appointment->doctor_id);
 
-        $appointment->doctor_user_id = $doctor->user_id;
+            $appointment->doctor_user_id = $doctor->user_id;
 
-        $appointment->speciality_id = $doctor->speciality_id;
+            $appointment->speciality_id = $doctor->speciality_id;
 
-        $appointment->status = 0;
+            $appointment->status = 0;
 
-        $historique = new History();
-        $historique->action = 'Update';
-        $historique->table = 'Appointment';
-        $historique->user_id = auth()->user()->id;
+            $historique = new History();
+            $historique->action = 'Update';
+            $historique->table = 'Appointment';
+            $historique->user_id = auth()->user()->id;
 
-        $appointment->save();
+            $appointment->save();
 
-        $historique->save();
+            $historique->save();
 
-        return $this->sendResponse($appointment, 'Appointment updated sucessfully!');
+            return $this->sendResponse($appointment, 'Appointment updated sucessfully!');
+        }
+
+        return $this->sendError('Appointment can not be updated!');
     }
 
     /**

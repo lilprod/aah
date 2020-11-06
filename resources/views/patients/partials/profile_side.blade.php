@@ -41,12 +41,22 @@
 							@endif
 						</a>
 					</li>
+
+					<li>
+						<a href="{{route('search_disease')}}">
+							<i class="fas fa-search"></i>
+							<span>Disease and Treatment</span>
+						</a>
+					</li>
+
+
 					<li>
 						<a href="{{route('patient_profile_setting')}}">
 							<i class="fas fa-user-cog"></i>
 							<span>Profile Settings</span>
 						</a>
 					</li>
+					
 					<li>
 						<a href="{{route('patient_change_password')}}">
 							<i class="fas fa-lock"></i>

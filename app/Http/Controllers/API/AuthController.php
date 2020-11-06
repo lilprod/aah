@@ -8,15 +8,20 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Patient;
 use App\Doctor;
-use Illuminate\Support\Facades\Auth;
+use App\Clinic;
+use App\ClinicImage;
+use App\Education;
+use App\Experience;
+use App\Award;
 use Validator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 
 class AuthController extends BaseController
 {
     /**
-     * Register api
+     * Patient Register api
      *
      * @return \Illuminate\Http\Response
      */
@@ -77,7 +82,11 @@ class AuthController extends BaseController
         return $this->sendResponse($success, 'Patient inscrit avec succès.');
     }
 
-
+    /**
+     * Doctor Register api
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function registerDoctor(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -132,6 +141,74 @@ class AuthController extends BaseController
         $success['profile_picture'] = $_ENV['APP_URL'].'/storage/profile_images/'.$user->profile_picture;
    
         return $this->sendResponse($success, 'Médecin inscrit avec succès.');
+    }
+
+    /**
+     * Verif Patient Profile
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+    public function verifPatient(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+        ]);
+
+        if($validator->fails()){
+            return $this->sendError('Validation Error.', $validator->errors());       
+        }
+
+        $user_id = $request->user_id;
+
+        $patient = Patient::where('user_id', $user_id)->first();
+
+        if($patient->status == 1){
+
+            $success = true;
+
+            return $this->sendResponse($success, 'Le profil du patient est complet');
+
+        }else{
+
+            $success = false;
+
+            return $this->sendResponse($success, 'Le profil du patient est incomplet');
+        }  
+    }
+
+    /**
+     * Verif Doctor Profile
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+    public function verifDoctor(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+        ]);
+
+        if($validator->fails()){
+            return $this->sendError('Validation Error.', $validator->errors());       
+        }
+
+        $user_id = $request->user_id;
+
+        $doctor = Doctor::where('user_id', $user_id)->first();
+
+        if($doctor->status == 1){
+
+            $success = true;
+
+            return $this->sendResponse($success, 'Le profil du Médecin est complet');
+
+        }else{
+
+            $success = false;
+
+            return $this->sendResponse($success, 'Le profil du Médecin est incomplet');
+        }
     }
 
     public function updatephone(Request $request)
@@ -612,10 +689,23 @@ class AuthController extends BaseController
 
             $doctor = Doctor::where('user_id', $user->id)
                                     ->first();
+
+            //$doctor->gender = $request->input('gender');
+            //$doctor->marital_status = $request->input('marital_status');
+            //$doctor->country = $request->input('country');
+            //$doctor->city = $request->input('city');
+            //$doctor->birth_date = $request->input('birth_date');
+            //$doctor->place_birth = $request->input('place_birth');
+            //$doctor->biography = $request->input('biography');
+            //$doctor->nationality = $request->input('nationality');
+            //$doctor->profession = $request->input('profession');
+
             $doctor->name = $request->name;
             $doctor->firstname = $request->firstname;
             $doctor->email =  $request->email;
             $doctor->address = $request->address;
+
+
            
             $doctor->save();
 

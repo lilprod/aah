@@ -63,6 +63,14 @@
 									<li><a href="{{route('posts.create')}}">New</a></li>
 								</ul>
 							</li>
+							<li class="has-submenu">
+								<a href="#">Diseases</a>
+								<ul class="submenu">
+									<li><a href="{{route('diseases.index')}}">List</a></li>
+									<li><a href="{{route('diseases.create')}}">New</a></li>
+								</ul>
+							</li>
+
 						</ul>
 					</li>
 

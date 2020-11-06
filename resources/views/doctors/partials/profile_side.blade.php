@@ -73,6 +73,13 @@
 					</li>
 
 					<li>
+						<a href="{{route('diseases.index')}}">
+							<i class="fas fa-folder"></i>
+							<span>Diseases</span>
+						</a>
+					</li>
+
+					<li>
 						<a href="{{route('doctor_profile_setting')}}">
 							<i class="fas fa-user-cog"></i>
 							<span>Profile Settings</span>

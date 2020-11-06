@@ -19,6 +19,22 @@ use App\Admin;
 |
 */
 
+
+//Paypal
+//Route::get('paypal/express-checkout', 'PaypalController@expressCheckout')->name('paypal.express-checkout');
+
+//Route::get('paypal/express-checkout-success', 'PaypalController@expressCheckoutSuccess');
+
+//Route::post('paypal/notify', 'PaypalController@notify');
+
+//Route::get('paypal/payment', 'PayPalController@payment')->name('payment');
+
+Route::post('paypal/payment', 'PayPalController@payment')->name('payment');
+
+Route::get('paypal/cancel', 'PayPalController@cancel')->name('payment.cancel');
+
+Route::get('paypal/success', 'PayPalController@success')->name('payment.success');
+
 //Admin Auth
 Route::namespace('Admin')->name('admin.')->prefix('admin')->group(function () {
 
@@ -133,6 +149,8 @@ Route::resource('services', 'ServiceController');
 
 Route::resource('drugs', 'DrugController');
 
+Route::resource('diseases', 'DiseaseController');
+
 Route::resource('drugtypes', 'DrugTypeController');
 
 Route::resource('prescriptions', 'PrescriptionController');
@@ -233,9 +251,16 @@ Route::get('/our-services', 'PagesController@services')->name('services');
 
 Route::get('/contact-us', 'PagesController@contact')->name('contact');
 
+Route::post('contact', 'ContactController@store')->name('postcontact');
+
+
 Route::get('/search', 'SearchController@search')->name('search');
 
 Route::post('/search', 'SearchController@postSearch')->name('search');
+
+Route::get('/search/disease', 'SearchController@searchDisease')->name('search_disease');
+
+Route::post('/postsearch/disease', 'SearchController@postData')->name('post_search_disease');
 
 Route::get('/blog', 'PagesController@blog')->name('blog');
 
@@ -260,10 +285,11 @@ Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 Route::get('categorie/check_slug', 'CategoryController@check_slug')
   ->name('category.check_slug');
 
-  Route::get('postn/check_slug', 'PostController@check_slug')
+Route::get('postn/check_slug', 'PostController@check_slug')
   ->name('post.check_slug');
 
-
+Route::get('diseasen/check_slug', 'DiseaseController@check_slug')
+  ->name('disease.check_slug');
 //Chat
 //Route::get('/chat', 'ChatController@index')->name('chat');
 

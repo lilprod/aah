@@ -39,6 +39,24 @@ Route::post('resendcode', 'API\AuthController@postCode');
 
 Route::post('updatephone', 'API\AuthController@updatephone');
 
+Route::get('/allDoctors', 'API\DoctorController@allDoctors')->name('allDoctors');
+
+Route::post('/getSchedules', 'API\DoctorController@getSchedules')->name('getSchedules');
+
+Route::post('/filterDoctor', 'API\DoctorController@filterDoctor');
+
+//Diseases
+
+Route::post('/search/diseases', 'API\DiseaseController@postSearch')->name('search_disease');
+
+Route::post('diseasen/check_slug', 'API\DoctorController@check_disease_slug')->name('disease_check_slug');
+
+Route::resource('diseases', 'API\DiseaseController');
+
+Route::get('mydiseases', 'API\DiseaseController@mydiseases')->name('mydiseases');
+
+Route::post('upload_file', 'API\DiseaseController@upload');
+
 //Blog
 
 Route::get('/blog', 'API\BlogController@blog')->name('blog');
@@ -49,13 +67,26 @@ Route::get('/postDetails/{slug}', 'API\BlogController@postDetails')->name('postD
 
 Route::get('categoryPosts/{slug}', 'API\BlogController@categoryPosts')->name('categoryPosts');
 
+Route::get('categorie/check_slug', 'API\CategoryController@check_slug')->name('category_check_slug');
+
+Route::post('postn/check_slug', 'API\DoctorController@check_slug')->name('post_check_slug');
+
+Route::resource('categories', 'API\CategoryController');
+
+//Doctor's Services
+
 Route::resource('services', 'API\ServiceController');
+
+//Doctor's specialities
 
 Route::resource('specialities', 'API\SpecialityController');
 
-Route::resource('categories', 'API\CategoryController');
-// private routes  
+// API private routes  
 Route::middleware('auth:api')->group( function () {
+
+    Route::post('/verifPatient', 'API\AuthController@verifPatient');
+
+    Route::post('/verifDoctor', 'API\AuthController@verifDoctor');
 
     Route::get('/logout', 'API\AuthController@logout')->name('logout');
 
@@ -66,6 +97,8 @@ Route::middleware('auth:api')->group( function () {
     Route::resource('appointments', 'API\AppointmentController');
 
     Route::resource('posts', 'API\PostController');
+
+    Route::post('upload', 'API\PostController@upload');
 
     Route::resource('payments', 'API\PaymentController');
 
@@ -85,6 +118,12 @@ Route::middleware('auth:api')->group( function () {
 
     //Patient Routes
 
+    Route::get('/patientPendingapts', 'API\PatientManagerController@patientPendingapts')->name('patientPendingapts');
+
+    Route::get('/patientUpcomingapts', 'API\PatientManagerController@patientUpcomingapts')->name('patientUpcomingapts');
+
+    Route::get('/patientArchivedapts', 'API\PatientManagerController@patientArchivedapts')->name('patientArchivedapts');
+
     Route::get('/myfavourites', 'API\PatientManagerController@myfavourites')->name('myfavourites');
 
     Route::post('favorite/{doctor}', 'API\PatientManagerController@favoriteDoctor');
@@ -93,13 +132,20 @@ Route::middleware('auth:api')->group( function () {
 
     Route::post('rating', 'API\PatientManagerController@rating')->name('rating');
 
+    Route::post('/patient/post_setting', 'API\PatientManagerController@postSetting')->name('post_patient_setting');
+
     //Doctor Routes
 
+    Route::post('/doctor/post_setting', 'API\DoctorManagerController@postSetting')->name('post_doctor_setting');
+
+    //Doctor's Posts
     Route::get('/myposts', 'API\DoctorManagerController@myposts')->name('myposts');
 
     Route::get('/mydraftsposts', 'API\DoctorManagerController@mydraftsposts')->name('mydraftsposts');
 
     Route::get('/myactivatedposts', 'API\DoctorManagerController@myactivatedposts')->name('myactivatedposts');
+
+    //Doctor's Schedules
 
     Route::get('/myschedules', 'API\DoctorManagerController@myschedules')->name('myschedules');
 
@@ -115,11 +161,29 @@ Route::middleware('auth:api')->group( function () {
 
     Route::get('/mySaturdayschedules', 'API\DoctorManagerController@mySaturdayschedules')->name('mySaturdayschedules');
 
+    //Doctor's Appointments
+
     Route::get('/myAppointments', 'API\DoctorManagerController@myAppointments')->name('myAppointments');
 
-    Route::get('/myPatients', 'API\DoctorManagerController@myPatients')->name('myPatients');
+    Route::get('/doctorPendingapts', 'API\DoctorManagerController@doctorPendingapts')->name('doctorPendingapts');
 
-    Route::put('/finish/{appointment}', 'API\DoctorManagerController@finish')->name('finish');
+    Route::get('/doctorTodayapts', 'API\DoctorManagerController@doctorTodayapts')->name('doctorTodayapts');
+
+    Route::get('/doctorUpcomingapts', 'API\DoctorManagerController@doctorUpcomingapts')->name('doctorUpcomingapts');
+
+    Route::get('/doctorArchivedapts', 'API\DoctorManagerController@doctorArchivedapts')->name('doctorArchivedapts');
+
+    Route::put('/take/{appointment}', 'API\DoctorManagerController@take');
+
+    Route::put('/archivedapt/{appointment}', 'API\DoctorManagerController@archivedApt');
+
+    Route::put('/start/{appointment}', 'API\DoctorManagerController@start');
+
+    Route::put('/finish/{appointment}', 'API\DoctorManagerController@finish');
+
+    //Doctor's Patients
+
+    Route::get('/myPatients', 'API\DoctorManagerController@myPatients')->name('myPatients');
 
 });
 

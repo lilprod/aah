@@ -27,7 +27,9 @@
         "pragmarx/countries": "^0.7.0",
         "rtconner/laravel-tagging": "^4.0",
         "spatie/laravel-permission": "^3.13",
-        "spatie/laravel-translatable": "^4.4"
+        "spatie/laravel-translatable": "^4.4",
+        "srmklive/paypal": "~2.0",
+        "stripe/stripe-php": "^7.61"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

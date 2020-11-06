@@ -15,6 +15,11 @@ use App\Drug;
 use App\Patient;
 use App\History;
 use App\Appointment;
+use App\Clinic;
+use App\ClinicImage;
+use App\Education;
+use App\Experience;
+use App\Award;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -34,6 +39,17 @@ class DoctorManagerController extends BaseController
     {
         $posts = auth()->user()->myposts();
 
+        foreach ($posts as $post) {
+            # code...
+            $post['cover_image'] = $_ENV['APP_URL'].'/storage/cover_images/'.$post->cover_image;
+
+            $post['author_image'] = $_ENV['APP_URL'].'/storage/profile_images/'.auth()->user()->profile_picture;
+
+            $post['author']= auth()->user()->name;
+
+            $post['category_title'] = $post->category->title;
+        }
+
         return $this->sendResponse($posts, 'Posts retrieved successfully.');
 
         //return $this->sendResponse(PostResource::collection($posts), 'Posts retrieved successfully.');
@@ -48,6 +64,17 @@ class DoctorManagerController extends BaseController
     {
         $posts = auth()->user()->mydraftsposts();
 
+        foreach ($posts as $post) {
+            # code...
+            $post['cover_image'] = $_ENV['APP_URL'].'/storage/cover_images/'.$post->cover_image;
+
+            $post['author_image'] = $_ENV['APP_URL'].'/storage/profile_images/'.auth()->user()->profile_picture;
+
+            $post['author']= auth()->user()->name;
+
+            $post['category_title'] = $post->category->title;
+        }
+
         return $this->sendResponse($posts, 'Posts retrieved successfully.');
     }
 
@@ -60,7 +87,191 @@ class DoctorManagerController extends BaseController
     {
         $posts = auth()->user()->myactivatedposts();
 
+        foreach ($posts as $post) {
+            # code...
+            $post['cover_image'] = $_ENV['APP_URL'].'/storage/cover_images/'.$post->cover_image;
+
+            $post['author_image'] = $_ENV['APP_URL'].'/storage/profile_images/'.auth()->user()->profile_picture;
+
+            $post['author']= auth()->user()->name;
+
+            $post['category_title'] = $post->category->title;
+        }
+
         return $this->sendResponse($posts, 'Posts retrieved successfully.');
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+    public function doctorPendingapts()
+    {
+        $appointments = auth()->user()->doctorPendingapts();
+
+        foreach ($appointments as $appointment) {
+            # code...
+            
+            $appointment['patient_name'] = $appointment->patient->name;
+
+            $appointment['patient_firstname'] = $appointment->patient->firstname;
+
+            $appointment['patient_email'] = $appointment->patient->email;
+
+            $appointment['patient_phone_number'] = $appointment->patient->phone_number;
+
+            $appointment['patient_profile_picture'] = $_ENV['APP_URL'].'/storage/profile_images/'.$appointment->patient->profile_picture;
+
+        }
+
+        return $this->sendResponse($appointments, 'Appointments retrieved successfully.');
+    }
+
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function doctorTodayapts()
+    {
+        $appointments = auth()->user()->doctorTodayapts();
+
+        foreach ($appointments as $appointment) {
+            # code...
+
+            $appointment['patient_name'] = $appointment->patient->name;
+
+            $appointment['patient_firstname'] = $appointment->patient->firstname;
+
+            $appointment['patient_email'] = $appointment->patient->email;
+
+            $appointment['patient_phone_number'] = $appointment->patient->phone_number;
+
+            $appointment['patient_profile_picture'] = $_ENV['APP_URL'].'/storage/profile_images/'.$appointment->patient->profile_picture;
+
+        }
+
+        return $this->sendResponse($appointments, 'Appointments retrieved successfully.');
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+    public function doctorUpcomingapts()
+    {
+        $appointments = auth()->user()->doctorUpcomingapts();
+
+        foreach ($appointments as $appointment) {
+            # code...
+
+            $appointment['patient_name'] = $appointment->patient->name;
+
+            $appointment['patient_firstname'] = $appointment->patient->firstname;
+
+            $appointment['patient_email'] = $appointment->patient->email;
+
+            $appointment['patient_phone_number'] = $appointment->patient->phone_number;
+
+            $appointment['patient_profile_picture'] = $_ENV['APP_URL'].'/storage/profile_images/'.$appointment->patient->profile_picture;
+
+        }
+
+        return $this->sendResponse($appointments, 'Appointments retrieved successfully.');
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+    public function doctorArchivedapts()
+    {
+        $appointments = auth()->user()->doctorArchivedapts();
+
+        foreach ($appointments as $appointment) {
+            # code...
+
+            $appointment['patient_name'] = $appointment->patient->name;
+
+            $appointment['patient_firstname'] = $appointment->patient->firstname;
+
+            $appointment['patient_email'] = $appointment->patient->email;
+
+            $appointment['patient_phone_number'] = $appointment->patient->phone_number;
+
+            $appointment['patient_profile_picture'] = $_ENV['APP_URL'].'/storage/profile_images/'.$appointment->patient->profile_picture;
+
+        }
+
+        return $this->sendResponse($appointments, 'Appointments retrieved successfully.');
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function take(Appointment $appointment)
+    {
+        $appointment->status = 1;
+
+        $patient = Patient::findOrFail($appointment->patient_id);
+
+        $doctor = Doctor::findOrFail($appointment->doctor_id);
+
+        $doctor->patients()->attach($patient->id, ['status' => 1]);
+
+        $appointment->save();
+
+        return $this->sendResponse($appointment, 'Appointment confirmation saved successfully.');
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function archivedApt(Appointment $appointment)
+    {
+        $appointment->status = 2;
+
+        $appointment->save();
+
+        return $this->sendResponse($appointment, 'Appointment Cancelled!');
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function start(Appointment $appointment)
+    {
+        $appointment['drugs'] = Drug::all();
+
+        return $this->sendResponse($appointment, 'Appointment start successfully.');
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+    public function finish(Appointment $appointment)
+    {
+        $appointment->status = 3;
+
+        $appointment->save();
+
+        return $this->sendResponse($appointment, 'Appointment closed successfully!');
     }
 
     /**
@@ -74,6 +285,185 @@ class DoctorManagerController extends BaseController
         $myschedules = auth()->user()->myschedules();
 
         return $this->sendResponse($myschedules, 'Schedules retrieved successfully.');
+    }
+
+
+    public function postSetting(Request $request) {
+
+        $user = User::findOrFail(auth()->user()->id);
+
+        $doctor = Doctor::where('user_id', $user->id)->first();
+
+        $data = $request->all();
+        //Validate these fields
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:120',
+            'firstname' => 'required|max:120',
+            //'email' => 'nullable|email|unique:users,email,'.$user->id,
+            //'phone_number' => 'required',
+            'gender' => 'required',
+            'birth_date' => 'required',
+            'place_birth' => 'nullable',
+            'address' => 'nullable',
+            'biography' => 'nullable',
+            'profile_picture' => 'nullable',
+            'speciality_id' => 'required',
+            'country' => 'required',
+            'region' => 'required',
+            'city' => 'required',
+            //'marital_status' => 'required',
+            //'nationality' => 'required',
+            //'profession' => 'required',
+        ]);
+
+        if($validator->fails()){
+            return $this->sendError('Validation Error.', $validator->errors());       
+        }
+
+        if ($request->hasfile('profile_picture')) {
+            // Get filename with the extension
+            $fileNameWithExt = $request->file('profile_picture')->getClientOriginalName();
+
+            // Get just filename
+            $filename = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+
+            // Get just ext
+            $extension = $request->file('profile_picture')->getClientOriginalExtension();
+
+            // Filename to store
+            $fileNameToStore = $filename.'_'.time().'.'.$extension;
+
+            // Upload Image
+            $path = $request->file('profile_picture')->storeAs('public/profile_images', $fileNameToStore);
+        } else {
+            $fileNameToStore = 'avatar.jpg';
+        }
+
+        
+        $doctor->name = $request->input('name');
+        $doctor->firstname = $request->input('firstname');
+        //$doctor->email = $request->input('email');
+        $doctor->gender = $request->input('gender');
+        //$doctor->marital_status = $request->input('marital_status');
+        if ($request->hasfile('profile_picture')) {
+            $doctor->profile_picture = $fileNameToStore;
+        }
+        //$doctor->phone_number = $request->input('phone_number');
+        $doctor->address = $request->input('address');
+        $doctor->region = $request->input('region');
+        $doctor->country = $request->input('country');
+        $doctor->city = $request->input('city');
+        $doctor->birth_date = $request->input('birth_date');
+        $doctor->place_birth = $request->input('place_birth');
+        $doctor->biography = $request->input('biography');
+        $doctor->speciality_id = $request->input('speciality_id');
+        //$doctor->nationality = $request->input('nationality');
+        //$doctor->profession = $request->input('profession');
+
+        $user->name = $request->input('name');
+        $user->firstname = $request->input('firstname');
+        //$user->phone_number = $request->input('phone_number');
+        //$user->gender = $request->input('gender');
+        //$user->birth_date = $request->input('birth_date');
+        $user->address = $request->input('address');
+        //$user->email = $request->input('email');
+        if ($request->hasfile('profile_picture')) {
+            $user->profile_picture = $fileNameToStore;
+        }
+
+        /*if($data['clinic_name'] != ''){
+            $clinic = Clinic::where('doctor_id', $doctor->id)->first();
+
+            if($clinic){
+
+                $clinic->name = $request->input('clinic_name');
+                $clinic->address = $request->input('clinic_address');
+                $clinic->doctor_id = $doctor->id;
+                $clinic->doctor_userid = $doctor->user_id;
+                $clinic->save();
+
+            }else{
+
+                $clinic = new Clinic();
+                $clinic->name = $request->input('clinic_name');
+                $clinic->address = $request->input('clinic_address');
+                $clinic->doctor_id = $doctor->id;
+                $clinic->doctor_userid = $doctor->user_id;
+                $clinic->save();
+            }
+        }*/        
+
+        //$i = 0;
+        //$j = 0;
+        //$k = 0;
+
+        /*if (isset($data['awards'])) {
+
+            foreach($data['awards'] as $row){
+
+                $award = new Award();
+                $award->awards = $data['awards'][$i];
+                $award->year = $data['year'][$i];
+                $award->doctor_id = $doctor->id;
+                $award->doctor_user_id = $doctor->user_id;
+
+                $award->save();
+
+                $i++;
+            }
+        }
+
+        if (isset($data['degree'])) {
+
+            foreach($data['degree'] as $row){
+
+                $education = new Education();
+                $education->degree = $data['degree'][$j];
+                $education->institute = $data['institute'][$j];
+                $education->year_completion = $data['year_completion'][$j];
+                $education->doctor_id = $doctor->id;
+                $education->doctor_user_id = $doctor->user_id;
+
+                $education->save();
+
+                $j++;
+            }
+        }
+
+        if (isset($data['exercice_place'])) {
+
+            foreach($data['exercice_place'] as $row){
+
+                $experience = new Experience();
+                $experience->exercice_place = $data['exercice_place'][$k];
+                $experience->from = $data['from'][$k];
+                $experience->to = $data['to'][$k];
+                $experience->year_completion = $data['year_completion'][$k];
+                $experience->doctor_id = $doctor->id;
+                $experience->doctor_user_id = $doctor->user_id;
+
+                $experience->save();
+
+                $k++;
+            }
+        }*/
+
+        $doctor->save();
+
+        $user->save();
+
+        $historique = new History();
+        $historique->action = 'Update Doctor Profile';
+        $historique->table = 'User/Doctor';
+        $historique->user_id = auth()->user()->id;
+
+        $historique->save();
+
+        $success = true;
+
+        // Send response
+        return $this->sendResponse($success, 'Profil édité avec succès.');
+
     }
 
     /**
@@ -190,30 +580,5 @@ class DoctorManagerController extends BaseController
         return $this->sendResponse($mypatients, 'Patients retrieved successfully.');
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function start(Appointment $appointment)
-    {
-        $appointment['drugs'] = Drug::all();
 
-        return $this->sendResponse($appointment, 'Appointment start successfully.');
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
-    public function finish(Appointment $appointment)
-    {
-        $appointment->status = 3;
-
-        $appointment->save();
-
-        return $this->sendResponse($appointment, 'Appointment closed successfully!');
-    }
 }

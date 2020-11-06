@@ -17,6 +17,8 @@ class CreatePaymentsTable extends Migration
             $table->id();
             $table->integer('apt_id');
             $table->integer('paymentmode_id')->nullable();
+            $table->string('title')->nullable();
+            $table->string('recurring_id')->nullable();
             $table->float('apt_amount');
             $table->string('description')->nullable();
             $table->integer('doctor_id');
@@ -27,6 +29,7 @@ class CreatePaymentsTable extends Migration
             $table->dateTime('date_payment')->nullable();
             $table->integer('telephone')->nullable();
             $table->string('identifier')->nullable();
+            $table->string('payment_status')->nullable();
             $table->integer('status');
             $table->timestamps();
         });

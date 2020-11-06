@@ -18,9 +18,6 @@ class BlogController extends BaseController
      */
     public function blog()
     {
-        //$posts = Post::all();
-        //$posts = Post::where('status', 1)->get();
-
         $posts = Post::with('category')
                        ->where('status', 1)
                        ->orderBy('created_at', 'desc')
@@ -30,7 +27,9 @@ class BlogController extends BaseController
             # code...
            $user = User::findOrFail($post->user_id);
 
-           $post['author_image'] = $user->profile_picture;
+           $post['cover_image'] = $_ENV['APP_URL'].'/storage/cover_images/'.$post->cover_image;
+
+           $post['author_image'] = $_ENV['APP_URL'].'/storage/profile_images/'.$user->profile_picture;
 
            $post['author']= $user->name;
 
@@ -48,10 +47,23 @@ class BlogController extends BaseController
      */
     public function latestposts()
     {
-    	$posts = Post::orderBy('created_at', 'desc')
+    	 $posts = Post::orderBy('created_at', 'desc')
                             ->where('status', 1)
                             ->limit(3)
                             ->get();
+
+      foreach ($posts as $post) {
+              # code...
+             $user = User::findOrFail($post->user_id);
+
+             $post['cover_image'] = $_ENV['APP_URL'].'/storage/cover_images/'.$post->cover_image;
+
+             $post['author_image'] = $_ENV['APP_URL'].'/storage/profile_images/'.$user->profile_picture;
+
+             $post['author']= $user->name;
+
+             //$post->author = $user->name.' '.$user->firstname;
+        }
 
         return $this->sendResponse($posts, 'Latest Posts retrieved successfully.');
     }
@@ -63,7 +75,9 @@ class BlogController extends BaseController
 
         $user = User::findOrFail($post->user_id);
 
-        $post['author_image'] = $user->profile_picture;
+        $post['author_image'] = $_ENV['APP_URL'].'/storage/profile_images/'.$user->profile_picture;
+
+        $post['cover_image'] = $_ENV['APP_URL'].'/storage/cover_images/'.$post->cover_image;
 
         $post['author']= $user->name;
 
@@ -79,7 +93,9 @@ class BlogController extends BaseController
             # code...
            $user = User::findOrFail($post->user_id);
 
-           $post['author_image'] = $user->profile_picture;
+           $post['author_image'] = $_ENV['APP_URL'].'/storage/profile_images/'.$user->profile_picture;
+
+           $post['cover_image'] = $_ENV['APP_URL'].'/storage/cover_images/'.$post->cover_image;
 
            $post['author']= $user->name;
 

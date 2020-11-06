@@ -18,6 +18,98 @@ use Illuminate\Support\Facades\DB;
 
 class PatientManagerController extends BaseController
 {
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+    public function patientPendingapts()
+    {
+        $appointments = auth()->user()->patientPendingapts();
+
+        foreach ($appointments as $appointment) {
+            # code...
+            
+            $appointment['doctor_name'] = $appointment->doctor->name;
+
+            $appointment['doctor_firstname'] = $appointment->doctor->firstname;
+
+            $appointment['doctor_email'] = $appointment->doctor->email;
+
+            $appointment['doctor_phone_number'] = $appointment->doctor->phone_number;
+
+            $appointment['doctor_speciality'] = $appointment->doctor->speciality->title;
+
+            $appointment['doctor_profile_picture'] = $_ENV['APP_URL'].'/storage/profile_images/'.$appointment->doctor->profile_picture;
+
+        }
+
+        return $this->sendResponse($appointments, 'Appointments retrieved successfully.');
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+    public function patientUpcomingapts()
+    {
+        $appointments = auth()->user()->patientUpcomingapts();
+
+        foreach ($appointments as $appointment) {
+            # code...
+            
+            $appointment['doctor_name'] = $appointment->doctor->name;
+
+            $appointment['doctor_firstname'] = $appointment->doctor->firstname;
+
+            $appointment['doctor_email'] = $appointment->doctor->email;
+
+            $appointment['doctor_phone_number'] = $appointment->doctor->phone_number;
+
+            $appointment['doctor_speciality'] = $appointment->doctor->speciality->title;
+
+            $appointment['doctor_profile_picture'] = $_ENV['APP_URL'].'/storage/profile_images/'.$appointment->doctor->profile_picture;
+
+        }
+
+        return $this->sendResponse($appointments, 'Appointments retrieved successfully.');
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+    public function patientArchivedapts()
+    {
+        $appointments = auth()->user()->patientArchivedapts();
+
+        foreach ($appointments as $appointment) {
+            # code...
+            
+            $appointment['doctor_name'] = $appointment->doctor->name;
+
+            $appointment['doctor_firstname'] = $appointment->doctor->firstname;
+
+            $appointment['doctor_email'] = $appointment->doctor->email;
+
+            $appointment['doctor_phone_number'] = $appointment->doctor->phone_number;
+
+            $appointment['doctor_speciality'] = $appointment->doctor->speciality->title;
+
+            $appointment['doctor_profile_picture'] = $_ENV['APP_URL'].'/storage/profile_images/'.$appointment->doctor->profile_picture;
+
+        }
+
+        return $this->sendResponse($appointments, 'Appointments retrieved successfully.');
+    }
+
+
     /**
      * Favorite a particular doctor
      *
@@ -58,6 +150,99 @@ class PatientManagerController extends BaseController
         $myFavorites = Auth::user()->favorites;
 
         return $this->sendResponse($myFavorites, 'Favourites Doctors retreive sucessfully!');
+    }
+
+
+    public function postSetting(Request $request) {
+
+        $user = User::findOrFail(auth()->user()->id);
+
+        $patient = Patient::where('user_id', $user->id)->first();
+        
+        //Validate these fields
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:120',
+            'firstname' => 'required|max:120',
+            'address' => 'nullable',
+            //'email' => 'nullable|email|unique:users,email,'.$user->id,
+            'gender' => 'required',
+            'birth_date' => 'required',
+            'place_birth' => 'nullable',
+            'blood_group' => 'required',
+            'rhesus' => 'required',
+            'marital_status' => 'required',
+            'profile_picture' => 'nullable',
+            //'nationality' => 'nullable',
+            //'ethnic_group' => 'nullable',
+            //'profession' => 'nullable',
+        ]);
+
+        if($validator->fails()){
+            return $this->sendError('Validation Error.', $validator->errors());       
+        }
+
+        if ($request->hasfile('profile_picture')) {
+            // Get filename with the extension
+            $fileNameWithExt = $request->file('profile_picture')->getClientOriginalName();
+
+            // Get just filename
+            $filename = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+
+            // Get just ext
+            $extension = $request->file('profile_picture')->getClientOriginalExtension();
+
+            // Filename to store
+            $fileNameToStore = $filename.'_'.time().'.'.$extension;
+
+            // Upload Image
+            $path = $request->file('profile_picture')->storeAs('public/profile_images', $fileNameToStore);
+        } else {
+            $fileNameToStore = 'avatar.jpg';
+        }
+
+        
+        $patient->name = $request->input('name');
+        $patient->firstname = $request->input('firstname');
+        //$patient->email = $request->input('email');
+        $patient->gender = $request->input('gender');
+        $patient->marital_status = $request->input('marital_status');
+        $patient->profile_picture = $fileNameToStore;
+        //$patient->phone_number = $request->input('phone_number');
+        $patient->address = $request->input('address');
+        $patient->birth_date = $request->input('birth_date');
+        $patient->place_birth = $request->input('place_birth');
+        //$patient->nationality = $request->input('nationality');
+        //$patient->ethnic_group = $request->input('ethnic_group');
+        $patient->blood_group = $request->input('blood_group');
+        $patient->rhesus = $request->input('rhesus');
+        //$patient->profession = $request->input('profession');
+
+        $patient->status = 1;
+
+        $user->name = $request->input('name');
+        $user->firstname = $request->input('firstname');
+        //$user->email = $request->input('email');
+        $user->profile_picture = $fileNameToStore;
+        //$user->phone_number = $request->input('phone_number');
+        //$user->gender = $request->input('gender');
+        //$user->birth_date = $request->input('birth_date');
+        $user->address = $request->input('address');
+
+        $patient->save();
+        $user->save();
+
+        $historique = new History();
+        $historique->action = 'Update Patient Profile';
+        $historique->table = 'User/Patient';
+        $historique->user_id = auth()->user()->id;
+
+        $historique->save();
+
+        $success = true;
+
+        // Send response
+        return $this->sendResponse($success, 'Profil édité avec succès.');
+
     }
 
 	 /**
@@ -136,5 +321,41 @@ class PatientManagerController extends BaseController
 
         return response()->json($response, 200);
         
+    }
+
+    public function getSchedules(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'doctor_id' => 'required',
+            'schedule_id' => 'required',
+            'date' => 'required',
+        ]);
+   
+        if($validator->fails()){
+            return $this->sendError('Validation Error.', $validator->errors());       
+        }
+
+        $day_num = 0;
+
+        $check = Carbon::parse($request->date);
+
+        $day_num = date('N', strtotime($check));
+
+        $appointments = Appointment::where('doctor_id', $request->doctor_id)
+                                    ->where('date_apt', $request->date)
+                                    ->pluck('schedule_id');
+
+        $schedules = Schedule::where('doctor_id', $request->doctor_id)
+                              ->where('day_num', $day_num)
+                              ->whereNotIn('id', $appointments)
+                              ->get();
+
+        if($schedules){
+
+            return $this->sendResponse($schedules, 'Doctor\'s availability time
+');
+        }
+
+        return $this->sendResponse([], 'No availability time for this Doctor!');
     }
 }

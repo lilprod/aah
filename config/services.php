@@ -42,4 +42,7 @@ return [
         'redirect' => env('FACEBOOK_CLIENT_CALLBACK')
     ],
 
+    'stripe' => [
+     'secret' => env('STRIPE_SECRET'),
+    ],
 ];

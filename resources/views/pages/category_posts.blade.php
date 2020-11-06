@@ -29,6 +29,9 @@
 	</head>
 	<body>
 
+		<!-- Main Wrapper -->
+		<div class="main-wrapper">
+
 		@include('website.hearder')
 
 		<!-- Breadcrumb -->

@@ -48,7 +48,8 @@
 							<li><a href="{{route('chat')}}">Chat</a></li>
 							<li><a href="{{route('video_chat')}}">Video Chat</a></li>
 							<li><a href="{{route('patient_profile_setting')}}">Profile Settings</a></li>
-							<li><a href="#">Change Password</a></li>
+							<li><a href="{{route('search_disease')}}">Disease and Treatment</a></li>
+							<li><a href="{{route('patient_change_password')}}">Change Password</a></li>
 						</ul>
 					</li>
 

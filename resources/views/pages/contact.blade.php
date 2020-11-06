@@ -159,9 +159,11 @@
 										<!--<div class="card-header">
 											<h4 class="card-title">Love to hear from you</h4>
 										</div>-->
+									<form class="form-area" id="myForm" action="{{route('postcontact')}}" method="POST">
 										<div class="card-body">
 
-											<form class="form-area" id="myForm" action="#" method="post" >
+											
+												{{csrf_field()}}
 												<div class="row">
 
 												<div class="col-12 col-md-6">	
@@ -201,16 +203,17 @@
 												</div>
 
 												</div>
-											</form>
+											
 
 									</div>
 
 									<div class="card-footer">
 										<div class="col-lg-12">
 											<div class="alert-msg" style="text-align: left;"></div>
-											<button class="btn btn-primary btn-rounded" style="float: right;">Send Message</button>											
+											<button class="btn btn-primary btn-rounded" style="float: right;" type="submit">Send Message</button>											
 										</div>
 									</div>
+								</form>
 
 									</div>
 

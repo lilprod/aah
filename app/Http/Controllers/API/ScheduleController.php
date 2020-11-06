@@ -91,7 +91,7 @@ class ScheduleController extends BaseController
         $schedule->save();
         $historique->save();
 
-        return $this->sendResponse(new ScheduleResource($schedule), 'Post retrieved successfully.');
+        return $this->sendResponse(new ScheduleResource($schedule), 'Schedule added successfully.');
     }
 
     /**
@@ -131,7 +131,49 @@ class ScheduleController extends BaseController
      */
     public function update(Request $request, Schedule $schedule)
     {
-        //
+        $input = $request->all();
+   
+        $validator = Validator::make($input, [
+            //'speciality_id' => 'required',
+            //'doctor_id' => 'required',
+            'day_num'  => 'required',
+            'begin_time' => 'required',
+        ]);
+   
+        if($validator->fails()){
+            return $this->sendError('Validation Error.', $validator->errors());       
+        }
+
+        $time = $request->input('begin_time');
+
+        $base = Carbon::parse($time);
+
+        $end = $base->copy()->addMinutes(30)->toTimeString();
+
+        $schedule->day_num  = $request->input('day_num');
+
+        $schedule->begin_time = $request->input('begin_time');
+
+        $schedule->end_time = $end; 
+        
+        $schedule->doctor_userid = auth()->user()->id;
+
+        $doctor = Doctor::where('user_id', auth()->user()->id)->first();
+
+        $schedule->doctor_id = $doctor->id;
+        
+        $schedule->status = 1;
+
+        $historique = new History();
+        $historique->action = 'Update';
+        $historique->table = 'Schedule';
+        $historique->user_id = auth()->user()->id;
+
+        
+        $schedule->save();
+        $historique->save();
+
+        return $this->sendResponse($schedule, 'Schedule updated successfully.');
     }
 
     /**

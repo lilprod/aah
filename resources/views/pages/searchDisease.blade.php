@@ -6,7 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-		<title>AAH+ - Search</title>
+		<title>AAH+ - Search Disease</title>
 		
 		<!-- Favicons -->
 		<link type="image/x-icon" href="{{asset('assets/img/favicon.png') }}" rel="icon">
@@ -55,7 +55,7 @@
 									<li class="breadcrumb-item active" aria-current="page">Search</li>
 								</ol>
 							</nav>
-							<h2 class="breadcrumb-title">Search <span style="color: #26a9e166">+</span></h2>
+							<h2 class="breadcrumb-title">Search Disease <span style="color: #26a9e166">+</span></h2>
 						</div>
 						<!--<div class="col-md-4 col-12 d-md-block d-none">
 							<div class="sort-by">
@@ -80,68 +80,36 @@
 			<div class="content">
 				<div class="container-fluid">
 					<div class="row">
-
-						<div class="col-md-12 col-lg-4 col-xl-3 theiaStickySidebar">
-						
-							<!-- Search Filter -->
-							<div class="card search-filter">
-								<div class="card-header">
-									<h4 class="card-title mb-0">Search Filter</h4>
-								</div>
-								<div class="card-body">
-									<form action="{{ route('search') }}" method="POST">
-										@csrf
-										<!--<div class="filter-widget">
-											<div class="cal-icon">
-												<input type="text" class="form-control datetimepicker" placeholder="Select Date">
-											</div>			
-										</div>-->
-										<div class="filter-widget">
-											<h4>Gender</h4>
-											<div>
-												<label class="custom_check">
-													<input type="checkbox" name="gender" checked value="M">
-													<span class="checkmark"></span> Male Doctor
-												</label>
-											</div>
-											<div>
-												<label class="custom_check">
-													<input type="checkbox" name="gender" value="F">
-													<span class="checkmark"></span> Female Doctor
-												</label>
-											</div>
-										</div>
-
-										<div class="filter-widget">
-											<h4>Select Specialist</h4>
-
-											@foreach($specialities as $speciality)
-												<div>
-													<label class="custom_check">
-														<input type="checkbox" name="speciality_id" value="{{$speciality->id}}">
-														<span class="checkmark"></span> {{$speciality->title}}
-													</label>
-												</div>
-
-											@endforeach
-											
-										</div>
-											<div class="btn-search">
-												<button type="submit" class="btn btn-block">Search</button>
-											</div>	
-										</div>
-								</form>
-							</div>
-							<!-- /Search Filter -->
-							
-						</div>
-
-						<div class="col-md-12 col-lg-8 col-xl-9">
-
-							
-						</div>
 					
-						
+						<!--<div class="col-md-12 col-lg-8 col-xl-9">
+							<div class="col-lg-4 col-lg-offset-4">-->
+
+						@include('patients.partials.profile_side')
+
+
+                        <div class="col-md-7 col-lg-8 col-xl-9">
+
+
+                        	<div class="col-md-6">
+								<!-- Search -->
+								<div class="card search-widget">
+									<div class="card-body">
+										<form class="search-form" action="{{ route('post_search_disease') }}" method="POST">
+											@csrf
+											<div class="input-group">
+												<input type="text" placeholder="Search..." class="form-control" name="query" required>
+												<div class="input-group-append">
+													<button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+								<!-- /Search -->
+							</div>
+
+
+						</div>
 
 					</div>
 				</div>

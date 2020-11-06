@@ -41,7 +41,9 @@ class SocialiteController extends Controller
         if (in_array($provider, $this->providers)) {
 
         	// Les informations provenant du provider
-            $data = Socialite::driver($request->provider)->user();
+            //$data = Socialite::driver($request->provider)->user();
+
+            $data = Socialite::driver($request->provider)->stateless()->user();
 
             # Social login - register
 
@@ -51,7 +53,7 @@ class SocialiteController extends Controller
             //$avatar = $data->getAvatar(); //avatar
 
             # 1. On récupère l'utilisateur à partir de l'adresse email
-            $user = User::where("email", $email)->first();
+            $user = User::where('email', $email)->first();
 
             # 2. Si l'utilisateur existe
             if (isset($user)) {

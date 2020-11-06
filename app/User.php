@@ -60,6 +60,18 @@ class User extends Authenticatable
         
     }
 
+    public function posts(){
+
+        return $this->hasMany(Post::class);
+        
+    }
+
+    public function diseases(){
+
+        return $this->hasMany(Disease::class);
+        
+    }
+
     public function favorites()
     {
         return $this->belongsToMany(Doctor::class, 'favourites', 'user_id', 'doctor_id')->withTimeStamps();
@@ -77,6 +89,48 @@ class User extends Authenticatable
                             ->get();
     }
 
+    public function patientArchivedapts()
+    {
+        $date = Carbon::now()->toDateString();
+
+        return Appointment::where('patient_user_id', $this->id)
+                            ->where('date_apt', '<' , $date)
+                            ->orderBy('id', 'DESC')
+                            ->get();
+    }
+
+    public function patientUpcomingapts()
+    {
+        $date = Carbon::now()->toDateString();
+
+        return Appointment::where('patient_user_id', $this->id)
+                            //->whereNotIn('status', array(2))
+                            ->where('date_apt', '>' , $date)
+                            ->orderBy('id', 'DESC')
+                            ->get();
+    }
+
+    public function patientPendingapts()
+    {
+        $date = Carbon::now()->toDateString();
+
+        return Appointment::where('patient_user_id', $this->id)
+                            ->where('status' ,'=', 0)
+                            ->where('date_apt', '>' , $date)
+                            ->orderBy('id', 'DESC')
+                            ->get();
+    }
+
+    public function doctorArchivedapts()
+    {
+        $date = Carbon::now()->toDateString();
+
+        return Appointment::where('doctor_user_id', $this->id)
+                            ->where('date_apt', '<' , $date)
+                            ->orderBy('id', 'DESC')
+                            ->get();
+    }
+
     public function doctorUpcomingapts()
     {
         $date = Carbon::now()->toDateString();
@@ -84,6 +138,7 @@ class User extends Authenticatable
         return Appointment::where('doctor_user_id', $this->id)
                             //->whereNotIn('status', array(2))
                             ->where('date_apt', '>' , $date)
+                            ->orderBy('id', 'DESC')
                             ->get();
     }
 
@@ -94,6 +149,7 @@ class User extends Authenticatable
         return Appointment::where('doctor_user_id', $this->id)
                             ->where('status' ,'=', 1)
                             ->where('date_apt', '=' , $date)
+                            ->orderBy('id', 'DESC')
                             ->get();
     }
 
@@ -104,6 +160,7 @@ class User extends Authenticatable
         return Appointment::where('doctor_user_id', $this->id)
                             ->where('status' ,'=', 0)
                             ->where('date_apt', '>' , $date)
+                            ->orderBy('id', 'DESC')
                             ->get();
     }
 
