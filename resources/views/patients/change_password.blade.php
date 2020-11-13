@@ -7,7 +7,6 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>AAH+ - Change Password</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
         
         <!-- Favicons -->
         <link type="image/x-icon" href="{{asset('assets/img/favicon.png') }}" rel="icon">
@@ -44,11 +43,11 @@
 						<div class="col-md-12 col-12">
 							<nav aria-label="breadcrumb" class="page-breadcrumb">
 								<ol class="breadcrumb">
-									<li class="breadcrumb-item"><a href="index.html">Home</a></li>
+									<li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
 									<li class="breadcrumb-item active" aria-current="page">Change Password</li>
 								</ol>
 							</nav>
-							<h2 class="breadcrumb-title">Change Password</h2>
+							<h2 class="breadcrumb-title">Change Password <span style="color: #26a9e166">+</span></h2>
 						</div>
 					</div>
 				</div>

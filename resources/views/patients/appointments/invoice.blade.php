@@ -63,7 +63,7 @@
 									<div class="row">
 										<div class="col-md-6">
 											<div class="invoice-logo">
-												<img src="assets/img/logo.png" alt="logo">
+												<img src="{{asset('assets/img/logo_aah.png') }}" alt="logo">
 											</div>
 										</div>
 										<div class="col-md-6">
@@ -82,9 +82,9 @@
 											<div class="invoice-info">
 												<strong class="customer-text">Invoice From</strong>
 												<p class="invoice-details invoice-details-two">
-													Dr. Darren Elder <br>
-													806  Twin Willow Lane, Old Forge,<br>
-													Newyork, USA <br>
+													Dr. {{$payment->doctor->name }} {{$payment->doctor->firstname}} <br>
+													{{$payment->doctor->address }},<br>
+													{{$payment->doctor->phone_number }} <br>
 												</p>
 											</div>
 										</div>
@@ -92,9 +92,9 @@
 											<div class="invoice-info invoice-info2">
 												<strong class="customer-text">Invoice To</strong>
 												<p class="invoice-details">
-													Walter Roberson <br>
-													299 Star Trek Drive, Panama City, <br>
-													Florida, 32405, USA <br>
+													{{$payment->patient->name }} {{$payment->patient->firstname}} <br>
+													{{$payment->patient->address }}, <br>
+													{{$payment->patient->phone_number }} <br>
 												</p>
 											</div>
 										</div>
@@ -129,7 +129,7 @@
 														<tr>
 															<th>Description</th>
 															<th class="text-center">Quantity</th>
-															<th class="text-center">VAT</th>
+															<!--<th class="text-center">VAT</th>-->
 															<th class="text-right">Total</th>
 														</tr>
 													</thead>
@@ -137,15 +137,15 @@
 														<tr>
 															<td>General Consultation</td>
 															<td class="text-center">1</td>
-															<td class="text-center">$0</td>
-															<td class="text-right">$100</td>
+															<!--<td class="text-center">$0</td>-->
+															<td class="text-right">${{$payment->apt_amount }}</td>
 														</tr>
-														<tr>
+														<!--<tr>
 															<td>Video Call Booking</td>
 															<td class="text-center">1</td>
 															<td class="text-center">$0</td>
 															<td class="text-right">$250</td>
-														</tr>
+														</tr>-->
 													</tbody>
 												</table>
 											</div>
@@ -154,17 +154,17 @@
 											<div class="table-responsive">
 												<table class="invoice-table-two table">
 													<tbody>
-													<tr>
+													<!--<tr>
 														<th>Subtotal:</th>
 														<td><span>$350</span></td>
 													</tr>
 													<tr>
 														<th>Discount:</th>
 														<td><span>-10%</span></td>
-													</tr>
+													</tr>-->
 													<tr>
 														<th>Total Amount:</th>
-														<td><span>$315</span></td>
+														<td><span>${{$payment->apt_amount }}</span></td>
 													</tr>
 													</tbody>
 												</table>
@@ -173,6 +173,23 @@
 									</div>
 								</div>
 								<!-- /Invoice Item -->
+
+								<br><br>
+								<!-- Signature -->
+									<div class="row">
+										<div class="col-md-12 text-right">
+											<div class="signature-wrap">
+												<div class="signature">
+													<!--Click here to sign-->
+												</div>
+												<div class="sign-name">
+													<p class="mb-0">( Dr. {{$payment->doctor->name}} {{$payment->doctor->firstname}} )</p>
+													<span class="text-muted">Signature</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- /Signature -->
 								
 								<!-- Invoice Information -->
 								<div class="other-info">
@@ -182,6 +199,11 @@
 								<!-- /Invoice Information -->
 								
 							</div>
+						</div>
+
+						
+						<div class="col-lg-8 offset-lg-2">
+							<a class="btn btn-primary" href="{{url()->previous()}}"><i class="fas fa-arrow-left"></i> Back</a>
 						</div>
 					</div>
 

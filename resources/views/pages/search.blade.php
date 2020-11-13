@@ -126,6 +126,12 @@
 											@endforeach
 											
 										</div>
+
+										<div class="filter-widget">
+											<h4>Exercice Place</h4>
+											<input type="text" placeholder="Enter a city name..." class="form-control" name="exercice_place">
+										</div>
+										
 											<div class="btn-search">
 												<button type="submit" class="btn btn-block">Search</button>
 											</div>	

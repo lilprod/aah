@@ -77,23 +77,24 @@
 												</tr>
 											</thead>
 											<tbody>
+												@foreach($payments as $payment)
 												<tr>
 													<td>
-														<a href="#">#INV-0010</a>
+														<a href="#">#INV-00{{$payment->id }}</a>
 													</td>
 													<td>
 														<h2 class="table-avatar">
 															<a href="#" class="avatar avatar-sm mr-2">
 																<img class="avatar-img rounded-circle" src="{{asset('assets/img/patients/patient.jpg') }}" alt="User Image">
 															</a>
-															<a href="#">Richard Wilson <span>#PT0016</span></a>
+															<a href="#">{{$payment->patient->name }} {{$payment->patient->firstname}}  <span>#PT00{{$payment->patient->id }} </span></a>
 														</h2>
 													</td>
-													<td>$450</td>
-													<td>14 Nov 2019</td>
+													<td>${{$payment->apt_amount}}</td>
+													<td>{{$payment->created_at->format('d/m/Y')}}</td>
 													<td class="text-right">
 														<div class="table-action">
-															<a href="#" class="btn btn-sm bg-info-light">
+															<a href="{{route('invoice.show', $payment->id)}}" class="btn btn-sm bg-info-light">
 																<i class="far fa-eye"></i> View
 															</a>
 															<a href="javascript:void(0);" class="btn btn-sm bg-primary-light">
@@ -102,6 +103,7 @@
 														</div>
 													</td>
 												</tr>
+												@endforeach
 											</tbody>
 										</table>
 									</div>

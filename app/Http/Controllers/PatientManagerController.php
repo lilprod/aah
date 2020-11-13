@@ -8,6 +8,10 @@ use App\Patient;
 use App\Doctor;
 use App\History;
 use App\Appointment;
+use App\Prescription;
+use App\Payment;
+use App\PrescribedDrug;
+use App\PrescriptionExam;
 use App\Schedule;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -136,34 +140,13 @@ class PatientManagerController extends Controller
 
     public function getSchedules(Request $request)
     {
-        
-        /* $check = Carbon::now()->addHours($heure_retrait);
-
-        if((date('N', strtotime($check)) >= 7)){
-            $date = Carbon::parse($check);
-            $order->delivery_date = $date->addDays(1);
-        }else{
-            $order->delivery_date = Carbon::parse($check);
-        }*/
-
-
-        /*$result = DB::table('exams')->whereNotIn('id', function($q){
-        $q->select('examId')->from('testresults');
-        })->get()*/
-
         $day_num = 0;
-        //$check = Carbon::parse($request->date);
         $check = Carbon::parse($request->date);
         $day_num = date('N', strtotime($check));
 
-
-        //$courseUserNames = BuyCourses::pluck('user_name')->all();
         $appointments = Appointment::where('doctor_id', $request->doctor)
                                     ->where('date_apt', $request->date)
                                     ->pluck('schedule_id');
-
-        //$users = User::whereNotIn('user_name', $courseUserNames)->select(...)->get();
-
 
         $schedules = Schedule::where('doctor_id', $request->doctor)
                               ->where('day_num', $day_num)
@@ -171,6 +154,35 @@ class PatientManagerController extends Controller
                               ->get();
 
         return response()->json($schedules);
+    }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function profile($id) {
+
+        $patient = Patient::findOrFail($id);
+
+        $prescriptions = Prescription::orderBy('created_at', 'desc')
+                            ->where('patient_id', $id)
+                            ->get();
+
+        $payments = Payment::orderBy('created_at', 'desc')
+                            ->where('patient_id', $id)
+                            ->get();
+
+        $bookings = Appointment::orderBy('created_at', 'desc')
+                            ->where('patient_id', $id)
+                            ->get();
+
+        $lastbookings = Appointment::orderBy('created_at', 'desc')
+                            ->where('patient_id', $id)
+                            ->limit(2)
+                            ->get();
+        
+        return view('patients.patient_profile', compact('patient', 'lastbookings', 'bookings', 'prescriptions', 'payments'));
     }
 
     /**
@@ -187,6 +199,25 @@ class PatientManagerController extends Controller
 
     public function check(Request $request)
     {
+
+        /* $check = Carbon::now()->addHours($heure_retrait);
+
+        if((date('N', strtotime($check)) >= 7)){
+            $date = Carbon::parse($check);
+            $order->delivery_date = $date->addDays(1);
+        }else{
+            $order->delivery_date = Carbon::parse($check);
+        }*/
+
+
+        /*$result = DB::table('exams')->whereNotIn('id', function($q){
+        $q->select('examId')->from('testresults');
+        })->get()*/
+
+        //$users = User::whereNotIn('user_name', $courseUserNames)->select(...)->get();
+
+        //$courseUserNames = BuyCourses::pluck('user_name')->all();
+
         $doctor =  $request->get('doctor');
         //$department = $request->get('department');
         $schedule = Schedule::findOrFail($request->get('schedule_id'));
@@ -270,6 +301,7 @@ class PatientManagerController extends Controller
         $patient->blood_group = $request->input('blood_group');
         $patient->rhesus = $request->input('rhesus');
         //$patient->profession = $request->input('profession');
+        $patient->status = 1;
         //$patient->status = $request->input('status');
 
         $user->name = $request->input('name');

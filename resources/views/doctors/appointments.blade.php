@@ -45,7 +45,7 @@
 									<li class="breadcrumb-item active" aria-current="page">Appointments</li>
 								</ol>
 							</nav>
-							<h2 class="breadcrumb-title">Appointments</h2>
+							<h2 class="breadcrumb-title">Appointments <span style="color: #26a9e166">+</span></h2>
 						</div>
 					</div>
 				</div>

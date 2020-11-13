@@ -40,7 +40,7 @@ class DoctorController extends BaseController
             $doctor['rating'] = $doctor->averageRating;
         }
 
-        return $this->sendResponse($doctors, 'Posts retrieved successfully.');
+        return $this->sendResponse($doctors, 'Doctors retrieved successfully.');
 
         //return $this->sendResponse(PostResource::collection($doctors), 'Doctors retrieved successfully.');
     }

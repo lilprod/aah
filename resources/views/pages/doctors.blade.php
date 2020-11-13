@@ -25,7 +25,7 @@
 
 		<link rel="stylesheet" type="text/css" href="{{asset('css/btn.css') }}">
 
-		 <link href="{{asset('css/star-rating.css') }}" media="all" rel="stylesheet" type="text/css" />
+		<link href="{{asset('css/star-rating.css') }}" media="all" rel="stylesheet" type="text/css" />
 		
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 		<!--[if lt IE 9]>
@@ -109,7 +109,9 @@
 												<a href="{{route('doctor.profile', $doctor->id)}}">Dr. {{$doctor->name}} {{$doctor->firstname}}</a> 
 												<i class="fas fa-check-circle verified"></i>
 											</h3>
-											<p class="speciality">MDS - Periodontology and Oral Implantology, BDS</p>
+											@if($doctor->speciality_id != '')
+											<p class="speciality">{{$doctor->speciality->title}}</p>
+											@endif
 											<div class="rating">
 												<!--<i class="fas fa-star filled"></i>
 												<i class="fas fa-star filled"></i>

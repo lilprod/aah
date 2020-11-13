@@ -47,7 +47,7 @@ Route::post('/filterDoctor', 'API\DoctorController@filterDoctor');
 
 //Diseases
 
-Route::post('/search/diseases', 'API\DiseaseController@postSearch')->name('search_disease');
+Route::post('/search/disease', 'API\DiseaseController@postSearch')->name('search_disease');
 
 Route::post('diseasen/check_slug', 'API\DoctorController@check_disease_slug')->name('disease_check_slug');
 
@@ -88,6 +88,8 @@ Route::middleware('auth:api')->group( function () {
 
     Route::post('/verifDoctor', 'API\AuthController@verifDoctor');
 
+    Route::get('/user', 'API\AuthController@user');
+
     Route::get('/logout', 'API\AuthController@logout')->name('logout');
 
     Route::post('updatelang', 'API\AuthController@updatelang');
@@ -126,9 +128,9 @@ Route::middleware('auth:api')->group( function () {
 
     Route::get('/myfavourites', 'API\PatientManagerController@myfavourites')->name('myfavourites');
 
-    Route::post('favorite/{doctor}', 'API\PatientManagerController@favoriteDoctor');
+    Route::put('favorite/{doctor}', 'API\PatientManagerController@favoriteDoctor');
 
-    Route::post('unfavorite/{doctor}', 'API\PatientManagerController@unFavoriteDoctor');
+    Route::put('unfavorite/{doctor}', 'API\PatientManagerController@unFavoriteDoctor');
 
     Route::post('rating', 'API\PatientManagerController@rating')->name('rating');
 
@@ -187,6 +189,6 @@ Route::middleware('auth:api')->group( function () {
 
 });
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+/*Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
-});
+});*/

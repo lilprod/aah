@@ -8,12 +8,20 @@ use Illuminate\Http\Request;
 use App\Http\Resources\Disease as DiseaseResource;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Support\Facades\Storage;
+use Validator;
 use App\Disease;
 use App\User;
 use App\History;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DiseaseController extends BaseController
 {
+    /*public function __construct()
+    {
+        $this->middleware('auth');
+    }*/
 
     public function postSearch(Request $request)
     {
@@ -24,6 +32,19 @@ class DiseaseController extends BaseController
         $diseases = Disease::filter($params)->orderByDesc('id')->paginate(10);;
 
         if (count($diseases) > 0){
+
+            foreach ($diseases as $disease) {
+                # code...
+
+               $disease['cover_image'] = $_ENV['APP_URL'].'/storage/diseases/'.$disease->cover_image;
+
+               $disease['author_image'] = $_ENV['APP_URL'].'/storage/profile_images/'.$disease->user->profile_picture;
+
+               $disease->author = $disease->user->name;
+
+               //$disease ->author = $user->name.' '.$user->firstname;
+            }
+
 
             return $this->sendResponse($diseases, 'Diseases retrieved successfully.');
 
@@ -65,7 +86,7 @@ class DiseaseController extends BaseController
      */
     public function mydiseases()
     {
-        $user_id = auth()->user()->id;
+        $user_id = Auth::guard('api')->user()->id;
 
         $diseases = Disease::where('user_id', $user_id)
                             ->get();
@@ -187,8 +208,12 @@ class DiseaseController extends BaseController
             $disease->cover_image = 'noimage.jpg';
         }
 
+        // Get current user
+        //$userId = Auth::guard('api')->user()->id;
+        //$user = User::findOrFail($userId);
+
         $disease->status = $request->input('status');
-        $disease->user_id = auth()->user()->id;
+        $disease->user_id = Auth::guard('api')->user()->id;
         //$disease->attach_file = $request->input('attach_file');
         //$disease->meta_keywords = $request->input('meta_keywords');
         //$disease->meta_description = $request->input('meta_description');
@@ -282,7 +307,8 @@ class DiseaseController extends BaseController
         }
         $disease->video_url = $request->input('video_url');
         $disease->status = $request->input('status');
-        $disease->user_id = auth()->user()->id;
+        $disease->user_id = Auth::guard('api')->user()->id;
+        //$disease->user_id = auth()->user()->id;
         //$disease->attach_file = $request->input('attach_file');
         //$disease->meta_keywords = $request->input('meta_keywords');
         //$disease->meta_description = $request->input('meta_description');

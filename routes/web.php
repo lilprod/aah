@@ -29,11 +29,21 @@ use App\Admin;
 
 //Route::get('paypal/payment', 'PayPalController@payment')->name('payment');
 
+//Paypal
+
 Route::post('paypal/payment', 'PayPalController@payment')->name('payment');
 
 Route::get('paypal/cancel', 'PayPalController@cancel')->name('payment.cancel');
 
 Route::get('paypal/success', 'PayPalController@success')->name('payment.success');
+
+//Stripe
+
+Route::get('/stripe/{id}', ['as' => 'stripe', 'uses' => 'StripeController@stripe']);
+
+//Route::get('stripe', 'StripeController@stripe')->name('stripe');
+
+Route::post('stripe', 'StripeController@stripePost')->name('stripe.post');
 
 //Admin Auth
 Route::namespace('Admin')->name('admin.')->prefix('admin')->group(function () {
@@ -167,6 +177,8 @@ Route::get('/patient/profile/{id}', ['as' => 'patient.profile', 'uses' => 'Patie
 Route::get('/patient/booking/{id}', ['as' => 'booking.doctor', 'uses' => 'PatientManagerController@booking']);
 
 Route::get('/patient/rating/{id}', ['as' => 'rating.doctor', 'uses' => 'PatientManagerController@rating']);
+
+Route::get('/invoice/{id}', ['as' => 'invoice.show', 'uses' => 'PaymentController@show']);
 
 Route::get('/patient/booking/success/{appointment}/{doctor}', ['as' => 'booking.success', 'uses' => 'AppointmentController@success']);
 

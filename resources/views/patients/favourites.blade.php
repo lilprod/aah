@@ -19,6 +19,8 @@
         
         <!-- Main CSS -->
         <link rel="stylesheet" href="{{asset('assets/css/style.css') }}">
+
+        <link href="{{asset('css/star-rating.css') }}" media="all" rel="stylesheet" type="text/css" />
 		
 		
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -48,7 +50,7 @@
 									<li class="breadcrumb-item active" aria-current="page">Favourites</li>
 								</ol>
 							</nav>
-							<h2 class="breadcrumb-title">Favourites</h2>
+							<h2 class="breadcrumb-title">Favourites <span style="color: #26a9e166">+</span></h2>
 						</div>
 					</div>
 				</div>
@@ -87,15 +89,16 @@
 												<a href="#">Dr. {{$myFavorite->name}} {{$myFavorite->firstname}}</a> 
 												<i class="fas fa-check-circle verified"></i>
 											</h3>
-											<p class="speciality">MDS - Periodontology and Oral Implantology, BDS</p>
-											<!--<div class="rating">
+											<p class="speciality">{{$myFavorite->speciality->title}}</p>
+											<div class="rating">
+												<!--<i class="fas fa-star filled"></i>
 												<i class="fas fa-star filled"></i>
 												<i class="fas fa-star filled"></i>
 												<i class="fas fa-star filled"></i>
 												<i class="fas fa-star filled"></i>
-												<i class="fas fa-star filled"></i>
-												<span class="d-inline-block average-rating">(17)</span>
-											</div>-->
+												<span class="d-inline-block average-rating">(17)</span>-->
+												<input id="rating-system" type="number" class="rating" min="0" max="5" step="1" name="rating" value="{{ $myFavorite->averageRating }}" disabled>
+											</div>
 											<!--<ul class="available-info">
 												<li>
 													<i class="fas fa-map-marker-alt"></i> Florida, USA
@@ -109,10 +112,10 @@
 											</ul>-->
 											<div class="row row-sm">
 												<div class="col-6">
-													<a href="#" class="btn view-btn">View Profile</a>
+													<a href="{{route('doctor.profile', $myFavorite->id)}}" class="btn view-btn">View Profile</a>
 												</div>
 												<div class="col-6">
-													<a href="#" class="btn book-btn">Book Now</a>
+													<a href="{{route('booking.doctor', $myFavorite->id)}}" class="btn book-btn">Book Now</a>
 												</div>
 											</div>
 										</div>
@@ -141,6 +144,8 @@
       
         <!-- jQuery -->
         <script src="{{asset('assets/js/jquery.min.js') }}"></script>
+
+        <script src="{{asset('js/star-rating.js') }}" type="text/javascript"></script>
 
         <!-- Scripts -->
  		<script src="{{ asset('js/app.js') }}"></script>

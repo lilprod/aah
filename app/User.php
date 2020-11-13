@@ -13,6 +13,8 @@ use App\Appointment;
 use App\Schedule;
 use Carbon\Carbon;
 use App\Post;
+use App\Prescription;
+use App\Payment;
 use AgilePixels\Rateable\Traits\AddsRating;
 use Illuminate\Support\Facades\DB;
 
@@ -80,6 +82,34 @@ class User extends Authenticatable
     public function allChatMsg()
     {
         return Message::where('to_id', $this->id)->where('seen', 0)->count();
+    }
+
+    public function patientprescriptions(){
+
+        return Prescription::where('patient_userid', $this->id)
+                            ->orderBy('id', 'DESC')
+                            ->get();
+
+    }
+
+    public function patientpayments(){
+
+        return Payment::where('patient_user_id', $this->id)
+                            ->orderBy('id', 'DESC')
+                            ->get();
+    }
+
+    public function doctorpayments(){
+         return Payment::where('doctor_user_id', $this->id)
+                            ->orderBy('id', 'DESC')
+                            ->get();
+    }
+
+    public function doctorprescriptions(){
+
+        return Prescription::where('doctor_userid', $this->id)
+                            ->orderBy('id', 'DESC')
+                            ->get();
     }
 
     public function patientappointments()

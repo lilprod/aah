@@ -44,11 +44,11 @@
                         <div class="col-md-12 col-12">
                             <nav aria-label="breadcrumb" class="page-breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                    <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
                                 </ol>
                             </nav>
-                            <h2 class="breadcrumb-title">Dashboard</h2>
+                            <h2 class="breadcrumb-title">Dashboard <span style="color: #26a9e166">+</span></h2>
                         </div>
                     </div>
                 </div>
@@ -169,15 +169,16 @@
                                                                 </tr>     
                                                             </thead>
                                                             <tbody>
+                                                                @foreach($prescriptions as $prescription)
                                                                 <tr>
-                                                                    <td>14 Nov 2019</td>
-                                                                    <td>Prescription 1</td>
+                                                                    <td>{{$prescription->created_at->format('d/m/Y')}}</td>
+                                                                    <td>Prescription</td>
                                                                     <td>
                                                                         <h2 class="table-avatar">
-                                                                            <a href="doctor-profile.html" class="avatar avatar-sm mr-2">
-                                                                                <img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-01.jpg" alt="User Image">
+                                                                            <a href="{{route('doctor.profile', $prescription->doctor->id)}}" class="avatar avatar-sm mr-2">
+                                                                                <img class="avatar-img rounded-circle" src="{{url('/storage/profile_images/'.$prescription->doctor->profile_picture ) }}" alt="User Image">
                                                                             </a>
-                                                                            <a href="doctor-profile.html">Dr. Ruby Perrin <span>Dental</span></a>
+                                                                            <a href="{{route('doctor.profile', $prescription->doctor->id)}}">Dr. {{$prescription->doctor->name }} {{$prescription->doctor->firstname}} <span>{{$prescription->doctor->speciality->title}}</span></a>
                                                                         </h2>
                                                                     </td>
                                                                     <td class="text-right">
@@ -185,12 +186,13 @@
                                                                             <a href="javascript:void(0);" class="btn btn-sm bg-primary-light">
                                                                                 <i class="fas fa-print"></i> Print
                                                                             </a>
-                                                                            <a href="javascript:void(0);" class="btn btn-sm bg-info-light">
+                                                                            <a href="{{route('prescriptions.show', $prescription->id)}}" class="btn btn-sm bg-info-light">
                                                                                 <i class="far fa-eye"></i> View
                                                                             </a>
                                                                         </div>
                                                                     </td>
                                                                 </tr>
+                                                                @endforeach
                                                             </tbody>    
                                                         </table>
                                                     </div>
@@ -264,23 +266,24 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
+                                                                @foreach($payments as $payment)
                                                                 <tr>
                                                                     <td>
-                                                                        <a href="invoice-view.html">#INV-0010</a>
+                                                                        <a href="#">#INV-00{{$payment->id}}</a>
                                                                     </td>
                                                                     <td>
                                                                         <h2 class="table-avatar">
-                                                                            <a href="doctor-profile.html" class="avatar avatar-sm mr-2">
-                                                                                <img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-01.jpg" alt="User Image">
+                                                                            <a href="{{route('doctor.profile', $payment->doctor->id)}}" class="avatar avatar-sm mr-2">
+                                                                                <img class="avatar-img rounded-circle" src="{{url('/storage/profile_images/'.$payment->doctor->profile_picture ) }}" alt="User Image">
                                                                             </a>
-                                                                            <a href="doctor-profile.html">Ruby Perrin <span>Dental</span></a>
+                                                                            <a href="{{route('doctor.profile', $payment->doctor->id)}}">Dr. {{$payment->doctor->name }} {{$payment->doctor->firstname}} <span>{{$payment->doctor->speciality->title}}</span></a>
                                                                         </h2>
                                                                     </td>
-                                                                    <td>$450</td>
-                                                                    <td>14 Nov 2019</td>
+                                                                    <td>${{$payment->apt_amount}}</td>
+                                                                    <td>{{$payment->created_at->format('d/m/Y')}}</td>
                                                                     <td class="text-right">
                                                                         <div class="table-action">
-                                                                            <a href="invoice-view.html" class="btn btn-sm bg-info-light">
+                                                                            <a href="{{route('invoice.show', $payment->id)}}" class="btn btn-sm bg-info-light">
                                                                                 <i class="far fa-eye"></i> View
                                                                             </a>
                                                                             <a href="javascript:void(0);" class="btn btn-sm bg-primary-light">
@@ -289,6 +292,7 @@
                                                                         </div>
                                                                     </td>
                                                                 </tr>
+                                                                @endforeach
                                                             </tbody>
                                                         </table>
                                                     </div>

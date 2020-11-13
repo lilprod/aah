@@ -66,7 +66,7 @@ class AuthController extends BaseController
         //$patient->profile_picture = $_ENV['APP_URL'].'/storage/profile_images/avatar.jpg';
         $patient->profile_picture = 'avatar.jpg';
         $patient->user_id = $user->id;
-        $patient->status = 1;
+        $patient->status = 0;
         $patient->save();
 
         $success['token'] =  $user->createToken('MyApp')->accessToken;
@@ -126,6 +126,7 @@ class AuthController extends BaseController
         $doctor->phone_number = $request->input('phone_number');
         $doctor->address = $request->input('address');
         //$doctor->profile_picture = $_ENV['APP_URL'].'/storage/profile_images/avatar.jpg';
+        $doctor->status = 0;
         $doctor->profile_picture = 'avatar.jpg';
         $doctor->user_id = $user->id;
         $doctor->save();
@@ -578,7 +579,52 @@ class AuthController extends BaseController
      */
     public function user(Request $request)
     {
-        return response()->json($request->user());
+        //return response()->json($request->user());
+
+        $user = $request->user();
+
+        if($user->role_id == 1){
+
+            $patient = Patient::where('user_id', $user->id)->first();
+
+            $user['gender'] = $patient->gender;
+            $user['marital_status'] = $patient->marital_status;
+            $user['profile_picture'] = $_ENV['APP_URL'].'/storage/profile_images/'.$patient->profile_picture;
+            $user['address'] = $patient->address;
+            $user['birth_date'] = $patient->birth_date;
+            $user['place_birth'] = $patient->place_birth;
+            //$user['nationality'] = $patient->nationality;
+            //$user['ethnic_group'] = $patient->ethnic_group;
+            $user['blood_group'] = $patient->blood_group;
+            $user['rhesus'] = $patient->rhesus;
+            //$user['profession'] = $patient->profession;
+
+            return $this->sendResponse($user, 'Infos de l\' utilisateur');
+
+        }else{
+
+            $doctor = Doctor::where('user_id', $user->id)->first();
+
+            $user['gender'] = $doctor->gender;
+            //$user['marital_status'] = $doctor->marital_status;
+            $user['profile_picture'] = $_ENV['APP_URL'].'/storage/profile_images/'.$doctor->profile_picture;
+            $user['address'] = $doctor->address;
+            $user['region'] = $doctor->region;
+            $user['country'] = $doctor->country;
+            $user['city'] = $doctor->city;
+            $user['birth_date'] =$doctor->birth_date;
+            $user['place_birth'] = $doctor->place_birth;
+            $user['biography'] = $doctor->biography;
+            if($doctor->speciality != ''){
+               $user['speciality'] = $doctor->speciality->title; 
+            }
+            $user['rating'] = $doctor->averageRating;
+            //$user['nationality'] = $doctor->nationality;
+            //$user['profession'] = $doctor->profession;
+            return $this->sendResponse($user, 'Infos de l\' utilisateur');
+        }
+
+        //return $this->sendResponse($user, 'Infos de l\' utilisateur');
     }
 
 

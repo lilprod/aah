@@ -12,4 +12,10 @@ class Patient extends Model
         //return $this->belongsToMany(Doctor::class);
         return $this->belongsToMany(Doctor::class, 'doctor_patient', 'patient_id','doctor_id' , 'status')->withTimeStamps();
     }
+
+    public function appointments(){
+
+        return $this->hasMany(Appointment::class);
+        
+    }
 }

@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>Doccure</title>
+		<title>AAH+ - Patient Profile</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
 		
 		<!-- Favicons -->
@@ -48,7 +48,7 @@
 									<li class="breadcrumb-item active" aria-current="page">Profile</li>
 								</ol>
 							</nav>
-							<h2 class="breadcrumb-title">Profile</h2>
+							<h2 class="breadcrumb-title">Patient Profile <span style="color: #26a9e166">+</span></h2>
 						</div>
 					</div>
 				</div>
@@ -68,23 +68,47 @@
 									<div class="pro-widget-content">
 										<div class="profile-info-widget">
 											<a href="#" class="booking-doc-img">
-												<img src="assets/img/patients/patient.jpg" alt="User Image">
+												<img src="{{url('/storage/profile_images/'.$patient->profile_picture ) }}" alt="User Image">
 											</a>
 											<div class="profile-det-info">
-												<h3>Richard Wilson</h3>
+												<h3>{{$patient->name}} {{$patient->firstname}}</h3>
 												
 												<div class="patient-details">
-													<h5><b>Patient ID :</b> PT0016</h5>
-													<h5 class="mb-0"><i class="fas fa-map-marker-alt"></i> Newyork, United States</h5>
+													<h5><b>Patient ID :</b> PT00{{$patient->id}}</h5>
+													@if($patient->address != '')
+													<h5 class="mb-0"><i class="fas fa-map-marker-alt"></i> {{$patient->address}}</h5>
+													@endif 
 												</div>
 											</div>
 										</div>
 									</div>
 									<div class="patient-info">
 										<ul>
-											<li>Phone <span>+1 952 001 8563</span></li>
-											<li>Age <span>38 Years, Male</span></li>
-											<li>Blood Group <span>AB+</span></li>
+											<li>Phone <span>{{$patient->name}}</span></li>
+											<li>Age 
+												<span>@if($patient->birth_date != '') 
+															@php
+																$birthday = new DateTime($patient->birth_date);
+															    $currentDate = new DateTime(date("Y-m-d"));
+															    $interval = $birthday->diff($currentDate);
+
+															    $age= $interval->format('%Y');
+
+															  	echo($age.' Year, ');
+															@endphp
+														@endif
+
+														@if($patient->gender != '') 
+															@if($patient->gender == 'M') 
+																Male 
+															@else
+																Female
+															@endif
+
+														@endif
+													</span>
+												</li>
+											<li>Blood Group <span>{{$patient->blood_group}}{{$patient->rhesus}}</span></li>
 										</ul>
 									</div>
 								</div>
@@ -97,30 +121,21 @@
 									<h4 class="card-title">Last Booking</h4>
 								</div>
 								<ul class="list-group list-group-flush">
+
+									@foreach($lastbookings as $lastbooking)
 									<li class="list-group-item">
 										<div class="media align-items-center">
 											<div class="mr-3">
-												<img alt="Image placeholder" src="assets/img/doctors/doctor-thumb-02.jpg" class="avatar  rounded-circle">
+												<img alt="Image placeholder" src="{{url('/storage/profile_images/'.$lastbooking->doctor->profile_picture ) }}" class="avatar  rounded-circle">
 											</div>
 											<div class="media-body">
-												<h5 class="d-block mb-0">Dr. Darren Elder </h5>
-												<span class="d-block text-sm text-muted">Dentist</span>
-												<span class="d-block text-sm text-muted">14 Nov 2019 5.00 PM</span>
+												<h5 class="d-block mb-0">Dr. {{$lastbooking->doctor->name }} {{$lastbooking->doctor->firstname}} </h5>
+												<span class="d-block text-sm text-muted">{{$lastbooking->doctor->speciality->title}}</span>
+												<span class="d-block text-sm text-muted"></i> {{$lastbooking->date_apt}}, {{$lastbooking->begin_time}}</span>
 											</div>
 										</div>
 									</li>
-									<li class="list-group-item">
-										<div class="media align-items-center">
-											<div class="mr-3">
-												<img alt="Image placeholder" src="assets/img/doctors/doctor-thumb-02.jpg" class="avatar  rounded-circle">
-											</div>
-											<div class="media-body">
-												<h5 class="d-block mb-0">Dr. Darren Elder </h5>
-												<span class="d-block text-sm text-muted">Dentist</span>
-												<span class="d-block text-sm text-muted">12 Nov 2019 11.00 AM</span>
-											</div>
-										</div>
-									</li>
+									@endforeach
 								</ul>
 							</div>
 							<!-- /Last Booking -->
@@ -166,20 +181,35 @@
 																</tr>
 															</thead>
 															<tbody>
+																@foreach($bookings as $booking)
 																<tr>
 																	<td>
 																		<h2 class="table-avatar">
-																			<a href="doctor-profile.html" class="avatar avatar-sm mr-2">
-																				<img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-02.jpg" alt="User Image">
+																			<a href="{{route('doctor.profile', $booking->doctor->id)}}" class="avatar avatar-sm mr-2">
+																				<img class="avatar-img rounded-circle" src="{{url('/storage/profile_images/'.$booking->doctor->profile_picture ) }}" alt="User Image">
 																			</a>
-																			<a href="doctor-profile.html">Dr. Darren Elder <span>Dental</span></a>
+																			<a href="{{route('doctor.profile', $booking->doctor->id)}}">Dr. {{$booking->doctor->name }} {{$booking->doctor->firstname}} <span>{{$booking->doctor->speciality->title}}</span></a>
 																		</h2>
 																	</td>
-																	<td>14 Nov 2019 <span class="d-block text-info">10.00 AM</span></td>
-																	<td>12 Nov 2019</td>
+																	<td>{{$booking->date_apt}} <span class="d-block text-info">{{$booking->begin_time}}</span></td>
+																	<td>{{$booking->created_at}}</td>
 																	<td>$160</td>
-																	<td>16 Nov 2019</td>
-																	<td><span class="badge badge-pill bg-success-light">Confirm</span></td>
+																	<td> - </td>
+																	<td>
+
+																		@if($booking->status == 0)
+																		<span class="badge badge-pill bg-warning-light">Pending</span>
+																		@endif
+																		@if($booking->status == 1)
+																		<span class="badge badge-pill bg-success-light">Confirmed</span>
+																		@endif
+																		@if($booking->status == 2)
+																		<span class="badge badge-pill bg-danger-light">Cancelled</span>
+																		@endif
+																		@if($booking->status == 3)
+																		<span class="badge badge-pill bg-primary-light">Completed</span>
+																		@endif
+																	</td>
 																	<td class="text-right">
 																		<div class="table-action">
 																			<a href="javascript:void(0);" class="btn btn-sm bg-success-light">
@@ -188,6 +218,7 @@
 																		</div>
 																	</td>
 																</tr>
+																@endforeach
 															</tbody>
 														</table>
 													</div>
@@ -199,7 +230,7 @@
 										<!-- Prescription Tab -->
 										<div class="tab-pane fade" id="pres">
 											<div class="text-right">
-												<a href="add-prescription.html" class="add-new-btn">Add Prescription</a>
+												<a href="#" class="add-new-btn">Add Prescription</a>
 											</div>
 											<div class="card card-table mb-0">
 												<div class="card-body">
@@ -214,15 +245,17 @@
 																</tr>     
 															</thead>
 															<tbody>
+
+																@foreach($prescriptions as $prescription)
 																<tr>
-																	<td>14 Nov 2019</td>
-																	<td>Prescription 1</td>
+																	<td>{{$prescription->created_at->format('d/m/Y')}}</td>
+																	<td>Prescription</td>
 																	<td>
 																		<h2 class="table-avatar">
-																			<a href="doctor-profile.html" class="avatar avatar-sm mr-2">
-																				<img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-01.jpg" alt="User Image">
+																			<a href="{{route('doctor.profile', $prescription->doctor->id)}}" class="avatar avatar-sm mr-2">
+																				<img class="avatar-img rounded-circle" src="{{url('/storage/profile_images/'.$prescription->doctor->profile_picture ) }}" alt="User Image">
 																			</a>
-																			<a href="doctor-profile.html">Dr. Ruby Perrin <span>Dental</span></a>
+																			<a href="{{route('doctor.profile', $prescription->doctor->id)}}">Dr. {{$prescription->doctor->name }} {{$prescription->doctor->firstname}} <span>{{$prescription->doctor->speciality->title}}</span></a>
 																		</h2>
 																	</td>
 																	<td class="text-right">
@@ -230,12 +263,13 @@
 																			<a href="javascript:void(0);" class="btn btn-sm bg-primary-light">
 																				<i class="fas fa-print"></i> Print
 																			</a>
-																			<a href="javascript:void(0);" class="btn btn-sm bg-info-light">
+																			<a href="{{route('prescriptions.show', $prescription->id)}}" class="btn btn-sm bg-info-light">
 																				<i class="far fa-eye"></i> View
 																			</a>
 																		</div>
 																	</td>
 																</tr>
+																@endforeach
 															</tbody>	
 														</table>
 													</div>
@@ -300,7 +334,7 @@
 										<!-- Billing Tab -->
 										<div class="tab-pane" id="billing">
 											<div class="text-right">
-												<a class="add-new-btn" href="add-billing.html">Add Billing</a>
+												<a class="add-new-btn" href="#">Add Billing</a>
 											</div>
 											<div class="card card-table mb-0">
 												<div class="card-body">
@@ -317,31 +351,33 @@
 																</tr>
 															</thead>
 															<tbody>
+																@foreach($payments as $payment)
 																<tr>
 																	<td>
-																		<a href="invoice-view.html">#INV-0010</a>
+																		<a href="invoice-view.html">#INV-00{{$payment->id}}</a>
 																	</td>
 																	<td>
 																		<h2 class="table-avatar">
-																			<a href="doctor-profile.html" class="avatar avatar-sm mr-2">
-																				<img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-01.jpg" alt="User Image">
+																			<a href="{{route('doctor.profile', $payment->doctor->id)}}" class="avatar avatar-sm mr-2">
+																				<img class="avatar-img rounded-circle" src="{{url('/storage/profile_images/'.$payment->doctor->profile_picture ) }}" alt="User Image">
 																			</a>
-																			<a href="doctor-profile.html">Ruby Perrin <span>Dental</span></a>
+																			<a href="{{route('doctor.profile', $payment->doctor->id)}}">Dr. {{$payment->doctor->name }} {{$payment->doctor->firstname}}  <span>{{$payment->doctor->speciality->title}}</span></a>
 																		</h2>
 																	</td>
-																	<td>$450</td>
-																	<td>14 Nov 2019</td>
+																	<td>${{$payment->apt_amount}}</td>
+																	<td>{{$payment->created_at->format('d/m/Y')}}</td>
 																	<td class="text-right">
 																		<div class="table-action">
 																			<a href="javascript:void(0);" class="btn btn-sm bg-primary-light">
 																				<i class="fas fa-print"></i> Print
 																			</a>
-																			<a href="javascript:void(0);" class="btn btn-sm bg-info-light">
+																			<a href="{{route('invoice.show', $payment->id)}}" class="btn btn-sm bg-info-light">
 																				<i class="far fa-eye"></i> View
 																			</a>
 																		</div>
 																	</td>
 																</tr>
+																@endforeach
 															</tbody>
 														</table>
 													</div>

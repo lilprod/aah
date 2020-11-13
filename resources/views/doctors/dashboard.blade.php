@@ -48,7 +48,7 @@
 									<li class="breadcrumb-item active" aria-current="page">Dashboard</li>
 								</ol>
 							</nav>
-							<h2 class="breadcrumb-title">Dashboard Doctor</h2>
+							<h2 class="breadcrumb-title">Dashboard <span style="color: #26a9e166">+</span></h2>
 						</div>
 					</div>
 				</div>
@@ -77,13 +77,13 @@
 												<div class="col-md-12 col-lg-4">
 													<div class="dash-widget dct-border-rht">
 														<div class="circle-bar circle-bar1">
-															<div class="circle-graph1" data-percent="75">
+															<div class="circle-graph1" data-percent="{{count($doctor->patients)}}">
 																<img src="{{asset('assets/img/icon-01.png') }}" class="img-fluid" alt="patient">
 															</div>
 														</div>
 														<div class="dash-widget-info">
 															<h6>Total Patient</h6>
-															<h3>1500</h3>
+															<h3>{{count($doctor->patients)}}</h3>
 															<p class="text-muted">Till Today</p>
 														</div>
 													</div>
@@ -92,14 +92,14 @@
 												<div class="col-md-12 col-lg-4">
 													<div class="dash-widget dct-border-rht">
 														<div class="circle-bar circle-bar2">
-															<div class="circle-graph2" data-percent="65">
+															<div class="circle-graph2" data-percent="{{count($todayapts)}}">
 																<img src="{{asset('assets/img/icon-02.png') }}" class="img-fluid" alt="Patient">
 															</div>
 														</div>
 														<div class="dash-widget-info">
 															<h6>Today Patient</h6>
-															<h3>160</h3>
-															<p class="text-muted">06, Nov 2019</p>
+															<h3>{{count($todayapts)}}</h3>
+															<p class="text-muted">{{$today->format('d/m/Y')}}</p>
 														</div>
 													</div>
 												</div>
@@ -107,14 +107,14 @@
 												<div class="col-md-12 col-lg-4">
 													<div class="dash-widget">
 														<div class="circle-bar circle-bar3">
-															<div class="circle-graph3" data-percent="50">
+															<div class="circle-graph3" data-percent="{{count($upcomapts)}}">
 																<img src="{{asset('assets/img/icon-03.png') }}" class="img-fluid" alt="Patient">
 															</div>
 														</div>
 														<div class="dash-widget-info">
 															<h6>Appoinments</h6>
-															<h3>85</h3>
-															<p class="text-muted">06, Apr 2019</p>
+															<h3>{{count($upcomapts)}}</h3>
+															<!--<p class="text-muted">06, Apr 2019</p>-->
 														</div>
 													</div>
 												</div>

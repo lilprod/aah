@@ -6,7 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-		<title>Telemed AAH - Result(s)</title>
+		<title>AAH+ - Result(s)</title>
 		
 		<!-- Favicons -->
 		<link type="image/x-icon" href="{{asset('assets/img/favicon.png') }}" rel="icon">
@@ -29,6 +29,8 @@
 		
 		<!-- Main CSS -->
 		<link rel="stylesheet" href="{{asset('assets/css/style.css') }}">
+
+		<link href="{{asset('css/star-rating.css') }}" media="all" rel="stylesheet" type="text/css" />
 		
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 		<!--[if lt IE 9]>
@@ -55,7 +57,7 @@
 									<li class="breadcrumb-item active" aria-current="page">Search</li>
 								</ol>
 							</nav>
-							<h2 class="breadcrumb-title">{{$nb}} match(es) found for your query</h2>
+							<h2 class="breadcrumb-title">{{$nb}} match(es) found  <!--for your query--></h2>
 						</div>
 						<!--<div class="col-md-4 col-12 d-md-block d-none">
 							<div class="sort-by">
@@ -126,6 +128,12 @@
 											@endforeach
 											
 										</div>
+
+										<div class="filter-widget">
+											<h4>Exercice Place</h4>
+											<input type="text" placeholder="Enter a city name..." class="form-control" name="exercice_place">
+										</div>
+
 											<div class="btn-search">
 												<button type="submit" class="btn btn-block">Search</button>
 											</div>	
@@ -168,15 +176,18 @@
 											</div>
 											<div class="doc-info-cont">
 												<h4 class="doc-name"><a href="#">Dr. {{$doctor->name}} {{$doctor->firstname}}</a></h4>
-												<!--<p class="doc-speciality">MDS - Periodontology and Oral Implantology, BDS</p>-->
+												@if($doctor->speciality_id != '')
+												<p class="doc-speciality">{{$doctor->speciality->title}}</p>
+												@endif
 												<h5 class="doc-department"><img src="{{url('/storage/cover_images/'.$doctor->speciality->cover_image ) }}" class="img-fluid" alt="Speciality">{{$doctor->speciality->title}}</h5>
 												<div class="rating">
-													<i class="fas fa-star filled"></i>
+													<!--<i class="fas fa-star filled"></i>
 													<i class="fas fa-star filled"></i>
 													<i class="fas fa-star filled"></i>
 													<i class="fas fa-star filled"></i>
 													<i class="fas fa-star"></i>
-													<span class="d-inline-block average-rating">(17)</span>
+													<span class="d-inline-block average-rating">(17)</span>-->
+													<input id="rating-system" type="number" class="rating" min="0" max="5" step="1" name="rating" value="{{ $doctor->averageRating }}" disabled>
 												</div>
 												<!--<div class="clinic-details">
 													<p class="doc-location"><i class="fas fa-map-marker-alt"></i> Florida, USA</p>
@@ -212,15 +223,15 @@
 										<div class="doc-info-right">
 											<div class="clini-infos">
 												<ul>
-													<li><i class="far fa-thumbs-up"></i> 98%</li>
-													<li><i class="far fa-comment"></i> 17 Feedback</li>
-													<li><i class="fas fa-map-marker-alt"></i> Florida, USA</li>
-													<li><i class="far fa-money-bill-alt"></i> $300 - $1000 <i class="fas fa-info-circle" data-toggle="tooltip" title="Lorem Ipsum"></i> </li>
+													<!--<li><i class="far fa-thumbs-up"></i> 98%</li>
+													<li><i class="far fa-comment"></i> 17 Feedback</li>-->
+													<li><i class="fas fa-map-marker-alt"></i> {{$doctor->exercice_place}} , {{$doctor->country}} </li>
+													<li><i class="far fa-money-bill-alt"></i> $300 <i class="fas fa-info-circle" data-toggle="tooltip" title="Lorem Ipsum"></i> </li>
 												</ul>
 											</div>
 											<div class="clinic-booking">
-												<a class="view-pro-btn" href="#">View Profile</a>
-												<a class="apt-btn" href="#">Book Appointment</a>
+												<a class="view-pro-btn" href="{{route('doctor.profile', $doctor->id)}}">View Profile</a>
+												<a class="apt-btn" href="{{route('booking.doctor', $doctor->id)}}">Book Appointment</a>
 											</div>
 										</div>
 									</div>
@@ -253,6 +264,8 @@
 	  
 		<!-- jQuery -->
 		<script src="{{asset('assets/js/jquery.min.js') }}"></script>
+
+		<script src="{{asset('js/star-rating.js') }}" type="text/javascript"></script>
 		
 		<!-- Bootstrap Core JS -->
 		<script src="{{asset('assets/js/popper.min.js') }}"></script>

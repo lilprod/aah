@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Srmklive\PayPal\Services\ExpressCheckout;
 use App\Payment;
+use App\Appointment;
+use Illuminate\Support\Facades\Session;
 
 class PaypalController extends Controller
 {
@@ -47,6 +49,8 @@ class PaypalController extends Controller
         $response = $this->provider->setExpressCheckout($data);
   
         $response = $this->provider->setExpressCheckout($data, true);
+
+
   
         return redirect($response['paypal_link']);
     }
@@ -59,7 +63,20 @@ class PaypalController extends Controller
     public function cancel()
     {
     	//dd($data);
-        $payment = Payment::findOrFail($data['invoice_id']);
+
+        $invoice_id = Session::get('invoice_id');
+
+        $apt_id = Session::get('apt_id');
+
+        Session::forget('invoice_id');
+        
+        Session::forget('apt_id');
+
+        $appointment = Appointment::findOrFail($apt_id);
+
+        $appointment->delete();
+
+        $payment = Payment::findOrFail($invoice_id);
 
         $payment->delete();
 
@@ -91,21 +108,18 @@ class PaypalController extends Controller
         // find payment by id
         $payment = Payment::find($payment_id);
 
-        
-  
         if (in_array(strtoupper($response['ACK']), ['SUCCESS', 'SUCCESSWITHWARNING'])) {
 
         	//$payment_status = $this->provider->doExpressCheckoutPayment($cart, $token, $PayerID);
-
         	$status = $response['PAYMENTINFO_0_PAYMENTSTATUS'];
 
         	// set payment status
-        	$payment->payment_status = $status;
+        	$payment->status = $status;
 
         	// save the payment
         	$payment->save();
 
-        	return redirect('/')->with('success', 'Order ' . $payment->id . ' has been paid successfully!');
+        	return redirect('/dashboard')->with('success', 'Order ' . $payment->id . ' has been paid successfully!');
 
             //dd('Your payment was successfully. You can create success page here.');
         }

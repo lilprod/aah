@@ -167,7 +167,7 @@ class PrescriptionController extends Controller
 
         $prescribeddrugs = $prescription->prescribeddrugs;
 
-        return view('prescriptions.show', compact('prescription', 'prescribeddrugs'));
+        return view('doctors.prescriptions.show', compact('prescription', 'prescribeddrugs'));
     }
 
     /**

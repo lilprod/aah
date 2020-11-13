@@ -13,12 +13,20 @@ use Illuminate\Http\Request;
 use App\User; 
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Redirect;
+use Srmklive\PayPal\Services\ExpressCheckout;
+use App\Payment;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Session;
 
 class AppointmentController extends Controller
 {
+    protected $provider;
+
     public function __construct()
     {
         $this->middleware(['auth']); //isAdmin middleware lets only users with a //specific permission permission to access these resources
+        $this->provider = new ExpressCheckout;
     }
     /**
      * Display a listing of the resource.
@@ -177,19 +185,11 @@ class AppointmentController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            //'department_id' => 'required',
             'doctor_id' => 'required',
             'schedule_id' => 'required',
-            //'begin_time' => 'required',
             'date_apt' => 'required',
             'user_id' => 'required',
         ]);
-
-        
-        //$time = $request->input('date_apt').' '.$request->input('begin_time');
-        //$base = Carbon::parse($time);
-        //$end = $base->copy()->addMinutes(30)->toTimeString();
-        //dd($end); 
 
         $appointment = new Appointment();
 
@@ -211,13 +211,7 @@ class AppointmentController extends Controller
 
         $appointment->identifier = $this->unique_code(9);
 
-        //$appointment->department_id = $request->input('department_id');
-        
-        //$department = Department::findOrFail($appointment->department_id);
-
-        //$appointment->department_name = $department->name;
-
-        $appointment->apt_amount = 5000;
+        $appointment->apt_amount = 1;
 
         $appointment->doctor_id = $request->input('doctor_id');
 
@@ -240,6 +234,93 @@ class AppointmentController extends Controller
 
         $historique->save();
 
+
+        if(($request->payment_mode == 1) || ($request->payment_mode == 2)){
+
+            /*$response = Http::post('https://paygateglobal.com/api/v1/pay', [
+                'auth_token' => 'a81d1e51-bf4c-4fa1-ad94-ef30eb442c58',
+                'identifier' => $appointment->identifier,
+            ]);
+
+            $result = $response->getBody()->getContents();
+
+            $data = json_decode($result, true);*/
+
+            $description = 'Patient '.$appointment->patient->name.' '.$appointment->patient->firstname.' Appointment Payment';
+            $amount = $appointment->apt_amount;
+            $token = "a81d1e51-bf4c-4fa1-ad94-ef30eb442c58";
+            $identifier = $appointment->identifier;
+            $url = route('dashboard');
+
+            $payment = new Payment();
+            $payment->apt_id = $appointment->id;
+            $payment->apt_amount = 1;
+            $payment->patient_id = $patient->id;
+            $payment->patient_user_id = $appointment->patient_user_id;
+            $payment->description = $description;
+            $payment->doctor_id = $appointment->doctor_id;
+            $payment->doctor_user_id = $doctor->user_id;
+            $payment->paymentmode_id = $request->payment_mode;
+            $payment->status = 0;
+            $payment->save();
+
+            //dd($url);
+
+            $urlString="https://paygateglobal.com/v1/page?token=$token&amount=$amount&description=$description&identifier=$identifier&url=$url";
+            return Redirect::to($urlString);
+
+        }elseif($request->payment_mode == 3){
+
+            $data = [];
+            $data['items'] = [
+                [
+                    'name' => 'Aah.care',
+                    'price' => 1,
+                    'desc'  => 'Paiement de consultation chez Aah.care',
+                    'qty' => 1
+                ]
+            ];
+
+            $payment = new Payment();
+            $payment->apt_id = $appointment->id;
+            $payment->apt_amount = 1;
+            $payment->patient_id = $patient->id;
+            $payment->patient_user_id = $appointment->patient_user_id;
+            $payment->doctor_id = $appointment->doctor_id;
+            $payment->doctor_user_id = $doctor->user_id;
+            $payment->description = 'Patient '.$appointment->patient->name.' '.$appointment->patient->firstname.' Appointment Payment';
+            $payment->paymentmode_id = 3;
+            $payment->status = 0;
+            $payment->save();
+      
+            $data['invoice_id'] = $payment->id;
+            $data['invoice_description'] = "Order #{$data['invoice_id']} Invoice";
+            $data['return_url'] = route('payment.success');
+            $data['cancel_url'] = route('payment.cancel');
+            $data['total'] = 1;
+
+            Session::put('invoice_id', $payment->id);
+            Session::put('apt_id', $appointment->id);
+      
+            //$provider = new ExpressCheckout();
+      
+            $response = $this->provider->setExpressCheckout($data);
+      
+            $response = $this->provider->setExpressCheckout($data, true);
+
+            //dd($data);
+      
+            return redirect($response['paypal_link']);
+
+        }elseif($request->payment_mode == 4){
+
+            //return view('payments.stripe', compact('doctor', 'patient', 'appointment'));
+
+            return redirect()->route('stripe', $appointment->id);
+        }
+
+        
+
         /*$notification = new Notification();
         $notification->sender_id = auth()->user()->id;
         $notification->body = "Le patient $appointment->name $appointment->firstanme a fait une demande de rendez-vous pour le $appointment->date_apt!";
@@ -249,8 +330,10 @@ class AppointmentController extends Controller
         $notification->receiver_id = $appointment->doctorUser_id;
         $notification->save();*/
 
+        
+
         //Redirect to the users.index view and display message
-        return redirect()->route('booking.success', ['appointment'=>$appointment->id,'doctor'=>$doctor->id]);
+        //return redirect()->route('booking.success', ['appointment'=>$appointment->id,'doctor'=>$doctor->id]);
         //route('remindHelper',['event'=>$eventId,'user'=>$userId]);
         
     }

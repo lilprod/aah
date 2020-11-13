@@ -23,6 +23,10 @@ class Doctor extends Model
             $query->where('name', 'LIKE', trim($params['name']) . '%');
         }
 
+        if ( isset($params['exercice_place']) && trim($params['exercice_place'] !== '') ) {
+            $query->where('exercice_place', 'LIKE', trim($params['exercice_place']) . '%');
+        }
+
         if ( isset($params['gender']) && trim($params['gender'] !== '') ) {
 
             $query->where('gender', '=', trim($params['gender']));
@@ -53,4 +57,11 @@ class Doctor extends Model
         //return $this->belongsToMany(Patient::class);
         return $this->belongsToMany(Patient::class, 'doctor_patient', 'doctor_id', 'patient_id', 'status')->withTimeStamps();
     }
+
+    public function appointments(){
+
+        return $this->hasMany(Appointment::class);
+        
+    }
+
 }

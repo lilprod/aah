@@ -37,19 +37,19 @@ class Disease extends Model
     {
 
         /*if ( isset($params['title']) && trim($params['title'] !== '') ) {
-            $query->where('title', 'LIKE', trim($params['title']) . '%');
+            $query->where('title', 'LIKE', trim($params['title']).'%');
         }
 
         if ( isset($params['scientific_name']) && trim($params['scientific_name'] !== '') ) {
 
-            $query->where('scientific_name', 'LIKE', trim($params['scientific_name']) . '%');
+            $query->where('scientific_name', 'LIKE', trim($params['scientific_name']).'%');
 
         }*/
 
         if ( isset($params['query']) && trim($params['query'] !== '') ) {
 
-            $query->where('title', 'LIKE', trim($params['query']) . '%')
-                  ->orWhere('scientific_name', 'LIKE', trim($params['query']) . '%');
+            $query->where('title', 'LIKE', trim($params['query']).'%')
+                  ->orWhere('scientific_name', 'LIKE', trim($params['query']).'%');
         }
 
         return $query;

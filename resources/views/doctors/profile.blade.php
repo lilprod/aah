@@ -44,11 +44,11 @@
 						<div class="col-md-12 col-12">
 							<nav aria-label="breadcrumb" class="page-breadcrumb">
 								<ol class="breadcrumb">
-									<li class="breadcrumb-item"><a href="index.html">Home</a></li>
+									<li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
 									<li class="breadcrumb-item active" aria-current="page">Doctor Profile</li>
 								</ol>
 							</nav>
-							<h2 class="breadcrumb-title">Doctor Profile</h2>
+							<h2 class="breadcrumb-title">Doctor Profile <span style="color: #26a9e166">+</span></h2>
 						</div>
 					</div>
 				</div>

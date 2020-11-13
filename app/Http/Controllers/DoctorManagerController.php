@@ -41,7 +41,9 @@ class DoctorManagerController extends Controller
 
     public function myInvoices(){
 
-        return view('doctors.invoices');
+        $payments = auth()->user()->doctorpayments();
+
+        return view('doctors.invoices', compact('payments'));
     }
 
     /**

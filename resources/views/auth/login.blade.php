@@ -110,7 +110,7 @@
                                             <div class="form-group form-focus">
                                                 <input type="text" class="form-control floating @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="text" autofocus>
                                                 <label class="focus-label">Email</label>
-
+                                                
                                                 @error('email')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>

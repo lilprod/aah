@@ -9,7 +9,8 @@ use App\Patient;
 use App\Doctor;
 use App\Appointment;
 use App\Prescription;
-
+use App\Payment;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -36,7 +37,11 @@ class DashboardController extends Controller
 
             $appointments = auth()->user()->patientappointments();
 
-            return view('patients.dashboard', compact('appointments'));
+            $prescriptions = auth()->user()->patientprescriptions();
+
+            $payments = auth()->user()->patientpayments();
+
+            return view('patients.dashboard', compact('appointments', 'prescriptions', 'payments'));
 
         }elseif(auth()->user()->role_id == 2){
 
@@ -44,12 +49,17 @@ class DashboardController extends Controller
 
             $todayapts = auth()->user()->doctorTodayapts();
 
-            return view('doctors.dashboard' , compact('upcomapts', 'todayapts'));
+            $prescriptions = auth()->user()->doctorprescriptions();
+
+            $payments = auth()->user()->doctorpayments();
+
+            $doctor = Doctor::where('user_id', auth()->user()->id)->first();
+
+            $today = Carbon::today();
+
+            return view('doctors.dashboard' , compact('upcomapts', 'todayapts', 'prescriptions', 'payments', 'doctor', 'today'));
 
         }else{
-
-            //$token = auth()->user()->token();
-            //$token->revoke();
 
             Auth::logout();
 
@@ -58,7 +68,6 @@ class DashboardController extends Controller
              'Veuillez vous connecter ici!');
  
         }
-        //return view('dashboard',compact('countries'));
     }
 
     

@@ -23,6 +23,8 @@
         
         <!-- Main CSS -->
         <link rel="stylesheet" href="{{asset('assets/css/style.css') }}">
+
+        <link href="{{asset('css/star-rating.css') }}" media="all" rel="stylesheet" type="text/css" />
         
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -50,7 +52,7 @@
                                     <li class="breadcrumb-item active" aria-current="page">Booking</li>
                                 </ol>
                             </nav>
-                            <h2 class="breadcrumb-title">Booking</h2>
+                            <h2 class="breadcrumb-title">Booking <span style="color: #26a9e166">+</span></h2>
                         </div>
                     </div>
                 </div>
@@ -63,7 +65,7 @@
                 
                     <div class="row">
                         <div class="col-12">
-
+                            @include('inc.messages')
                             <div class="card">
                                 <div class="card-body">
                                     <div class="booking-doc-info">
@@ -72,14 +74,15 @@
                                         </a>
                                         <div class="booking-info">
                                             <h4><a href="{{route('doctor.profile', $doctor->id)}}">Dr. {{$doctor->name}} {{$doctor->firstname}}</a></h4>
-                                            <!--<div class="rating">
-                                                <i class="fas fa-star filled"></i>
+                                            <div class="rating">
+                                                <!--<i class="fas fa-star filled"></i>
                                                 <i class="fas fa-star filled"></i>
                                                 <i class="fas fa-star filled"></i>
                                                 <i class="fas fa-star filled"></i>
                                                 <i class="fas fa-star"></i>
-                                                <span class="d-inline-block average-rating">35</span>
-                                            </div>-->
+                                                <span class="d-inline-block average-rating">35</span>-->
+                                                <input id="rating-system" type="number" class="rating" min="0" max="5" step="1" name="rating" value="{{ $doctor->averageRating }}" disabled>
+                                            </div>
                                             @if($doctor->address != '')
                                             <p class="text-muted mb-0"><i class="fas fa-map-marker-alt"></i> {{$doctor->address}}</p>
                                             @endif
@@ -126,6 +129,18 @@
                                             </div>
                                         </div>
 
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Payment Mode</label>
+                                                <select class="form-control select" name="payment_mode">
+                                                        <option value="1">Flooz</option>
+                                                        <option value="2">T-Money</option>
+                                                        <option value="3">Paypal</option>
+                                                        <option value="4">Stripe</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
                                         <p id="not-available" style="display: none; color: red; text-align: center;">
                                             <i class="fa fa-exclamation-circle"></i> Votre médécin est indisponible. Veuillez choisir une autre date ou période
                                         </p>
@@ -143,7 +158,8 @@
 
                             <!-- Submit Section -->
                             <div class="submit-section proceed-btn text-right">
-                                <button type="submit" id="submit" class="btn btn-primary submit-btn" disabled>Save Changes</button>
+                                <!--<button type="submit" id="submit" class="btn btn-primary submit-btn" disabled>Save Changes</button>-->
+                                <button type="submit" id="submit" class="btn btn-primary submit-btn" disabled>Proceed to Pay</button>
                                 <!--<a href="checkout.html" class="btn btn-primary submit-btn">Proceed to Pay</a>-->
                             </div>
                         </form>
@@ -165,6 +181,8 @@
 
          <!-- jQuery -->
         <script src="{{asset('assets/js/jquery.min.js') }}"></script>
+
+        <script src="{{asset('js/star-rating.js') }}" type="text/javascript"></script>
 
         <script src="{{ asset('ckeditor/ckeditor.js')}}"></script> 
 

@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>AAH+ - Prescription</title>
+		<title>AAH+ - Details Prescription</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
 		
 		<!-- Favicons -->
@@ -63,7 +63,7 @@
 									<div class="row">
 										<div class="col-md-6">
 											<div class="invoice-logo">
-												<img src="assets/img/logo.png" alt="logo">
+												<img src="{{asset('assets/img/logo_aah.png') }}" alt="logo">
 											</div>
 										</div>
 										<div class="col-md-6">
@@ -82,9 +82,9 @@
 											<div class="invoice-info">
 												<strong class="customer-text">Invoice From</strong>
 												<p class="invoice-details invoice-details-two">
-													Dr. Darren Elder <br>
-													806  Twin Willow Lane, Old Forge,<br>
-													Newyork, USA <br>
+													Dr. {{$prescription->doctor->name }} {{$prescription->doctor->firstname}} <br>
+													{{$prescription->doctor->address }},<br>
+													{{$prescription->doctor->phone_number }} <br>
 												</p>
 											</div>
 										</div>
@@ -92,9 +92,9 @@
 											<div class="invoice-info invoice-info2">
 												<strong class="customer-text">Invoice To</strong>
 												<p class="invoice-details">
-													Walter Roberson <br>
-													299 Star Trek Drive, Panama City, <br>
-													Florida, 32405, USA <br>
+													{{$prescription->patient->name }} {{$prescription->patient->firstname}} <br>
+													{{$prescription->patient->address }}, <br>
+													{{$prescription->patient->phone_number }}<br>
 												</p>
 											</div>
 										</div>
@@ -103,7 +103,7 @@
 								<!-- /Invoice Item -->
 								
 								<!-- Invoice Item -->
-								<div class="invoice-item">
+								<!--<div class="invoice-item">
 									<div class="row">
 										<div class="col-md-12">
 											<div class="invoice-info">
@@ -116,7 +116,7 @@
 											</div>
 										</div>
 									</div>
-								</div>
+								</div>-->
 								<!-- /Invoice Item -->
 								
 								<!-- Invoice Item -->
@@ -127,30 +127,26 @@
 												<table class="invoice-table table table-bordered">
 													<thead>
 														<tr>
-															<th>Description</th>
+															<th>Drugs</th>
 															<th class="text-center">Quantity</th>
-															<th class="text-center">VAT</th>
-															<th class="text-right">Total</th>
+															<th class="text-center">Dosage</th>
+															<!--<th class="text-right">Total</th>-->
 														</tr>
 													</thead>
 													<tbody>
+														@foreach($prescribeddrugs as $prescribeddrug)
 														<tr>
-															<td>General Consultation</td>
-															<td class="text-center">1</td>
-															<td class="text-center">$0</td>
-															<td class="text-right">$100</td>
+															<td>{{$prescribeddrug->drug_name}} {{$prescribeddrug->strengh}}</td>
+															<td class="text-center">{{$prescribeddrug->quantity}}</td>
+															<td class="text-center">{{$prescribeddrug->duration}} Day(s)</td>
+															<!--<td class="text-right">$100</td>-->
 														</tr>
-														<tr>
-															<td>Video Call Booking</td>
-															<td class="text-center">1</td>
-															<td class="text-center">$0</td>
-															<td class="text-right">$250</td>
-														</tr>
+														@endforeach
 													</tbody>
 												</table>
 											</div>
 										</div>
-										<div class="col-md-6 col-xl-4 ml-auto">
+										<!--<div class="col-md-6 col-xl-4 ml-auto">
 											<div class="table-responsive">
 												<table class="invoice-table-two table">
 													<tbody>
@@ -169,19 +165,40 @@
 													</tbody>
 												</table>
 											</div>
-										</div>
+										</div>-->
 									</div>
 								</div>
 								<!-- /Invoice Item -->
+
+								<br><br>
+								<!-- Signature -->
+									<div class="row">
+										<div class="col-md-12 text-right">
+											<div class="signature-wrap">
+												<div class="signature">
+													<!--Click here to sign-->
+												</div>
+												<div class="sign-name">
+													<p class="mb-0">( Dr. {{$prescription->doctor->name}} {{$prescription->doctor->firstname}} )</p>
+													<span class="text-muted">Signature</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- /Signature -->
 								
 								<!-- Invoice Information -->
 								<div class="other-info">
-									<h4>Other information</h4>
+									<h4>Note</h4>
 									<p class="text-muted mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sed dictum ligula, cursus blandit risus. Maecenas eget metus non tellus dignissim aliquam ut a ex. Maecenas sed vehicula dui, ac suscipit lacus. Sed finibus leo vitae lorem interdum, eu scelerisque tellus fermentum. Curabitur sit amet lacinia lorem. Nullam finibus pellentesque libero.</p>
 								</div>
 								<!-- /Invoice Information -->
 								
 							</div>
+						</div>
+
+						<div class="col-lg-8 offset-lg-2">
+							<a class="btn btn-primary" href="{{url()->previous()}}"><i class="fas fa-arrow-left"></i> Back</a>
 						</div>
 					</div>
 

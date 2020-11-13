@@ -44,7 +44,7 @@
 									<li class="breadcrumb-item active" aria-current="page">My Patients</li>
 								</ol>
 							</nav>
-							<h2 class="breadcrumb-title">My Patients</h2>
+							<h2 class="breadcrumb-title">My Patients <span style="color: #26a9e166">+</span></h2>
 						</div>
 					</div>
 				</div>
