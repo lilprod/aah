@@ -30,9 +30,9 @@
 						<a href="{{route('home')}}">Home</a>
 					</li>
 
-					<li class="">
+					<!--<li class="">
 						<a href="{{route('our_doctors')}}">Médecins</a>
-					</li>
+					</li>-->
 
 					<li class="">
 						<a href="#">Pharmacies</a>
@@ -74,6 +74,11 @@
 						</ul>
 					</li>
 
+
+					<li class="{{ Request::routeIs('blog') ? 'active' : '' }}">
+						<a href="{{route('blog')}}">Blog</a>
+					</li>
+
 					<li class="{{ Request::routeIs('about') ? 'active' : '' }}">
 						<a href="{{route('about')}}">About</a>
 					</li>
@@ -83,11 +88,7 @@
 					</li>-->
 
 					<li class="">
-						<a href="#">Application</a>
-					</li>
-
-					<li class="{{ Request::routeIs('blog') ? 'active' : '' }}">
-						<a href="{{route('blog')}}">Blog</a>
+						<a href="{{route('home')}}#download-app">Application</a>
 					</li>
 
 					<li class="{{ Request::routeIs('contact') ? 'active' : '' }}">

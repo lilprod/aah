@@ -8,6 +8,15 @@ use App\User;
 use App\Post;
 use App\Category;
 use App\Speciality;
+use App\Patient;
+use App\History;
+use App\Appointment;
+use App\Prescription;
+use App\Payment;
+use App\PrescribedDrug;
+use App\PrescriptionExam;
+use App\Schedule;
+use Carbon\Carbon;
 
 class PagesController extends Controller
 {
@@ -32,6 +41,48 @@ class PagesController extends Controller
         }
 
         return view('pages.index',compact('specialities','posts'));
+    }
+
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function profileDoctor($id){
+
+        $doctor = Doctor::findOrFail($id);
+
+        return view('doctors.profile', compact('doctor'));
+    }
+
+     /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function profilePatient($id) {
+
+        $patient = Patient::findOrFail($id);
+
+        $prescriptions = Prescription::orderBy('created_at', 'desc')
+                            ->where('patient_id', $id)
+                            ->get();
+
+        $payments = Payment::orderBy('created_at', 'desc')
+                            ->where('patient_id', $id)
+                            ->get();
+
+        $bookings = Appointment::orderBy('created_at', 'desc')
+                            ->where('patient_id', $id)
+                            ->get();
+
+        $lastbookings = Appointment::orderBy('created_at', 'desc')
+                            ->where('patient_id', $id)
+                            ->limit(2)
+                            ->get();
+        
+        return view('patients.patient_profile', compact('patient', 'lastbookings', 'bookings', 'prescriptions', 'payments'));
     }
 
     public function about()

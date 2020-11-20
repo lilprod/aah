@@ -30,7 +30,7 @@
 						<a href="{{route('home')}}">Home</a>
 					</li>
 
-					<li class="">
+					<li class="{{ Request::routeIs('our_doctors') ? 'active' : '' }}">
 						<a href="{{route('our_doctors')}}">Médecins</a>
 					</li>
 
@@ -53,6 +53,10 @@
 						</ul>
 					</li>
 
+					<li class="{{ Request::routeIs('blog') ? 'active' : '' }}">
+						<a href="{{route('blog')}}">Blog</a>
+					</li>
+
 					<li class="{{ Request::routeIs('about') ? 'active' : '' }}">
 						<a href="{{route('about')}}">About</a>
 					</li>
@@ -62,11 +66,7 @@
 					</li>-->
 
 					<li class="">
-						<a href="#">Application</a>
-					</li>
-
-					<li class="{{ Request::routeIs('blog') ? 'active' : '' }}">
-						<a href="{{route('blog')}}">Blog</a>
+						<a href="{{route('home')}}#download-app">Application</a>
 					</li>
 
 					<li class="{{ Request::routeIs('contact') ? 'active' : '' }}">
@@ -83,8 +83,6 @@
                             <li><a class="dropdown-item" href="{{ URL::to('locale/sw') }}"><img src="{{asset('assets/img/sw.png')}}" width="20px" height="15x"> Swawili</a></li>
                         </ul>
                     </li>
-
-				
 				</ul>
 			</div>
 

@@ -189,6 +189,7 @@ class AppointmentController extends Controller
             'schedule_id' => 'required',
             'date_apt' => 'required',
             'user_id' => 'required',
+            'payment_mode' => 'required',
         ]);
 
         $appointment = new Appointment();
@@ -222,6 +223,8 @@ class AppointmentController extends Controller
         $appointment->doctor_user_id = $doctor->user_id;
 
         $appointment->speciality_id = $doctor->speciality_id;
+
+        $appointment->paymentmode_id = $request->payment_mode;
 
         $appointment->status = 0;
 
@@ -257,6 +260,7 @@ class AppointmentController extends Controller
             $payment->apt_amount = 1;
             $payment->patient_id = $patient->id;
             $payment->patient_user_id = $appointment->patient_user_id;
+            $payment->identifier = $appointment->identifier;
             $payment->description = $description;
             $payment->doctor_id = $appointment->doctor_id;
             $payment->doctor_user_id = $doctor->user_id;
@@ -286,6 +290,7 @@ class AppointmentController extends Controller
             $payment->apt_amount = 1;
             $payment->patient_id = $patient->id;
             $payment->patient_user_id = $appointment->patient_user_id;
+            $payment->identifier = $appointment->identifier;
             $payment->doctor_id = $appointment->doctor_id;
             $payment->doctor_user_id = $doctor->user_id;
             $payment->description = 'Patient '.$appointment->patient->name.' '.$appointment->patient->firstname.' Appointment Payment';
@@ -319,8 +324,6 @@ class AppointmentController extends Controller
             return redirect()->route('stripe', $appointment->id);
         }
 
-        
-
         /*$notification = new Notification();
         $notification->sender_id = auth()->user()->id;
         $notification->body = "Le patient $appointment->name $appointment->firstanme a fait une demande de rendez-vous pour le $appointment->date_apt!";
@@ -329,8 +332,6 @@ class AppointmentController extends Controller
         $notification->status = 0;
         $notification->receiver_id = $appointment->doctorUser_id;
         $notification->save();*/
-
-        
 
         //Redirect to the users.index view and display message
         //return redirect()->route('booking.success', ['appointment'=>$appointment->id,'doctor'=>$doctor->id]);

@@ -41,9 +41,15 @@ Route::post('updatephone', 'API\AuthController@updatephone');
 
 Route::get('/allDoctors', 'API\DoctorController@allDoctors')->name('allDoctors');
 
+Route::get('/doctor/profile/{id}',  'DoctorController@profileDoctor');
+
+Route::get('/patient/profile/{id}',  'DoctorController@profilePatient');
+
 Route::post('/getSchedules', 'API\DoctorController@getSchedules')->name('getSchedules');
 
 Route::post('/filterDoctor', 'API\DoctorController@filterDoctor');
+
+//Route::get('/myschedules', 'API\DoctorManagerController@myschedules')->name('myschedules');
 
 //Diseases
 

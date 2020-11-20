@@ -177,15 +177,11 @@
 																					<i class="far fa-eye"></i> View
 																				</a>
 																				@if($appointment->status == 0)
-																				<a href="javascript:void(0);" class="btn btn-sm bg-success-light">
-																					<i class="fas fa-check"></i> Accept
-																				</a>
+																				<a href="javascript:void(0);" class="btn btn-sm bg-success-light" data-toggle="modal" data-target="#take_appointment" onclick="addData({{ $appointment->id}})"><i class="fas fa-check"></i> Accept</a>
 																				@endif
 
 																				@if($appointment->status == 0)
-																				<a href="javascript:void(0);" class="btn btn-sm bg-danger-light">
-																					<i class="fas fa-times"></i> Cancel
-																				</a>
+																				<a href="javascript:void(0);" class="btn btn-sm bg-danger-light" data-toggle="modal" data-target="#cancel_appointment" onclick="cancelData({{ $appointment->id}})"><i class="fas fa-times"></i>Cancel</a>
 																				@endif
 
 																				@if($appointment->status == 1)
@@ -247,15 +243,11 @@
 																				</a>
 																				
 																				@if($appointment->status == 0)
-																				<a href="javascript:void(0);" class="btn btn-sm bg-success-light">
-																					<i class="fas fa-check"></i> Accept
-																				</a>
+																				<a href="javascript:void(0);" class="btn btn-sm bg-success-light" data-toggle="modal" data-target="#take_appointment" onclick="addData({{ $appointment->id}})"><i class="fas fa-check"></i> Accept</a>
 																				@endif
 
 																				@if($appointment->status == 0)
-																				<a href="javascript:void(0);" class="btn btn-sm bg-danger-light">
-																					<i class="fas fa-times"></i> Cancel
-																				</a>
+																				<a href="javascript:void(0);" class="btn btn-sm bg-danger-light" data-toggle="modal" data-target="#cancel_appointment" onclick="cancelData({{ $appointment->id}})"><i class="fas fa-times"></i>Cancel</a>
 																				@endif
 
 																				@if($appointment->status == 1)
@@ -477,7 +469,7 @@
 
 		<div id="finish_appointment" class="modal fade custom-modal" role="dialog">
 		    <div class="modal-dialog modal-dialog-centered">
-		        <form action="" id="addForm" method="post">
+		        <form action="" id="finishForm" method="post">
 			        <div class="modal-content">
 
 			        	<div class="modal-header ">
@@ -506,7 +498,7 @@
 
 		<div id="cancel_appointment" class="modal fade custom-modal" role="dialog">
 		    <div class="modal-dialog modal-dialog-centered">
-		        <form action="" id="addForm" method="post">
+		        <form action="" id="cancelForm" method="post">
 			        <div class="modal-content">
 
 			        	<div class="modal-header ">
@@ -556,7 +548,7 @@
 	         var id = id;
 	         var url = '{{ route("archivedapt", ":id") }}';
 	         url = url.replace(':id', id);
-	         $("#addForm").attr('action', url);
+	         $("#cancelForm").attr('action', url);
 	     }
 
 	     function formSubmit()
@@ -571,12 +563,12 @@
 	         var id = id;
 	         var url = '{{ route("finish", ":id") }}';
 	         url = url.replace(':id', id);
-	         $("#addForm").attr('action', url);
+	         $("#finishForm").attr('action', url);
 	     }
 
 	     function formSubmit()
 	     {
-	         $("#addForm").submit();
+	         $("#finishForm").submit();
 	     }
 		</script>
         

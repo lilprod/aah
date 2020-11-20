@@ -56,6 +56,7 @@ class StripeController extends Controller
         $payment->apt_amount = $request->amount;
         $payment->patient_id = $appointment->patient_id;
         $payment->patient_user_id = $appointment->patient_user_id;
+        $payment->identifier = $appointment->identifier;
         $payment->doctor_id = $appointment->doctor_id;
         $payment->doctor_user_id = $appointment->doctor->user_id;
         $payment->description = 'Patient '.$appointment->patient->name.' '.$appointment->patient->firstname.' Appointment Payment';

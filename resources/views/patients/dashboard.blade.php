@@ -66,6 +66,7 @@
                         <!-- / Profile Sidebar -->
                         
                         <div class="col-md-7 col-lg-8 col-xl-9">
+                            @include('inc.messages')
                             <div class="card">
                                 <div class="card-body pt-0">
                                 

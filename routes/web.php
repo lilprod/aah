@@ -166,13 +166,17 @@ Route::resource('drugtypes', 'DrugTypeController');
 Route::resource('prescriptions', 'PrescriptionController');
 
 Route::resource('prescriptiontypes', 'PrescriptionTypeController');
+
+Route::post('verif/{id}','PaymentController@verif')->name('verif');
 //Patients Routes
 
 Route::get('/patient/profile_setting', 'PatientManagerController@setting')->name('patient_profile_setting');
 
 Route::post('/patient/post_setting', 'PatientManagerController@postSetting')->name('post_patient_setting');
 
-Route::get('/patient/profile/{id}', ['as' => 'patient.profile', 'uses' => 'PatientManagerController@profile']);
+Route::get('/patient/profile/{id}', ['as' => 'patient.profile', 'uses' => 'PagesController@profilePatient']);
+
+//Route::get('/patient/profile/{id}', ['as' => 'patient.profile', 'uses' => 'PatientManagerController@profile']);
 
 Route::get('/patient/booking/{id}', ['as' => 'booking.doctor', 'uses' => 'PatientManagerController@booking']);
 
@@ -194,7 +198,9 @@ Route::get('/doctor/profile_setting', 'DoctorManagerController@setting')->name('
 
 Route::post('/doctor/post_setting', 'DoctorManagerController@postSetting')->name('post_doctor_setting');
 
-Route::get('/doctor/profile/{id}', ['as' => 'doctor.profile', 'uses' => 'DoctorManagerController@profile']);
+Route::get('/doctor/profile/{id}', ['as' => 'doctor.profile', 'uses' => 'PagesController@profileDoctor']);
+
+//Route::get('/doctor/profile/{id}', ['as' => 'doctor.profile', 'uses' => 'DoctorManagerController@profile']);
 
 Route::get('/doctor/change_password', 'DoctorManagerController@changePassword')->name('doctor_change_password');
 

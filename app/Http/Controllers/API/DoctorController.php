@@ -36,13 +36,36 @@ class DoctorController extends BaseController
         foreach ($doctors as $doctor) {
 
             $doctor['profile_picture'] = $_ENV['APP_URL'].'/storage/profile_images/'.$doctor->profile_picture;
-            $doctor['speciality'] = $doctor->speciality->title;
+            $speciality = $doctor->speciality;
+            $speciality['cover_image'] = $_ENV['APP_URL'].'/storage/cover_images/'.$speciality->cover_image;
+            $doctor['speciality'] = $speciality;
             $doctor['rating'] = $doctor->averageRating;
         }
 
         return $this->sendResponse($doctors, 'Doctors retrieved successfully.');
 
         //return $this->sendResponse(PostResource::collection($doctors), 'Doctors retrieved successfully.');
+    }
+
+
+    public function profileDoctor($id){
+
+        $doctor = Doctor::findOrFail($id);
+        $doctor['profile_picture'] = $_ENV['APP_URL'].'/storage/profile_images/'.$doctor->profile_picture;
+        $speciality = $doctor->speciality;
+        $speciality['cover_image'] = $_ENV['APP_URL'].'/storage/cover_images/'.$speciality->cover_image;
+        $doctor['speciality'] = $speciality;
+        $doctor['rating'] = $doctor->averageRating;
+
+        return $this->sendResponse($doctor, 'Doctor retrieved successfully.');
+    }
+
+    public function profilePatient($id){
+
+        $patient = Patient::findOrFail($id);
+        $patient['profile_picture'] = $_ENV['APP_URL'].'/storage/profile_images/'.$patient->profile_picture;
+
+        return $this->sendResponse($patient, 'Patient retrieved successfully.');
     }
 
 
@@ -59,7 +82,9 @@ class DoctorController extends BaseController
             foreach ($doctors as $doctor) {
 
                 $doctor['profile_picture'] = $_ENV['APP_URL'].'/storage/profile_images/'.$doctor->profile_picture;
-                $doctor['speciality'] = $doctor->speciality->title;
+                $speciality = $doctor->speciality;
+                $speciality['cover_image'] = $_ENV['APP_URL'].'/storage/cover_images/'.$speciality->cover_image;
+                $doctor['speciality'] = $speciality;
                 $doctor['rating'] = $doctor->averageRating;
             }
 

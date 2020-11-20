@@ -28,6 +28,7 @@ class CreateAppointmentsTable extends Migration
             $table->mediumText('note')->nullable();
             $table->date('confirm_date')->nullable();
             $table->string('identifier')->nullable();
+            $table->integer('paymentmode_id')->nullable();
             $table->integer('status');
 
             $table->timestamps();

@@ -80,7 +80,7 @@ class PaypalController extends Controller
 
         $payment->delete();
 
-        return redirect()->back()->with('error', 'Your payment is canceled!');
+        return redirect()->back()->with('error', 'Your appointment was not registered because the payment was canceled! Please try again!');
     }
   
     /**
@@ -103,7 +103,9 @@ class PaypalController extends Controller
 
         $response = $this->provider->getExpressCheckoutDetails($token);
 
-        $payment_id = explode('_', $response['INVNUM'])[1];
+        //$payment_id = explode('_', $response['INVNUM'])[1];
+
+        $payment_id = $response['INVNUM'];
 
         // find payment by id
         $payment = Payment::find($payment_id);
@@ -111,10 +113,11 @@ class PaypalController extends Controller
         if (in_array(strtoupper($response['ACK']), ['SUCCESS', 'SUCCESSWITHWARNING'])) {
 
         	//$payment_status = $this->provider->doExpressCheckoutPayment($cart, $token, $PayerID);
-        	$status = $response['PAYMENTINFO_0_PAYMENTSTATUS'];
+        	//$status = $response['PAYMENTINFO_0_PAYMENTSTATUS'];
 
         	// set payment status
-        	$payment->status = $status;
+        	//$payment->status = $status;
+            $payment->status = 1;
 
         	// save the payment
         	$payment->save();

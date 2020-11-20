@@ -20,13 +20,14 @@ use App\ClinicImage;
 use App\Education;
 use App\Experience;
 use App\Award;
+use App\Schedule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 
 class DoctorManagerController extends BaseController
 {
-	public function __construct()
+    public function __construct()
     {
         $this->middleware('auth');
     }
@@ -282,8 +283,32 @@ class DoctorManagerController extends BaseController
 
     public function myschedules() {
 
-        $myschedules = auth()->user()->myschedules();
+        //$myschedules = auth()->user()->myschedules();
 
+        /*for ($i=1; $i <= 7 ; $i++) {
+
+            $myschedules['day'] = $i;
+            $myschedules['schedules'] = Schedule::where('day_num', $i)
+                                                ->where('doctor_userid', auth()->user()->id)
+                                                ->get();
+        }*/
+
+        $days = [1,2,3,4,5,6,7];
+
+        $i = 1;
+
+        $myschedules = [];
+
+        foreach ($days as $day) {
+                # code...
+                $myschedules['day'.$i] = $day;
+                $myschedules['schedules'.$i] = Schedule::where('day_num', $day)
+                                                        ->where('doctor_userid', auth()->user()->id)
+                                                        ->get();
+
+            $i++;
+        }
+        
         return $this->sendResponse($myschedules, 'Schedules retrieved successfully.');
     }
 
@@ -320,33 +345,15 @@ class DoctorManagerController extends BaseController
             return $this->sendError('Validation Error.', $validator->errors());       
         }
 
-        if ($request->hasfile('profile_picture')) {
-            // Get filename with the extension
-            $fileNameWithExt = $request->file('profile_picture')->getClientOriginalName();
-
-            // Get just filename
-            $filename = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
-
-            // Get just ext
-            $extension = $request->file('profile_picture')->getClientOriginalExtension();
-
-            // Filename to store
-            $fileNameToStore = $filename.'_'.time().'.'.$extension;
-
-            // Upload Image
-            $path = $request->file('profile_picture')->storeAs('public/profile_images', $fileNameToStore);
-        } else {
-            $fileNameToStore = 'avatar.jpg';
-        }
-
-        
         $doctor->name = $request->input('name');
         $doctor->firstname = $request->input('firstname');
         //$doctor->email = $request->input('email');
         $doctor->gender = $request->input('gender');
         //$doctor->marital_status = $request->input('marital_status');
-        if ($request->hasfile('profile_picture')) {
-            $doctor->profile_picture = $fileNameToStore;
+        
+        if(!empty($request->input('profile_picture'))){
+            
+            $doctor->profile_picture = $request->input('profile_picture');
         }
         //$doctor->phone_number = $request->input('phone_number');
         $doctor->address = $request->input('address');
@@ -367,10 +374,11 @@ class DoctorManagerController extends BaseController
         //$user->birth_date = $request->input('birth_date');
         $user->address = $request->input('address');
         //$user->email = $request->input('email');
-        if ($request->hasfile('profile_picture')) {
-            $user->profile_picture = $fileNameToStore;
+        if(!empty($request->input('profile_picture'))){
+            
+            $user->profile_picture = $request->input('profile_picture');
         }
-
+        
         /*if($data['clinic_name'] != ''){
             $clinic = Clinic::where('doctor_id', $doctor->id)->first();
 

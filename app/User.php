@@ -62,6 +62,18 @@ class User extends Authenticatable
         
     }
 
+    public function patient()
+    {
+        return Patient::where('user_id', $this->id)
+                            ->first();
+    }
+
+    public function doctor()
+    {
+        return Doctor::where('user_id', $this->id)
+                            ->first();
+    }
+
     public function posts(){
 
         return $this->hasMany(Post::class);

@@ -616,7 +616,9 @@ class AuthController extends BaseController
             $user['place_birth'] = $doctor->place_birth;
             $user['biography'] = $doctor->biography;
             if($doctor->speciality != ''){
-               $user['speciality'] = $doctor->speciality->title; 
+               $speciality = $doctor->speciality;
+               $speciality['cover_image'] = $_ENV['APP_URL'].'/storage/cover_images/'.$speciality->cover_image;
+               $user['speciality'] = $speciality;
             }
             $user['rating'] = $doctor->averageRating;
             //$user['nationality'] = $doctor->nationality;
@@ -803,7 +805,7 @@ class AuthController extends BaseController
 
             $patient = Patient::where('user_id', $user->id)->first();
 
-            $patient->profile_picture = $_ENV['APP_URL'].'/storage/profile_images/'.$fileNameToStore;
+            $patient->profile_picture = $fileNameToStore;
         
             $patient->save();
 
@@ -811,20 +813,19 @@ class AuthController extends BaseController
 
             $doctor = Doctor::where('user_id', $user->id)->first();
 
-            $doctor->profile_picture = $_ENV['APP_URL'].'/storage/profile_images/'.$fileNameToStore;
+            $doctor->profile_picture = $fileNameToStore;
            
             $doctor->save();
-
         }
 
         // Save user to database
-        $user->profile_picture = $_ENV['APP_URL'].'/storage/profile_images/'.$fileNameToStore;
+        $user->profile_picture = $fileNameToStore;
 
         $user->save();
 
-        $success = true;
-        // Redirect to route
-        return $this->sendResponse($success, 'Photo de profil éditée avec succès.');
+        //$success = true;
+        // Send response
+        return $this->sendResponse($fileNameToStore, 'Photo de profil éditée avec succès.');
     }
 
     public function delete_picture(Request $request)
@@ -839,7 +840,7 @@ class AuthController extends BaseController
 
             $patient = Patient::where('user_id', $user->id)->first();
 
-            $patient->profile_picture = $_ENV['APP_URL'].'/storage/profile_images/'.$fileNameToStore;
+            $patient->profile_picture = $fileNameToStore;
         
             $patient->save();
 
@@ -847,20 +848,20 @@ class AuthController extends BaseController
 
             $doctor = Doctor::where('user_id', $user->id)->first();
 
-            $doctor->profile_picture = $_ENV['APP_URL'].'/storage/profile_images/'.$fileNameToStore;
+            $doctor->profile_picture = $fileNameToStore;
            
             $doctor->save();
 
         }
 
         // Save user to database
-        $user->profile_picture = $_ENV['APP_URL'].'/storage/profile_images/'.$fileNameToStore;
+        $user->profile_picture = $fileNameToStore;
 
         $user->save();
 
-        $success = true;
-        // Redirect to route
-        return $this->sendResponse($success, 'Photo de profil supprimée avec succès.');
+        //$success = true;
+        // Send response
+        return $this->sendResponse($fileNameToStore, 'Photo de profil supprimée avec succès.');
     }
 
     public function generateIdentifier()

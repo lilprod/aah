@@ -20,7 +20,13 @@ class ServiceController extends BaseController
     public function index()
     {
         $services = Service::all();
-        
+
+        foreach ($services as $service) {
+            $speciality = $service->speciality;
+            $speciality['cover_image'] = $_ENV['APP_URL'].'/storage/cover_images/'.$speciality->cover_image;
+            $service['speciality'] = $speciality;
+        }
+    
         return $this->sendResponse($services, 'Services retrieved successfully.');
     }
 
@@ -59,6 +65,10 @@ class ServiceController extends BaseController
 
             return $this->sendError('Service not found.');
         }
+
+        $speciality = $service->speciality;
+        $speciality['cover_image'] = $_ENV['APP_URL'].'/storage/cover_images/'.$speciality->cover_image;
+        $service['speciality'] = $speciality;
    
         return $this->sendResponse(new ServiceResource($service), 'Service retrieved successfully.');
     }

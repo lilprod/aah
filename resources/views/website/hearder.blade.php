@@ -30,7 +30,7 @@
 										<a href="{{route('home')}}">Accueil</a>
 									</li>
 
-									<li class="">
+									<li class="{{ Request::routeIs('our_doctors') ? 'active' : '' }}">
 										<a href="{{route('our_doctors')}}">Médecins</a>
 									</li>
 
@@ -70,13 +70,13 @@
 			                        </li>
 									
 
-									@guest('admin') 
-							
-									<li>
-										<a href="{{route('admin.login')}}" target="_blank">Admin</a>
-									</li>
-
-									@endguest
+									{{--@guest('admin') 
+																									
+										<li>
+											<a href="{{route('admin.login')}}" target="_blank">Admin</a>
+										</li>
+	
+									@endguest--}}
 
 									
 
@@ -169,6 +169,11 @@
 									</li>
 
 									@if(auth()->user()->role_id == 1)
+
+									<li class="">
+										<a href="{{route('our_doctors')}}">Médecins</a>
+									</li>
+
 									<li class="has-submenu">
 										<a href="#!">Patients<i class="fas fa-chevron-down"></i></a>
 										<ul class="submenu">
@@ -215,10 +220,6 @@
 										</ul>
 									</li>
 									@endif
-
-									<li class="">
-										<a href="{{route('our_doctors')}}">Médecins</a>
-									</li>
 
 									<li class="">
 										<a href="#">Pharmacies</a>

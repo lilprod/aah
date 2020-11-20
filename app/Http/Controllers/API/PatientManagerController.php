@@ -12,6 +12,7 @@ use App\History;
 use App\Appointment;
 use App\Schedule;
 use Carbon\Carbon;
+use Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
@@ -181,32 +182,17 @@ class PatientManagerController extends BaseController
             return $this->sendError('Validation Error.', $validator->errors());       
         }
 
-        if ($request->hasfile('profile_picture')) {
-            // Get filename with the extension
-            $fileNameWithExt = $request->file('profile_picture')->getClientOriginalName();
-
-            // Get just filename
-            $filename = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
-
-            // Get just ext
-            $extension = $request->file('profile_picture')->getClientOriginalExtension();
-
-            // Filename to store
-            $fileNameToStore = $filename.'_'.time().'.'.$extension;
-
-            // Upload Image
-            $path = $request->file('profile_picture')->storeAs('public/profile_images', $fileNameToStore);
-        } else {
-            $fileNameToStore = 'avatar.jpg';
-        }
-
-        
         $patient->name = $request->input('name');
         $patient->firstname = $request->input('firstname');
         //$patient->email = $request->input('email');
         $patient->gender = $request->input('gender');
         $patient->marital_status = $request->input('marital_status');
-        $patient->profile_picture = $fileNameToStore;
+        
+        if(!empty($request->input('profile_picture'))){
+            
+            $patient->profile_picture = $request->input('profile_picture');
+        }
+        //$patient->profile_picture = $fileNameToStore;
         //$patient->phone_number = $request->input('phone_number');
         $patient->address = $request->input('address');
         $patient->birth_date = $request->input('birth_date');
@@ -222,7 +208,11 @@ class PatientManagerController extends BaseController
         $user->name = $request->input('name');
         $user->firstname = $request->input('firstname');
         //$user->email = $request->input('email');
-        $user->profile_picture = $fileNameToStore;
+        if(!empty($request->input('profile_picture'))){
+
+            $user->profile_picture = $request->input('profile_picture');
+        }
+        //$user->profile_picture = $fileNameToStore;
         //$user->phone_number = $request->input('phone_number');
         //$user->gender = $request->input('gender');
         //$user->birth_date = $request->input('birth_date');
@@ -245,16 +235,16 @@ class PatientManagerController extends BaseController
 
     }
 
-	 /**
-	 * Rating a particular doctor
-	 *
-	 * @param  Doctor $doctor
-	 * @return Response
-	 */
+     /**
+     * Rating a particular doctor
+     *
+     * @param  Doctor $doctor
+     * @return Response
+     */
     public function rating(Request $request) {
 
         $validator = Validator::make($request->all(), [
-			'doctor_id' => 'required',
+            'doctor_id' => 'required',
             'user_id' => 'required',
             'rating' => 'required',
             'body' => 'nullable',
@@ -284,8 +274,8 @@ class PatientManagerController extends BaseController
      */
     public function check(Request $request)
     {
-    	$validator = Validator::make($request->all(), [
-			'doctor_id' => 'required',
+        $validator = Validator::make($request->all(), [
+            'doctor_id' => 'required',
             'schedule_id' => 'required',
             'date' => 'required',
         ]);

@@ -96,14 +96,13 @@
 					<!-- Cards -->
 					<div class="row justify-content-center" style="background-color: #fcfcfc;">
 						<div class="col-md-9">
-						<section class="comp-section comp-cards">
 							<!-- Section Header -->
-							<div class="section-header text-center">
+							<div class="section-header text-center" style="padding-top: 80px">
 								<h2>OUR TEAM</h2>
 								<p class="sub-title">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
 							</div>
 							<!-- /Section Header -->
-
+						<section class="comp-section comp-cards">
 							<div class="row">
 								<div class="col-12 col-md-6 col-lg-4 d-flex">
 									<div class="card flex-fill">

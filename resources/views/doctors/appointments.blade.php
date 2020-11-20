@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>Doccure</title>
+		<title>AAH+ - Appointments</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
 		
 		<!-- Favicons -->
@@ -61,7 +61,6 @@
 						@include('doctors.partials.profile_side')
 
 						<div class="col-md-7 col-lg-8 col-xl-9">
-
 							
         					@include('inc.messages')
 
@@ -97,6 +96,15 @@
 										<a href="" class="btn btn-sm bg-info-light" data-toggle="modal" data-target="#appt_details{{$i}}">
 											<i class="far fa-eye"></i> View
 										</a>
+
+										@if(($appointment->paymentmode_id == 1 )|| ($appointment->paymentmode_id == 2))
+										<a href="javascript:void(0);" onclick="verifData({{ $appointment->id}})" class="btn btn-sm bg-primary-light">
+											<i class="fas fa-binoculars"></i> Check
+										</a>
+										<form id="verif-form" action="" method="POST" style="display: none;">
+                                            @csrf
+                                        </form>
+										@endif
 										<!--{!! '<a href="' . route('appointments.show', $appointment->id) . '" class="btn btn-sm bg-info-light" id="show"><i class="far fa-eye"></i> View</a>' !!}-->
 
 										<!--<a data-toggle="modal" data-target="#details{{$i}}" title="Voire plus de Détails" href="">Détails</a>-->
@@ -178,7 +186,7 @@
 
 		<div id="finish_appointment" class="modal fade custom-modal" role="dialog">
 		    <div class="modal-dialog modal-dialog-centered">
-		        <form action="" id="addForm" method="post">
+		        <form action="" id="finishForm" method="post">
 			        <div class="modal-content">
 
 			        	<div class="modal-header ">
@@ -207,7 +215,7 @@
 
 		<div id="cancel_appointment" class="modal fade custom-modal" role="dialog">
 		    <div class="modal-dialog modal-dialog-centered">
-		        <form action="" id="addForm" method="post">
+		        <form action="" id="cancelForm" method="post">
 			        <div class="modal-content">
 
 			        	<div class="modal-header ">
@@ -311,6 +319,22 @@
 		<!-- jQuery -->
 		<script src="{{asset('assets/js/jquery.min.js') }}"></script>
 
+		<script>
+			function verifData(id)
+		     {
+		         var id = id;
+		         var url = '{{ route("verif", ":id") }}';
+		         url = url.replace(':id', id);
+		         $("#verif-form").attr('action', url);
+		         $("#verif-form").submit();
+		     }
+
+		     function formSubmit()
+		     {
+		         $("#verif-form").submit();
+		     }
+		</script>
+
 		<!--<script>
 		  $(() => {
 		    $('#show').click(e => {
@@ -353,12 +377,12 @@
 	         var id = id;
 	         var url = '{{ route("archivedapt", ":id") }}';
 	         url = url.replace(':id', id);
-	         $("#addForm").attr('action', url);
+	         $("#cancelForm").attr('action', url);
 	     }
 
 	     function formSubmit()
 	     {
-	         $("#addForm").submit();
+	         $("#cancelForm").submit();
 	     }
 		</script>
 
@@ -368,12 +392,12 @@
 	         var id = id;
 	         var url = '{{ route("finish", ":id") }}';
 	         url = url.replace(':id', id);
-	         $("#addForm").attr('action', url);
+	         $("#finishForm").attr('action', url);
 	     }
 
 	     function formSubmit()
 	     {
-	         $("#addForm").submit();
+	         $("#finishForm").submit();
 	     }
 		</script>
 		

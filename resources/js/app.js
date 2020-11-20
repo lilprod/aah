@@ -31,6 +31,8 @@ Vue.component('chat-component', require('./components/ChatComponent.vue').defaul
 
 Vue.component('favorite', require('./components/FavoriteComponent.vue').default);
 
+Vue.component('favourite', require('./components/FavouriteComponent.vue').default);
+
 Vue.use(VueChatScroll);
 // Vue.component('chat-room' , require('./components/laravel-video-chat/ChatRoom.vue').default);
 // Vue.component('group-chat-room', require('./components/laravel-video-chat/GroupChatRoom.vue').default);

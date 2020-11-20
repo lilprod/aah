@@ -84,7 +84,7 @@
 														info@aah.care
 													</p>
 												</div>
-											</div><br><br>
+											</div><br>
 
 											<div class="single-contact-address">
 												<div class="contact-details">
@@ -103,7 +103,7 @@
 														investor@aah.care
 													</p>
 												</div>
-											</div><br><br>
+											</div><br>
 
 											<div class="single-contact-address">
 												<div class="contact-details">
@@ -161,10 +161,9 @@
 										</div>-->
 									<form class="form-area" id="myForm" action="{{route('postcontact')}}" method="POST">
 										<div class="card-body">
-
 											
-												{{csrf_field()}}
-												<div class="row">
+											{{csrf_field()}}
+											<div class="row">
 
 												<div class="col-12 col-md-6">	
 													<div class=" form-group">
@@ -202,16 +201,12 @@
 													</div>
 												</div>
 
+												<div class="col-12 col-md-12">
+													<button class="btn btn-primary btn-rounded" style="float: right;" type="submit">Send Message</button>				
 												</div>
-											
 
-									</div>
+											</div>
 
-									<div class="card-footer">
-										<div class="col-lg-12">
-											<div class="alert-msg" style="text-align: left;"></div>
-											<button class="btn btn-primary btn-rounded" style="float: right;" type="submit">Send Message</button>											
-										</div>
 									</div>
 								</form>
 

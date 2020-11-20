@@ -2,8 +2,10 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 		<title>AAH+ - Doctor Profile</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
 		
 		<!-- Favicons -->
 		<link href="{{asset('assets/img/favicon.png') }}" rel="icon">
@@ -20,6 +22,10 @@
 		
 		<!-- Main CSS -->
 		<link rel="stylesheet" href="{{asset('assets/css/style.css') }}">
+
+		<link rel="stylesheet" type="text/css" href="{{asset('css/btn.css') }}">
+
+		<link href="{{asset('css/star-rating.css') }}" media="all" rel="stylesheet" type="text/css" />
 		
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 		<!--[if lt IE 9]>
@@ -31,7 +37,7 @@
 	<body>
 
 		<!-- Main Wrapper -->
-		<div class="main-wrapper">
+		<div class="main-wrapper" id="app">
 		
 			<!-- Header -->
 			@include('website.hearder')
@@ -69,15 +75,16 @@
 									</div>
 									<div class="doc-info-cont">
 										<h4 class="doc-name">Dr. {{$doctor->name}} {{$doctor->firstname}}</h4>
-										<p class="doc-speciality">BDS, MDS - Oral & Maxillofacial Surgery</p>
-										<p class="doc-department"><img src="{{asset('assets/img/specialities/specialities-05.png') }}" class="img-fluid" alt="Speciality">Dentist</p>
+										<p class="doc-speciality">{{$doctor->speciality->title}}</p>
+										<p class="doc-department"><img src="{{url('/storage/cover_images/'.$doctor->speciality->cover_image ) }}" class="img-fluid" alt="Speciality">{{$doctor->speciality->title}}</p>
 										<div class="rating">
-											<i class="fas fa-star filled"></i>
+											<!--<i class="fas fa-star filled"></i>
 											<i class="fas fa-star filled"></i>
 											<i class="fas fa-star filled"></i>
 											<i class="fas fa-star filled"></i>
 											<i class="fas fa-star"></i>
-											<span class="d-inline-block average-rating">(35)</span>
+											<span class="d-inline-block average-rating">(35)</span>-->
+											<input id="rating-system" type="number" class="rating" min="0" max="5" step="1" name="rating" value="{{ $doctor->averageRating }}" disabled>
 										</div>
 										<div class="clinic-details">
 											<p class="doc-location"><i class="fas fa-map-marker-alt"></i> Newyork, USA - <a href="javascript:void(0);">Get Directions</a></p>
@@ -113,20 +120,28 @@
 								<div class="doc-info-right">
 									<div class="clini-infos">
 										<ul>
-											<li><i class="far fa-thumbs-up"></i> 99%</li>
-											<li><i class="far fa-comment"></i> 35 Feedback</li>
-											<li><i class="fas fa-map-marker-alt"></i> Newyork, USA</li>
+											<!--<li><i class="far fa-thumbs-up"></i> 99%</li>
+											<li><i class="far fa-comment"></i> 35 Feedback</li>-->
+											<li><i class="fas fa-map-marker-alt"></i>@if($doctor->city != '') {{$doctor->city}}, @endif{{$doctor->country}}</li>
 											<li><i class="far fa-money-bill-alt"></i> $100 per hour </li>
 										</ul>
 									</div>
 									<div class="doctor-action">
-										<a href="javascript:void(0)" class="btn btn-white fav-btn">
-											<i class="far fa-bookmark"></i>
-										</a>
+										@if ((Auth::check()) && (Auth()->user()->role_id == 1))
+										        <favourite
+										            :doctor={{ $doctor->id }}
+										            :favorited={{ $doctor->favorited() ? 'true' : 'false' }}
+										        ></favourite>
+											@endif
+										
 										<a href="#" class="btn btn-white msg-btn">
 											<i class="far fa-comment-alt"></i>
 										</a>
-										<!--<a href="javascript:void(0)" class="btn btn-white call-btn" data-toggle="modal" data-target="#voice_call">
+										<!--<a href="javascript:void(0)" class="btn btn-white fav-btn">
+											<i class="far fa-bookmark"></i>
+										</a>
+
+										<a href="javascript:void(0)" class="btn btn-white call-btn" data-toggle="modal" data-target="#voice_call">
 											<i class="fas fa-phone"></i>
 										</a>
 										<a href="javascript:void(0)" class="btn btn-white call-btn" data-toggle="modal" data-target="#video_call">
@@ -134,7 +149,7 @@
 										</a>-->
 									</div>
 									<div class="clinic-booking">
-										<a class="apt-btn" href="#">Book Appointment</a>
+										<a class="apt-btn" href="{{route('booking.doctor', $doctor->id)}}">Book Appointment</a>
 									</div>
 								</div>
 							</div>
@@ -174,10 +189,12 @@
 										<div class="col-md-12 col-lg-9">
 										
 											<!-- About Details -->
+											@if($doctor->bibliography != '')
 											<div class="widget about-widget">
 												<h4 class="widget-title">About Me</h4>
-												<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+												<p>{{$doctor->bibliography}}</p>
 											</div>
+											@endif
 											<!-- /About Details -->
 										
 											<!-- Education Details -->
@@ -789,6 +806,7 @@
 			<!-- /Page Content -->
    
 			<!-- Footer -->
+			<button onclick="topFunction()" id="myBtn" title="Go to top"><i class="fa fa-chevron-up"></i></button>
 			@include('website.footer')
 			<!-- /Footer -->
 		   
@@ -859,6 +877,29 @@
 
 		<!-- jQuery -->
 		<script src="{{asset('assets/js/jquery.min.js') }}"></script>
+
+		<script src="{{asset('js/star-rating.js') }}" type="text/javascript"></script>
+
+		<script src="{{ asset('js/app.js') }}"></script>
+
+		<script type="text/javascript">
+			// When the user scrolls down 20px from the top of the document, show the button
+			window.onscroll = function() {scrollFunction()};
+
+			function scrollFunction() {
+			  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+			    document.getElementById("myBtn").style.display = "block";
+			  } else {
+			    document.getElementById("myBtn").style.display = "none";
+			  }
+			}
+
+			// When the user clicks on the button, scroll to the top of the document
+			function topFunction() {
+			  document.body.scrollTop = 0; // For Safari
+			  document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+			}
+		</script>
 		
 		<!-- Bootstrap Core JS -->
 		<script src="{{asset('assets/js/popper.min.js') }}"></script>

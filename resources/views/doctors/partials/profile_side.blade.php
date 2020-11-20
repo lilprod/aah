@@ -11,7 +11,7 @@
 					<h3>Dr. {{ auth()->user()->name }} {{ auth()->user()->firstname }}</h3>
 					
 					<div class="patient-details">
-						<h5 class="mb-0">BDS, MDS - Oral & Maxillofacial Surgery</h5>
+						<h5 class="mb-0">{{ auth()->user()->doctor()->speciality->title}}</h5>
 					</div>
 				</div>
 			</div>
