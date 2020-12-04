@@ -30,7 +30,7 @@
                   <div class="modal-body">
                     {{ csrf_field() }}
                     {{ method_field('DELETE') }}
-                    <p>Etes-vous sûr(e) de vouloir supprimer cet utilisateur?</p>
+                    <p>Etes-vous sûr(e) de vouloir supprimer cet administrateur?</p>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-close"></i> Non, Fermer</button>
@@ -50,9 +50,9 @@
 	<div class="card">
 		<div class="card-header">
 			<div class="d-flex align-items-center">
-				<h4 class="card-title">Liste des Administrateurs</h4>
+				<h4 class="card-title">List of Administrators</h4>
 				<a href="{{ route('users.create') }}" class="btn btn-primary btn-round ml-auto" data-toggle="" data-target=""> <i class="fa fa-plus"></i>
-					Add user</a>
+					Add Admin</a>
 			</div>
 		</div>
 	<div class="card-body">
@@ -61,10 +61,10 @@
 			<table class="datatable table table-hover table-center mb-0">
 				<thead>
 				<tr>
-					<th>Nom et Prénom(s)</th>
+					<th>Name et Firstname</th>
                     <th>Email</th>
                     <th>Date/Heure d'ajout</th>
-                    <th>Rôles</th>
+                    <th>Role</th>
 					<th style="width: 10%">Actions</th>
 				</tr>
 				</thead>

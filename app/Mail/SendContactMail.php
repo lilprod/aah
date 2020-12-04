@@ -46,7 +46,7 @@ class SendContactMail extends Mailable
         $e_firstname = $this->firstname; 
         $e_phone = $this->phone_number; 
 
-        return $this->from($e_email)->subject($e_subject)->view('mail.contact_mail', compact('e_message','e_name', 'e_firstname', 'e_phone'));
+        return $this->from($e_email)->subject($e_subject)->view('mail.contact_mail', compact('e_name', 'e_firstname', 'e_phone', 'e_email','e_message'));
 
         //return $this->view('view.name');
     }

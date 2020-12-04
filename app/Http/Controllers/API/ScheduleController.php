@@ -12,6 +12,7 @@ use App\Doctor;
 use App\User;
 use App\Schedule;
 use App\History;
+use Validator;
 
 class ScheduleController extends BaseController
 {
@@ -91,7 +92,7 @@ class ScheduleController extends BaseController
         $schedule->save();
         $historique->save();
 
-        return $this->sendResponse(new ScheduleResource($schedule), 'Schedule added successfully.');
+        return $this->sendResponse($schedule, 'Schedule added successfully.');
     }
 
     /**
@@ -108,7 +109,7 @@ class ScheduleController extends BaseController
             return $this->sendError('Schedule not found.');
         }
    
-        return $this->sendResponse(new ScheduleResource($schedule), 'Schedule retrieved successfully.');
+        return $this->sendResponse($schedule, 'Schedule retrieved successfully.');
     }
 
     /**

@@ -8,8 +8,6 @@ use App\User;
 use App\Patient;
 use App\History;
 use Illuminate\Support\Facades\Storage;
-use App\Biometry;
-use App\Antecedent;
 use App\Doctor;
 
 class PatientController extends Controller
@@ -95,21 +93,7 @@ class PatientController extends Controller
         $patient->blood_group = $request->input('blood_group');
         $patient->rhesus = $request->input('rhesus');
         $patient->profession = $request->input('profession');
-        $patient->age = $request->input('age');
         $patient->status = $request->input('status');
-        $patient->doctor_id = $request->input('doctor_id');
-
-        $doctor = Doctor::findOrFail($patient->doctor_id);
-        $patient->doctor_name = $doctor->name;
-        $patient->doctor_firstname = $doctor->firstname;
-        $patient->doctor_email = $doctor->email;
-        $patient->doctor_gender = $doctor->gender;
-        $patient->doctor_phone = $doctor->phone_number;
-        $patient->doctor_address = $doctor->address;
-        $patient->doctor_profession = $doctor->profession;
-        $patient->department_id = $doctor->department_id;
-        $patient->department_name = $doctor->department_name;
-        $patient->create_user_id = auth()->user()->id;
 
         $user = new User();
         $user->name = $request->input('name');
@@ -118,12 +102,12 @@ class PatientController extends Controller
         //$user->password = $request->input('password');
         $user->password = 123456;
         $user->profile_picture = $fileNameToStore;
-        $user->user_profession = $request->input('profession');
+        //$user->user_profession = $request->input('profession');
         $user->phone_number = $request->input('phone_number');
-        $user->gender = $request->input('gender');
-        $user->birth_date = $request->input('birth_date');
+        //$user->gender = $request->input('gender');
+        //$user->birth_date = $request->input('birth_date');
         $user->address = $request->input('address');
-        $user->role_user = 1;
+        $user->role_id = 1;
 
         $patient->save();
         $user->save();
@@ -157,13 +141,7 @@ class PatientController extends Controller
     {
         $patient = Patient::findOrFail($id); //Get patient with specified id
 
-        $biometries = $patient->biometries;
-
-        $consultations = $patient->consultations;
-
-        $antecedents = $patient->antecedents;
-
-        return view('admin.patients.show', compact('patient', 'biometries', 'antecedents','consultations')); //pass patient data to view
+        return view('admin.patients.show', compact('patient')); //pass patient data to view
     }
 
     /**
@@ -239,21 +217,7 @@ class PatientController extends Controller
         $patient->blood_group = $request->input('blood_group');
         $patient->rhesus = $request->input('rhesus');
         $patient->profession = $request->input('profession');
-        $patient->age = $request->input('age');
         $patient->status = $request->input('status');
-        $patient->doctor_id = $request->input('doctor_id');
-
-        $doctor = Doctor::findOrFail($patient->doctor_id);
-        $patient->doctor_name = $doctor->name;
-        $patient->doctor_firstname = $doctor->firstname;
-        $patient->doctor_email = $doctor->email;
-        $patient->doctor_gender = $doctor->gender;
-        $patient->doctor_phone = $doctor->phone_number;
-        $patient->doctor_address = $doctor->address;
-        $patient->doctor_profession = $doctor->profession;
-        $patient->department_id = $doctor->department_id;
-        $patient->department_name = $doctor->department_name;
-        $patient->create_user_id = auth()->user()->id;
 
         $user = User::findOrFail($patient->user_id);
 
@@ -261,11 +225,9 @@ class PatientController extends Controller
         $user->firstname = $request->input('firstname');
         $user->email = $request->input('email');
         $user->phone_number = $request->input('phone_number');
-        $user->user_profession = $request->input('profession');
+        //$user->user_profession = $request->input('profession');
         $user->address = $request->input('address');
-        $user->gender = $request->input('gender');
-        $user->birth_date = $request->input('birth_date');
-        $user->role_user = 1;
+        //$user->gender = $request->input('gender');
         if ($request->hasfile('profile_picture')) {
             $user->profile_picture = $fileNameToStore;
         }
@@ -295,8 +257,6 @@ class PatientController extends Controller
     {
         $patient = Patient::findOrFail($id);
         $user = User::findOrFail($patient->user_id);
-        $antecedent = Antecedent::findOrFail($patient->antecedent_id);
-        $biometry = Biometry::findOrFail($patient->biometry_id);
 
         if ($user->profile_picture != 'avatar.jpg') {
             Storage::delete('public/profile_images/'.$user->profile_picture);
@@ -304,13 +264,11 @@ class PatientController extends Controller
 
         $historique = new History();
         $historique->action = 'Delete';
-        $historique->table = 'User/Patient/Biometry/Antecedent';
+        $historique->table = 'User/Patient';
         $historique->user_id = auth()->user()->id;
 
         $user->delete();
         $patient->delete();
-        $biometry->delete();
-        $antecedent->delete();
         $historique->save();
 
         return redirect()->route('patients.index')

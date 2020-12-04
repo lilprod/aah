@@ -86,15 +86,17 @@
                                             <div class="row form-row social-login">
 
                                                 <div class="col-12">
+                                                    <br><br>
                                                     <a href="{{route('socialite.redirect', 'facebook')}}" class="btn btn-facebook btn-block"><i class="fab fa-facebook-f mr-1"></i> Login</a>
-                                                </div><br><br><br><br>
+                                                </div><br><br><br><br><br>
                                                 <div class="col-12">
                                                     <a href="{{route('socialite.redirect', 'google')}}" class="btn btn-google btn-block"><i class="fab fa-google mr-1"></i> Login</a>
+                                                    <br><br>
                                                 </div>
-                                                <br><br><br><br>
-                                                <div class="col-12">
+                                                <!--<br><br>-->
+                                                <!--<div class="col-12">
                                                     <a href="#" class="btn btn-instagram btn-block"><i class="fab fa-instagram mr-1"></i> Login</a>
-                                                </div><br><br><br><br>
+                                                </div><br><br><br><br>-->
                                             </div> 
 
                                         </div>

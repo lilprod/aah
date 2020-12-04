@@ -12,6 +12,7 @@ use App\History;
 use App\Appointment;
 use App\Schedule;
 use Carbon\Carbon;
+use Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
@@ -109,6 +110,15 @@ class AppointmentController extends BaseController
 
         $historique->save();
 
+        $patient = $appointment->patient;
+        $patient['profile_picture'] = $_ENV['APP_URL'].'/storage/profile_images/'.$patient->profile_picture;
+
+        $doctor = $appointment->doctor;
+        $doctor['profile_picture'] = $_ENV['APP_URL'].'/storage/profile_images/'.$doctor->profile_picture;
+        $speciality = $doctor->speciality;
+        $doctor['speciality'] = $speciality;
+        $speciality['cover_image'] = $_ENV['APP_URL'].'/storage/cover_images/'.$speciality->cover_image;
+
         return $this->sendResponse($appointment, 'Appointment saved sucessfully!');
     }
 
@@ -125,6 +135,15 @@ class AppointmentController extends BaseController
         if (is_null($appointment)) {
             return $this->sendError('Appointment not found.');
         }
+
+        $patient = $appointment->patient;
+        $patient['profile_picture'] = $_ENV['APP_URL'].'/storage/profile_images/'.$patient->profile_picture;
+
+        $doctor = $appointment->doctor;
+        $doctor['profile_picture'] = $_ENV['APP_URL'].'/storage/profile_images/'.$doctor->profile_picture;
+        $speciality = $doctor->speciality;
+        $doctor['speciality'] = $speciality;
+        $speciality['cover_image'] = $_ENV['APP_URL'].'/storage/cover_images/'.$speciality->cover_image;
    
         return $this->sendResponse(new PostResource($appointment), 'Appointment retrieved successfully.');
     }
@@ -213,6 +232,15 @@ class AppointmentController extends BaseController
             $appointment->save();
 
             $historique->save();
+
+            $patient = $appointment->patient;
+            $patient['profile_picture'] = $_ENV['APP_URL'].'/storage/profile_images/'.$patient->profile_picture;
+
+            $doctor = $appointment->doctor;
+            $doctor['profile_picture'] = $_ENV['APP_URL'].'/storage/profile_images/'.$doctor->profile_picture;
+            $speciality = $doctor->speciality;
+            $doctor['speciality'] = $speciality;
+            $speciality['cover_image'] = $_ENV['APP_URL'].'/storage/cover_images/'.$speciality->cover_image;
 
             return $this->sendResponse($appointment, 'Appointment updated sucessfully!');
         }

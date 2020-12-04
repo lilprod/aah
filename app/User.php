@@ -146,7 +146,7 @@ class User extends Authenticatable
         $date = Carbon::now()->toDateString();
 
         return Appointment::where('patient_user_id', $this->id)
-                            //->whereNotIn('status', array(2))
+                            ->where('status' ,'=', 1)
                             ->where('date_apt', '>' , $date)
                             ->orderBy('id', 'DESC')
                             ->get();

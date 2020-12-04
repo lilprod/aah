@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Socialite;
 use App\User;
+use App\Patient;
 
 class SocialiteController extends Controller
 {
@@ -61,6 +62,9 @@ class SocialiteController extends Controller
                 // Mise à jour des informations de l'utilisateur
                 $user->name = $name;
                 $user->save();
+                $patient = Patient::where('user_id', $user->id)->first();
+                $patient->name = $name;
+                $patient->save();
 
             # 3. Si l'utilisateur n'existe pas, on l'enregistre
             } else {
@@ -78,6 +82,18 @@ class SocialiteController extends Controller
                     'profile_picture' => 'avatar.jpg',
 
                 ]);
+
+                $user->assignRole('Patient');
+
+                $patient = new Patient();
+                $patient->name = $name;
+                $patient->firstname = $name;
+                $patient->email = $email;
+                $patient->profile_picture = 'avatar.jpg';
+                $patient->user_id = $user->id;
+                $patient->status = 0;
+
+                $patient->save();
             }
 
             # 4. On connecte l'utilisateur

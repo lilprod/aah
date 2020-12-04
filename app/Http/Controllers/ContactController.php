@@ -27,7 +27,7 @@ class ContactController extends Controller
         $subject = $request->subject;
         $message = $request->message;
 
-        Mail::to('aah@gmail.com')->send(new SendContactMail($name, $firstname, $phone_number, $email, $subject, $message));
+        Mail::to('aahafricahealthcare@gmail.com')->send(new SendContactMail($name, $firstname, $phone_number, $email, $subject, $message));
 
         return redirect()->route('contact')->with('success', 'Message envoyé avec succès!');
     }

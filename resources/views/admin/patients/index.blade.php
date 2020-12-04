@@ -5,11 +5,11 @@
 <div class="page-header">
 	<div class="row">
 		<div class="col-sm-12">
-			<h3 class="page-title">List of Patient</h3>
+			<h3 class="page-title">List of Patients</h3>
 			<ul class="breadcrumb">
 				<li class="breadcrumb-item"><a href="{{('admin.dashboard')}}">Dashboard</a></li>
-				<li class="breadcrumb-item"><a href="javascript:(0);">Users</a></li>
-				<li class="breadcrumb-item active">Patient</li>
+				<li class="breadcrumb-item"><a href="javascript:(0);">Patients</a></li>
+				<li class="breadcrumb-item active">List</li>
 			</ul>
 		</div>
 	</div>

@@ -17,6 +17,7 @@ use App\PrescribedDrug;
 use App\PrescriptionExam;
 use App\Schedule;
 use Carbon\Carbon;
+use App\Country;
 
 class PagesController extends Controller
 {
@@ -41,6 +42,13 @@ class PagesController extends Controller
         }
 
         return view('pages.index',compact('specialities','posts'));
+    }
+
+    public function getCountries(Request $request)
+    {
+        $contries = Country::where('region_id', $request->id)
+                            ->get();
+        return response()->json($contries);
     }
 
 

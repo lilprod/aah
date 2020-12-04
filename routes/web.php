@@ -7,7 +7,6 @@ use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Hash;
 use App\Admin;
 
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,15 +18,11 @@ use App\Admin;
 |
 */
 
+//Account Verification
 
-//Paypal
-//Route::get('paypal/express-checkout', 'PaypalController@expressCheckout')->name('paypal.express-checkout');
+Route::get('/verify', 'VerifyController@getVerify')->name('getVerify');
 
-//Route::get('paypal/express-checkout-success', 'PaypalController@expressCheckoutSuccess');
-
-//Route::post('paypal/notify', 'PaypalController@notify');
-
-//Route::get('paypal/payment', 'PayPalController@payment')->name('payment');
+Route::post('/verify', 'VerifyController@postVerify')->name('verify');
 
 //Paypal
 
@@ -57,21 +52,77 @@ Route::namespace('Admin')->name('admin.')->prefix('admin')->group(function () {
     Route::post('logout', 'AdminAuthController@postLogout')->name('logout');
 });
 
+// Admin Doctors reviews
 
 Route::get('admin/reviews', 'AdminReviewController@index')->name('admin.reviews');
 
 Route::delete('admin/reviewsdelete/{id}', 'AdminReviewController@destroy')->name('admin.reviewsDelete');
-//Route::get('/login/doctor', 'Auth\LoginController@showDoctorLoginForm');
 
-Route::get('/register/doctor', 'Auth\RegisterController@showDoctorRegisterForm')->name('register_doctor');
+//Admin Post
+
+Route::get('admin/active/posts', 'AdminPostController@index')->name('admin.posts');
+
+Route::get('admin/pending/posts', 'AdminPostController@pending')->name('admin.pending_posts');
+
+Route::get('admin/posts/{id}', 'AdminPostController@show')->name('admin_posts_show');
+
+Route::delete('admin/posts_delete/{id}', 'AdminPostController@delete')->name('admin_posts_delete');
+
+Route::get('admin/create/posts', 'AdminPostController@create')->name('admin_posts_create');
+
+Route::get('admin/posts/{id}/edit', 'AdminPostController@edit')->name('admin_posts_edit');
+
+Route::post('admin/posts', 'AdminPostController@store')->name('admin_posts_store');
+
+Route::put('admin/posts/upadte/{id}', 'AdminPostController@update')->name('admin_posts_update');
+
+Route::get('postm/check_slug', 'AdminPostController@check_slug')->name('admin.post.check_slug');
+
+Route::post('admin/activate/posts/{id}','AdminPostController@active')->name('admin_activate_post');
+
+Route::post('admin/desactivate/posts/{id}','AdminPostController@desactive')->name('admin_desactivate_post');
+
+//Admin Payment
+
+Route::get('admin/payments', 'AdminPaymentController@index')->name('admin_payments');
+
+Route::get('admin/payments/{id}', 'AdminPaymentController@show')->name('admin_payments_show');
+
+//Admin Disease
+
+Route::get('admin/diseases', 'AdminDiseaseController@index')->name('admin.diseases');
+
+Route::get('admin/diseases/{id}', 'AdminDiseaseController@show')->name('admin_diseases_show');
+
+Route::get('admin/create/diseases', 'AdminDiseaseController@create')->name('admin_diseases_create');
+
+Route::delete('admin/diseases_delete/{id}', 'AdminDiseaseController@delete')->name('admin_diseases_delete');
+
+Route::put('admin/posts/upadte/{id}', 'AdminPostController@update')->name('admin_posts_update');
+
+Route::get('admin/diseases/{id}/edit', 'AdminDiseaseController@edit')->name('admin_diseases_edit');
+
+Route::post('admin/diseases', 'AdminDiseaseController@store')->name('admin_diseases_store');
+
+Route::get('diseasem/check_slug', 'AdminDiseaseController@check_slug')->name('admin.disease.check_slug');
+
+//Admin Appointment
+
+Route::get('admin/appointments', 'AdminAppointmentController@index')->name('admin_appointments');
+
+//Frontend Authentification
+
+//Route::get('/login/doctor', 'Auth\LoginController@showDoctorLoginForm');
 
 //Route::post('/login/doctor', 'Auth\LoginController@doctorLogin');
 
-Route::post('/register/doctor', 'Auth\RegisterController@createDoctor');
+Auth::routes();
+
+Route::get('/register/doctor', 'Auth\RegisterController@showDoctorRegisterForm')->name('register_doctor');
+
+Route::post('/register/doctor', 'Auth\RegisterController@registerDoctor');
 
 Route::get('/getDoctors', 'PagesController@getDoctors')->name('getDoctors');
-
-//Route::post('/takeup', 'DoctorManagerController@takeUp')->name('takeUp');
 
 Route::post('/take/{id}', ['as' => 'take', 'uses' => 'DoctorManagerController@take']);
 
@@ -80,19 +131,6 @@ Route::post('/finish/{id}', ['as' => 'finish', 'uses' => 'DoctorManagerControlle
 Route::post('/checkup', 'AppointmentController@check')->name('checkUp');
 
 Route::post('/archivedapt', 'DoctorManagerController@archivedApt')->name('archivedapt');
-
-
-//Video Chat
-//Route::get('/home', 'HomeController@index')->name('home');
-/*Route::get('/chat/{id}', 'VideoChatController@chat')->name('videochat');
-Route::get('/group/chat/{id}', 'VideoChatController@groupChat')->name('group.chat');
-
-Route::post('/chat/message/send', 'VideoChatController@send')->name('chat.send');
-Route::post('/chat/message/send/file', 'VideoChatController@sendFilesInConversation')->name('chat.send.file');
-Route::post('/group/chat/message/send', 'VideoChatController@groupSend')->name('group.send');
-Route::post('/group/chat/message/send/file', 'VideoChatController@sendFilesInGroupConversation')->name('group.send.file');
-*/
-
 
 # Socialite URLs
 
@@ -122,20 +160,27 @@ Route::post('/group/chat/leave/{id}' , function ($id) {
 
 //Administrations
 
-/*Route::group(['prefix' => 'admin'], function() {
-
-  
-Route::get('events/{event}/remind/{user}', [
-'as' => 'remindHelper', 'uses' => 'EventsController@remindHelper']);
-View:
-
-route('remindHelper',['event'=>$eventId,'user'=>$userId]);
-    
-});*/
+Route::get('changeStatus', 'DoctorController@ChangeUserStatus')->name('changeStatus');
 
 Route::resource('ratings', 'RatingController');
 
+// Admin Medical Ressources
+
 Route::resource('specialities', 'SpecialityController');
+
+Route::resource('services', 'ServiceController');
+
+Route::resource('drugs', 'DrugController');
+
+Route::resource('diseases', 'DiseaseController');
+
+Route::resource('drugtypes', 'DrugTypeController');
+
+Route::resource('prescriptions', 'PrescriptionController');
+
+Route::resource('prescriptiontypes', 'PrescriptionTypeController');
+
+//Admin Doctor
 
 Route::resource('doctors', 'DoctorController');
 
@@ -155,18 +200,6 @@ Route::resource('schedules', 'ScheduleController');
 
 Route::resource('appointments', 'AppointmentController');
 
-Route::resource('services', 'ServiceController');
-
-Route::resource('drugs', 'DrugController');
-
-Route::resource('diseases', 'DiseaseController');
-
-Route::resource('drugtypes', 'DrugTypeController');
-
-Route::resource('prescriptions', 'PrescriptionController');
-
-Route::resource('prescriptiontypes', 'PrescriptionTypeController');
-
 Route::post('verif/{id}','PaymentController@verif')->name('verif');
 //Patients Routes
 
@@ -175,8 +208,6 @@ Route::get('/patient/profile_setting', 'PatientManagerController@setting')->name
 Route::post('/patient/post_setting', 'PatientManagerController@postSetting')->name('post_patient_setting');
 
 Route::get('/patient/profile/{id}', ['as' => 'patient.profile', 'uses' => 'PagesController@profilePatient']);
-
-//Route::get('/patient/profile/{id}', ['as' => 'patient.profile', 'uses' => 'PatientManagerController@profile']);
 
 Route::get('/patient/booking/{id}', ['as' => 'booking.doctor', 'uses' => 'PatientManagerController@booking']);
 
@@ -192,6 +223,12 @@ Route::get('/patient/change_password', 'PatientManagerController@changePassword'
 
 Route::post('/patient/update_password', 'PatientManagerController@updatePassword')->name('patient_update_password');
 
+Route::post('favorite/{doctor}', 'PatientManagerController@favoriteDoctor');
+
+Route::post('unfavorite/{doctor}', 'PatientManagerController@unFavoriteDoctor');
+
+Route::get('my_favourites', 'PatientManagerController@myFavorites')->middleware('auth');
+
 //Doctors Routes
 
 Route::get('/doctor/profile_setting', 'DoctorManagerController@setting')->name('doctor_profile_setting');
@@ -199,8 +236,6 @@ Route::get('/doctor/profile_setting', 'DoctorManagerController@setting')->name('
 Route::post('/doctor/post_setting', 'DoctorManagerController@postSetting')->name('post_doctor_setting');
 
 Route::get('/doctor/profile/{id}', ['as' => 'doctor.profile', 'uses' => 'PagesController@profileDoctor']);
-
-//Route::get('/doctor/profile/{id}', ['as' => 'doctor.profile', 'uses' => 'DoctorManagerController@profile']);
 
 Route::get('/doctor/change_password', 'DoctorManagerController@changePassword')->name('doctor_change_password');
 
@@ -218,48 +253,8 @@ Route::get('/doctor/pending_posts', 'PostController@pending')->name('doctor_pend
 
 Route::get('/doctor/startapt/{id}', ['as' => 'appointment.start', 'uses' => 'DoctorManagerController@start']);
 
-//Admin Routes
-Route::get('changeStatus', 'DoctorController@ChangeUserStatus')->name('changeStatus');
 
-/*Route::middleware('auth:admin')->group(function(){
-  //here all your admin routes
-    Route::resource('users', 'UserController');
-
-    Route::resource('roles', 'RoleController');
-
-    Route::resource('permissions', 'PermissionController');
-});*/
-
-/*Route::get('/create_role_permission', function () {
-    $role = Role::create(['name' => 'Admin']);
-    $permission = Permission::create(['name' => 'Admin Permissions']);
-    auth()->user()->assignRole('Admin');
-    auth()->user()->givePermissionTo('Admin Permissions');
-
-
-    $admin = new Admin();
-    $admin->name = 'KOSSIGAN';
-    $admin->firstname = 'Prodige';
-    $admin->email = 'pkossigan@gmail.com';
-    $admin->password = Hash::make('prodige93');
-    $admin->phone_number = 22893343699;
-    $admin->address = 'Lomé-Togo';
-    $admin->profile_picture = 'avatar.jpg';
-    $admin->save();
-       
-});*/
-
-/*Route::get('/', function () {
-    return view('welcome');
-});*/
-
-Auth::routes();
-
-Route::post('favorite/{doctor}', 'PatientManagerController@favoriteDoctor');
-
-Route::post('unfavorite/{doctor}', 'PatientManagerController@unFavoriteDoctor');
-
-Route::get('my_favourites', 'PatientManagerController@myFavorites')->middleware('auth');
+//Website Pages
 
 Route::get('/', 'PagesController@index')->name('home');
 
@@ -270,7 +265,6 @@ Route::get('/our-services', 'PagesController@services')->name('services');
 Route::get('/contact-us', 'PagesController@contact')->name('contact');
 
 Route::post('contact', 'ContactController@store')->name('postcontact');
-
 
 Route::get('/search', 'SearchController@search')->name('search');
 
@@ -290,6 +284,8 @@ Route::get('/policy', 'PagesController@policy')->name('policy');
 
 Route::get('/faq', 'PagesController@faq')->name('faq');
 
+Route::get('/getCountries', 'PagesController@getCountries')->name('getCountries');
+
 Route::post('/loadmore/load_data', 'PagesController@load_data')->name('loadmore.load_data');
 
 //Route::get('/blog-details', 'PagesController@blogDetail')->name('blogdetails');
@@ -300,15 +296,14 @@ Route::get('category/{slug}', ['as' => 'categoryPosts', 'uses' => 'PagesControll
 
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 
-Route::get('categorie/check_slug', 'CategoryController@check_slug')
-  ->name('category.check_slug');
+Route::get('categorie/check_slug', 'CategoryController@check_slug')->name('category.check_slug');
 
-Route::get('postn/check_slug', 'PostController@check_slug')
-  ->name('post.check_slug');
+Route::get('postn/check_slug', 'PostController@check_slug')->name('post.check_slug');
 
-Route::get('diseasen/check_slug', 'DiseaseController@check_slug')
-  ->name('disease.check_slug');
+Route::get('diseasen/check_slug', 'DiseaseController@check_slug')->name('disease.check_slug');
+
 //Chat
+
 //Route::get('/chat', 'ChatController@index')->name('chat');
 
 Route::get('/messages', 'ChatController@fetchAllMessages');
@@ -332,10 +327,56 @@ Route::group(['middleware' => 'auth'], function(){
   Route::post('auth/video_chat', 'VideoChatController@auth');
 });
 
-//Route::get('admin/dashboard', 'DashboardController@adminHome')->name('admin.dashboard');
-
 Route::get('locale/{locale}', function ($locale) {
     Session::put('locale', $locale);
 
     return redirect()->back();
 });
+
+//Video Chat
+
+//Route::get('/home', 'HomeController@index')->name('home');
+
+/*Route::get('/chat/{id}', 'VideoChatController@chat')->name('videochat');
+
+Route::get('/group/chat/{id}', 'VideoChatController@groupChat')->name('group.chat');
+
+Route::post('/chat/message/send', 'VideoChatController@send')->name('chat.send');
+
+Route::post('/chat/message/send/file', 'VideoChatController@sendFilesInConversation')->name('chat.send.file');
+
+Route::post('/group/chat/message/send', 'VideoChatController@groupSend')->name('group.send');
+
+Route::post('/group/chat/message/send/file', 'VideoChatController@sendFilesInGroupConversation')->name('group.send.file');
+
+*/
+
+/*Route::group(['prefix' => 'admin'], function() {
+
+  
+Route::get('events/{event}/remind/{user}', [
+'as' => 'remindHelper', 'uses' => 'EventsController@remindHelper']);
+View:
+
+route('remindHelper',['event'=>$eventId,'user'=>$userId]);
+    
+});*/
+
+/*Route::get('/create_role_permission', function () {
+    $role = Role::create(['name' => 'Admin']);
+    $permission = Permission::create(['name' => 'Admin Permissions']);
+    auth()->user()->assignRole('Admin');
+    auth()->user()->givePermissionTo('Admin Permissions');
+
+
+    $admin = new Admin();
+    $admin->name = 'KOSSIGAN';
+    $admin->firstname = 'Prodige';
+    $admin->email = 'pkossigan@gmail.com';
+    $admin->password = Hash::make('prodige93');
+    $admin->phone_number = 22893343699;
+    $admin->address = 'Lomé-Togo';
+    $admin->profile_picture = 'avatar.jpg';
+    $admin->save();
+       
+});*/

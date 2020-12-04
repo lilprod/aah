@@ -155,6 +155,7 @@
 								</div>
 
 								<div class="col-md-8">
+									@include('inc.messages')
 									<div class="card">
 										<!--<div class="card-header">
 											<h4 class="card-title">Love to hear from you</h4>
@@ -185,7 +186,7 @@
 
 												<div class="col-12 col-md-6">	
 													<div class="form-group">
-														<input name="phone_number" placeholder="Enter Phone number" pattern="[0-9+]" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Phone number'" class="form-control" required="" type="text">
+														<input name="phone_number" placeholder="Enter Phone number"  onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Phone number'" class="form-control" required="" type="text">
 													</div>
 												</div>
 

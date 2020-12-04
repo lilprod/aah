@@ -44,6 +44,37 @@ class LoginController extends Controller
         $this->middleware('guest:admin')->except('logout');
     }
 
+    public function login(Request $request)
+    {
+        $this->validateLogin($request);
+        if ($this->hasTooManyLoginAttempts($request)) {
+            $this->fireLockoutEvent($request);
+
+            return $this->sendLockoutResponse($request);
+        }
+
+        //-----------------------------
+
+        if ($this->guard()->validate($this->credentials($request))) {
+            $user = $this->guard()->getLastAttempted();
+            if ($user->is_activated && $this->attemptLogin($request)) {
+                return $this->sendLoginResponse($request);
+            } else {
+                $this->incrementLoginAttempts($request);
+                $user->code = SendCode::sendCode($user->email, $user->phone_number);
+                if ($user->save()) {
+                    return redirect('/verify?email='.$user->email.'&phone_number='.$user->phone_number);
+                }
+            }
+        }
+
+        //--------------------------
+
+        $this->IncrementLoginAttempts($request);
+
+        return $this->sendFailedLoginResponse($request);
+    }
+
     /*public function showPatientLoginForm()
     {
         return view('auth.login', ['url' => 'patient']);

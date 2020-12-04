@@ -33,10 +33,10 @@ class DoctorController extends Controller
     {
         $doctor = Doctor::findOrFail($request->doctor_id);
         $user = User::where('id', $doctor->user_id)->first();
-        $doctor->status = $request->status;
+        //$doctor->status = $request->status;
         $user->is_activated = $request->status;
 
-        $doctor->save();
+        //$doctor->save();
         $user->save();
   
         return response()->json(['success'=>'User status change successfully.']);
@@ -115,17 +115,17 @@ class DoctorController extends Controller
         $user->email = $request->input('email');
         //$user->password = $request->input('password');
         $user->password = 123456;
-        $user->user_profession = $request->input('profession');
+        //$user->user_profession = $request->input('profession');
         $user->profile_picture = $fileNameToStore;
         $user->phone_number = $request->input('phone_number');
-        $user->gender = $request->input('gender');
-        $user->birth_date = $request->input('birth_date');
+        //$user->gender = $request->input('gender');
+        //$user->birth_date = $request->input('birth_date');
         $user->address = $request->input('address');
         $user->role_id = 2;
 
         $doctor->save();
         $user->save();
-        $user->assignRole('Docteur');
+        $user->assignRole('Doctor');
         
         $historique = new History();
         $historique->action = 'Create';

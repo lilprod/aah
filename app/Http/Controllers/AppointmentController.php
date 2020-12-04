@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Appointment;
-use App\Department;
+use App\Speciality;
 use App\Doctor;
 use App\History;
 use App\Notification;
@@ -456,7 +456,7 @@ class AppointmentController extends Controller
     {
         $appointment = Appointment::findOrFail($id); //Get appointment with specified id
 
-        $historique = new Historique();
+        $historique = new History();
         $historique->action = 'Delete';
         $historique->table = 'Appointment';
         $historique->user_id = auth()->user()->id;

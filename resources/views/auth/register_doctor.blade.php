@@ -257,26 +257,14 @@
 
                                             <div class="col-sm-6">
                                                 <div class="form-group mb-3">
-                                                    <label>Country</label>
-                                                    <input type="text" class="form-control @error('country') is-invalid @enderror" name="country" value="{{ old('country') }}" required autocomplete="country" placeholder="Country">
-
-                                                    @error('country')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-6">
-                                                <div class="form-group mb-3">
                                                     <label>Region</label>
                                                     <select class="form-control" id="region" name="region" required>
-                                                        <option value="WEST AFRICA">WEST AFRICA</option>
-                                                        <option value="EAST AFRICA">EAST AFRICA</option>
-                                                        <option value="NORTHEN AFRICA">NORTHEN AFRICA</option>
-                                                        <option value="MIDDLE AFRICA">MIDDLE AFRICA</option>
-                                                        <option value="SOUTHERN AFRICA">SOUTHERN AFRICA</option>
+                                                        <option value = "">--Select Region--</option>
+                                                        <option value="1">WEST AFRICA</option>
+                                                        <option value="2">EAST AFRICA</option>
+                                                        <option value="3">NORTHEN AFRICA</option>
+                                                        <option value="4">MIDDLE AFRICA</option>
+                                                        <option value="5">SOUTHERN AFRICA</option>
                                                     </select>
 
                                                     <!--<label class="focus-label">Nom</label>-->
@@ -288,6 +276,23 @@
                                                         @enderror
                                                 </div>
                                             </div>
+
+                                            <div class="col-sm-6">
+                                                <div class="form-group mb-3">
+                                                    <label>Country</label>
+                                                    <select class="form-control @error('country') is-invalid @enderror" name="country" id="country">
+                                                    </select>
+
+
+                                                    @error('country')
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+
+                                            
 
                                            <!-- <div class="col-sm-6">
                                                 <div class="form-group mb-3">
@@ -409,6 +414,52 @@
         
         <!-- jQuery -->
          <script src="{{asset('assets/js/jquery.min.js') }}"></script>
+
+         <script type="text/javascript">
+            $(document).ready(function() {
+
+                 $('#region').on('change', function () {
+
+                    var region_id = $(this).val();
+
+                    if(region_id){
+                        $.ajax({
+                            url: '{!!URL::route('getCountries')!!}',
+                            type: 'GET',
+                            data : { 'id' : region_id},
+                            dataType: 'json',
+
+                            success:function(data){
+                                //console.log('data');
+
+                                if(data) {
+                                    $('#country').empty();
+
+                                    $('#country').focus;
+
+                                    $('#country').append('<option value = "">--Select Country--</option>');
+
+                                    $.each(data, function(key, value){
+                                        $('select[name = "country"]').append('<option value= "'+ value.title +'">' + value.title + '</option>');
+                                    });
+
+                                    //$('select[name = "country"]').selectmenu('refresh', true);
+
+                                    //$('select[name = "country"]').refresh();
+
+                                    } else {
+                                        $('#country').empty();
+                                    } 
+                                }
+                                });
+                            }
+                            else{
+                                $('#country').empty();
+                            }
+                        
+                 });
+            });
+            </script>
         <!-- Bootstrap Core JS -->
         <script src="{{asset('assets/js/popper.min.js') }}"></script>
         <script src="{{asset('assets/js/bootstrap.min.js') }}"></script>

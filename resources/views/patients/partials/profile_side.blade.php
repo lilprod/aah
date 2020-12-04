@@ -10,7 +10,7 @@
 					<h3>{{Auth()->user()->name}} {{Auth()->user()->firstname}}</h3>
 					<div class="patient-details">
 
-						@if(auth()->user()->patient()->birth_date != '') 
+						{{--@if(auth()->user()->patient()->birth_date != '') 
 							@php
 								$birthday = new DateTime(auth()->user()->patient()->birth_date);
 							    $currentDate = new DateTime(date("Y-m-d"));
@@ -18,7 +18,7 @@
 							    $age= $interval->format('%Y');
 							@endphp
 							<h5><i class="fas fa-birthday-cake"></i> {{auth()->user()->patient()->birth_date}}, {{$age}} years</h5>
-						@endif
+						@endif--}}
 						<!--<h5><i class="fas fa-birthday-cake"></i> 24 Jul 1983, 38 years</h5>-->
 						@if( Auth()->user()->address != '')
 							<h5 class="mb-0"><i class="fas fa-map-marker-alt"></i> {{Auth()->user()->address}}</h5>

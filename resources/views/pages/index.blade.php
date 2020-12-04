@@ -54,8 +54,8 @@
 									<span class="form-text" style="">Based on your Location</span>
 								</div>
 								<div class="form-group search-info">
-									<input type="text" class="form-control" placeholder="Search Doctors, Clinics, Hospitals, Diseases Etc" name="query">
-									<span class="form-text" style="">Ex : Dental or Sugar Check up etc</span>
+									<input type="text" class="form-control" placeholder="Search Doctors, Specialities,  Diseases Etc" name="query">
+									<span class="form-text" style="">Ex : Dentist or Urology etc</span>
 								</div>
 								<button type="submit" class="btn btn-primary search-btn"><i class="fas fa-search"></i> <span>Search</span></button>
 							</form>

@@ -23,6 +23,11 @@ class Doctor extends Model
             $query->where('name', 'LIKE', trim($params['name']) . '%');
         }
 
+        if ( isset($params['query']) && trim($params['query'] !== '') ) {
+            $query->where('name', 'LIKE', trim($params['query']) . '%')
+                ->orWhere('firstname', 'LIKE', trim($params['query']) . '%');
+        }
+
         if ( isset($params['exercice_place']) && trim($params['exercice_place'] !== '') ) {
             $query->where('exercice_place', 'LIKE', trim($params['exercice_place']) . '%');
         }

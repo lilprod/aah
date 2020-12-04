@@ -1,36 +1,45 @@
-@extends('layouts.app')
+@extends('admin.layouts.app')
 
 @section('content')
 
-<div class="row">
-    <div class="col-lg-8 offset-lg-2">
-        <h4 class="page-title">Nouvelle fiche patiente</h4>
+<div class="page-header">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="page-title">Patients</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="javascript:(0);">Patients</a></li>
+                <li class="breadcrumb-item active">New Patient</li>
+            </ul>
+        </div>
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-12">
-		@include('inc.messages')
-	</div>
-</div>
 
-<div class="row">
-    <div class="col-lg-8 offset-lg-2">
+<div class="col-md-12">
+    @include('inc.messages')
+    <div class="card">
+        <div class="card-header">
+            <div class="d-flex align-items-center">
+                <h4 class="card-title">New Patient</h4>
+            </div>
+        </div>
 
         <form method="POST" action="{{ route('patients.store') }}" enctype="multipart/form-data">
         	@csrf
+        <div class="card-body">
 
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <label>Nom <span class="text-danger">*</span></label>
+                        <label>Name <span class="text-danger">*</span></label>
                         <input class="form-control" type="text" name="name">
                     </div>
                 </div>
 
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <label>Prénom(s) <span class="text-danger">*</span></label>
+                        <label>Firstname <span class="text-danger">*</span></label>
                         <input class="form-control" type="text" name="firstname">
                     </div>
                 </div>
@@ -44,30 +53,22 @@
 
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <label>Téléphone <span class="text-danger">*</span></label>
+                        <label>Phone number <span class="text-danger">*</span></label>
                         <input class="form-control" type="text" name="phone_number">
                     </div>
                 </div>
 
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <label>Date de naissance <span class="text-danger">*</span></label>
+                        <label>Birth Date <span class="text-danger">*</span></label>
                             <input type="date" class="form-control" name="birth_date">
                     </div>
                 </div>
 
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <label>Lieu de naissance <span class="text-danger">*</span></label>
+                        <label>Birth Place<span class="text-danger">*</span></label>
                             <input type="text" class="form-control" name="place_birth">
-                    </div>
-                </div>
-                
-
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label>Age <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control" name="age">
                     </div>
                 </div>
 
@@ -80,29 +81,29 @@
 
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <label>Nationalité <span class="text-danger">*</span></label>
+                        <label>Nationality <span class="text-danger">*</span></label>
                         <input type="text" class="form-control " name="nationality">
                     </div>
                 </div>
 
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <label>Ethnie <span class="text-danger">*</span></label>
+                        <label>Ethnic Group <span class="text-danger">*</span></label>
                         <input type="text" class="form-control " name="ethnic_group">
                     </div>
                 </div>
 
                 <div class="col-sm-6">
 					<div class="form-group gender-select">
-						<label class="gen-label">Genre: <span class="text-danger">*</span></label>
+						<label class="gen-label">Genrder : <span class="text-danger">*</span></label>
 						<div class="form-check-inline">
 							<label class="form-check-label">
-								<input type="radio" name="gender" value="M" class="form-check-input">Masculin
+								<input type="radio" name="gender" value="M" class="form-check-input">Male
 							</label>
 						</div>
 						<div class="form-check-inline">
 							<label class="form-check-label">
-								<input type="radio" name="gender" value="F" class="form-check-input">Feminin
+								<input type="radio" name="gender" value="F" class="form-check-input">Female
 							</label>
 						</div>
 					</div>
@@ -110,7 +111,7 @@
 
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <label>Situation matrimoniale <span class="text-danger">*</span></label>
+                        <label>Marital Status<span class="text-danger">*</span></label>
                         <select class="select" name="marital_status" required="">
                             <option value="Célibataire" >Célibataire</option>
                             <option value="Marié(e)">Marié(e)</option>
@@ -123,16 +124,16 @@
 
 				<div class="col-sm-6">
 					<div class="form-group">
-						<label>Adresse <span class="text-danger">*</span></label>
+						<label>Address <span class="text-danger">*</span></label>
 						<input type="text" class="form-control " name="address">
 					</div>
 				</div>
 
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <label>Groupe sanguin <span class="text-danger">*</span></label>
+                        <label>Blood Group <span class="text-danger">*</span></label>
                         <select class="select" name="blood_group" required="">
-                            <option value="">--Selectionner le Groupe sanguin--</option>
+                            <option value="">--Select Blood Group--</option>
                             <option value="O">O</option>
                             <option value="A" >A</option>
                             <option value="B">B</option>
@@ -143,27 +144,14 @@
 
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <label>Rhésus <span class="text-danger">*</span></label>
+                        <label>Rhesus <span class="text-danger">*</span></label>
                         <select class="select" name="rhesus" required="">
-                                <option value="" >--Selectionner le Rhésus--</option>
+                                <option value="" >--Select Rhesus--</option>
                                 <option value="+" >Positif</option>
                                 <option value="-">Négatif</option>
                             </select>
                     </div>
                 </div>
-
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Medécin traitant <span class="text-danger">*</span></label>
-                        <select name="doctor_id" id="doctor" class="select">
-                            <option value="">--Selectionner Médecin--</option>
-                            @foreach( $doctors as $doctor)
-                                <option value="{{ $doctor->id }}">{{$doctor->name}} {{$doctor->firstname}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-
 
                 <div class="col-sm-6">
 					<div class="form-group">
@@ -198,9 +186,12 @@
                 </div>
 
             </div>
+        </div>
             
-            <div class="m-t-20 text-center">
-                <button class="btn btn-primary submit-btn">Créer Patient</button>
+            <div class="card-footer">
+                <div class="m-t-20 text-center">
+                    <button class="btn btn-primary submit-btn">Add Patient</button>
+                </div>
             </div>
         </form>
     </div>

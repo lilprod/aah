@@ -83,6 +83,8 @@ Route::resource('categories', 'API\CategoryController');
 
 Route::resource('services', 'API\ServiceController');
 
+Route::post('getServices', 'API\ServiceController@getServices');
+
 //Doctor's specialities
 
 Route::resource('specialities', 'API\SpecialityController');

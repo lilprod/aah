@@ -30,6 +30,34 @@ class ServiceController extends BaseController
         return $this->sendResponse($services, 'Services retrieved successfully.');
     }
 
+    public function getServices(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'speciality_id' => 'required',
+        ]);
+
+        if($validator->fails()){
+            return $this->sendError('Validation Error.', $validator->errors());       
+        }
+        
+        $services = Service::where('speciality_id', $request->input('speciality_id'))
+                            ->get();
+                            
+        if($services){
+            
+            foreach ($services as $service) 
+            {
+                $speciality = $service->speciality;
+                $speciality['cover_image'] = $_ENV['APP_URL'].'/storage/cover_images/'.$speciality->cover_image;
+                $service['speciality'] = $speciality;
+            }
+        
+            return $this->sendResponse($services, 'Services retrieved successfully.');
+        }
+        
+        return $this->sendResponse([], 'No Service fond for this speciality.');
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -70,7 +98,7 @@ class ServiceController extends BaseController
         $speciality['cover_image'] = $_ENV['APP_URL'].'/storage/cover_images/'.$speciality->cover_image;
         $service['speciality'] = $speciality;
    
-        return $this->sendResponse(new ServiceResource($service), 'Service retrieved successfully.');
+        return $this->sendResponse($service, 'Service retrieved successfully.');
     }
 
     /**

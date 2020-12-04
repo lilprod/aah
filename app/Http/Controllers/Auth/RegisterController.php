@@ -9,10 +9,15 @@ use App\Admin;
 use App\Doctor;
 use App\Patient;
 use App\Speciality;
+use App\Region;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendMailable;
+
 
 class RegisterController extends Controller
 {
@@ -35,6 +40,7 @@ class RegisterController extends Controller
      * @var string
      */
     protected $redirectTo = RouteServiceProvider::HOME;
+    //protected $redirectTo = '/verify';
 
     /**
      * Create a new controller instance.
@@ -44,6 +50,22 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+    }
+
+
+    /**
+     * Get a validator for an incoming registration request.
+     *
+     * @param array $data
+     *
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+        event(new Registered($user = $this->create($request->all())));
+
+        return $this->registered($request, $user) ?: redirect('/verify?email='.$request->email.'&phone_number='.$request->phone_number);
     }
 
     /**
@@ -63,6 +85,24 @@ class RegisterController extends Controller
             'address' => ['nullable', 'string'],
             //'username' => ['nullable', 'string'],
         ]);
+    }
+
+
+    public static function sendCode($email, $phone_number)
+    {
+        $code = rand(1111, 9999);
+        Mail::to($email)->send(new SendMailable($code));
+
+        /*$basic = new \Nexmo\Client\Credentials\Basic('81de9211', '2uK4uXgfutl3LgtC');
+        $client = new \Nexmo\Client($basic);
+
+        $message = $client->message()->send([
+            'to' => $phone_number,
+            'from' => '14373703901',
+            'text' => 'Code de Vérification: '.$code,
+        ]);*/
+
+        return $code;
     }
 
 
@@ -99,9 +139,8 @@ class RegisterController extends Controller
             'phone_number' => $data['phone_number'],
             'address' => $data['address'],
             'profile_picture' => 'avatar.jpg',
-            //'profile_picture' => $_ENV['APP_URL'].'/storage/profile_images/'.$fileNameToStore,
             'role_id' => 1,
-            'is_activated' => 1,
+            'is_activated' => 0,
             'lang' => 'FR',
         ]);
 
@@ -116,9 +155,14 @@ class RegisterController extends Controller
         $patient->address = $data['address'];
         $patient->profile_picture = 'avatar.jpg';
         $patient->user_id = $user->id;
-        $patient->status = 1;
+        $patient->status = 0;
 
         $patient->save();
+
+        if ($user) {
+            $user->code = $this::sendCode($user->email, $user->phone_number);
+            $user->save();
+        }
 
         return $user;
        
@@ -141,17 +185,26 @@ class RegisterController extends Controller
             //'nationality' => ['required'],
             //'marital_status' => ['required'],
             //'speciality_id' => ['required'],
+            'region' => ['required'],
             'country' => ['required', 'string'],
-            'region' => ['required', 'string'],
             'exercice_place' => ['required', 'string'],
         ]);
     }
 
-    protected function createDoctor(Request $request)
+
+    protected function registerDoctor(Request $request)
     {
         $this->validatorDoctor($request->all())->validate();
+        event(new Registered($user = $this->createDoctor($request->all())));
 
-        if ($request->hasfile('profile_picture')) {
+        return $this->registered($request, $user) ?: redirect('/verify?email='.$request->email.'&phone_number='.$request->phone_number);
+    }
+
+    protected function createDoctor(array $data)
+    {
+        //$this->validatorDoctor($request->all())->validate();
+
+        /*if ($request->hasfile('profile_picture')) {
             // Get filename with the extension
             $fileNameWithExt = $request->file('profile_picture')->getClientOriginalName();
 
@@ -168,17 +221,18 @@ class RegisterController extends Controller
             $path = $request->file('profile_picture')->storeAs('public/profile_images', $fileNameToStore);
         } else {
             $fileNameToStore = 'avatar.jpg';
-        }
+        }*/
+
+        $fileNameToStore = 'avatar.jpg';
 
         $user = User::create([
-            'name' => $request['name'],
-            'firstname' => $request['firstname'],
-            'email' => $request['email'],
-            'password' => $request['password'],
-            'phone_number' => $request['phone_number'],
-            'address' => $request['address'],
+            'name' => $data['name'],
+            'firstname' => $data['firstname'],
+            'email' => $data['email'],
+            'password' => $data['password'],
+            'phone_number' => $data['phone_number'],
+            //'address' => $data['address'],
             'profile_picture' => $fileNameToStore,
-             //'profile_picture' => $_ENV['APP_URL'].'/storage/profile_images/'.$fileNameToStore,
             'role_id' => 2,
             'is_activated' => 0,
             'lang' => 'FR',
@@ -187,11 +241,11 @@ class RegisterController extends Controller
         $user->assignRole('Doctor');
 
         $doctor = new Doctor();
-        $doctor->name = $request['name'];
-        $doctor->firstname = $request['firstname'];
+        $doctor->name = $data['name'];
+        $doctor->firstname = $data['firstname'];
         //$doctor->username = $request['username'];
-        $doctor->email = $request['email'];
-        $doctor->phone_number = $request['phone_number'];
+        $doctor->email = $data['email'];
+        $doctor->phone_number = $data['phone_number'];
         //$doctor->address = $request['address'];
         //$doctor->title = $request['title'];
         //$doctor->gender = $request['gender'];
@@ -199,17 +253,25 @@ class RegisterController extends Controller
         //$doctor->place_birth = $data['place_birth'];
         //$doctor->nationality = $data['nationality'];
         //$doctor->speciality_id =$request['speciality_id'];
-        $doctor->country =$request['country'];
-        $doctor->region =$request['region'];
-        $doctor->exercice_place =$request['exercice_place'];
-
+        $region = Region::findOrFail($data['region']);
+        $doctor->region = $region->title;
+        $doctor->country =$data['country'];
+        //$doctor->region =$request['region'];
+        $doctor->exercice_place =$data['exercice_place'];
+        $doctor->city =$data['exercice_place'];
         $doctor->profile_picture = $fileNameToStore;
-        //$doctor->profile_picture = $_ENV['APP_URL'].'/storage/profile_images/'.$fileNameToStore;
         $doctor->user_id = $user->id;
         $doctor->status = 0;
 
         $doctor->save();
 
-        return redirect()->intended('login');
+        //return redirect()->intended('login');
+
+        if ($user) {
+            $user->code = $this::sendCode($user->email, $user->phone_number);
+            $user->save();
+        }
+
+        return $user;
     }
 }

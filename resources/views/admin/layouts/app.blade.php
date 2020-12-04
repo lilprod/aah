@@ -185,6 +185,22 @@
 							</li>
 
 							<li class="submenu">
+								<a href="#"><i class="fe fe-document"></i> <span> Blog </span> <span class="menu-arrow"></span></a>
+								<ul style="display: none;">
+									<li><a href="{{route('admin.posts')}}"> Blog </a></li>
+									<li><a href="{{route('admin_posts_create')}}"> Add Blog </a></li>
+								</ul>
+							</li>
+
+							<li class="submenu">
+								<a href="#"><i class="fe fe-document"></i> <span> Diseases </span> <span class="menu-arrow"></span></a>
+								<ul style="display: none;">
+									<li><a href="{{route('admin.diseases')}}"> Diseases </a></li>
+									<li><a href="{{route('admin_diseases_create')}}"> Add Disease </a></li>
+								</ul>
+							</li>
+
+							<li class="submenu">
 								<a href="#"><i class="fe fe-vector"></i> <span> Drugs </span> <span class="menu-arrow"></span></a>
 								<ul style="display: none;">
 									<li><a href="{{route('drugs.index')}}">Drugs </a></li>
@@ -234,16 +250,24 @@
 								</ul>
 							</li>
 
-							<li> 
-								<a href="{{route('doctors.index')}}"><i class="fe fe-user-plus"></i> <span>Doctors</span></a>
+							<li class="submenu">
+								<a href="#"><i class="fe fe-user-plus"></i> <span> Doctors </span> <span class="menu-arrow"></span></a>
+								<ul style="display: none;">
+									<li><a href="{{route('doctors.index')}}">Doctors </a></li>
+									<li><a href="{{route('doctors.create')}}">New </a></li>
+								</ul>
+							</li>
+
+							<li class="submenu">
+								<a href="#"><i class="fe fe-user-plus"></i> <span> Patients </span> <span class="menu-arrow"></span></a>
+								<ul style="display: none;">
+									<li><a href="{{route('patients.index')}}">Patients </a></li>
+									<li><a href="{{route('patients.create')}}">New </a></li>
+								</ul>
 							</li>
 
 							<li> 
-								<a href="{{route('patients.index')}}"><i class="fe fe-user"></i> <span>Patients</span></a>
-							</li>
-
-							<li> 
-								<a href="#!"><i class="fe fe-layout"></i> <span>Appointments</span></a>
+								<a href="{{route('admin_appointments')}}"><i class="fe fe-layout"></i> <span>Appointments</span></a>
 							</li>
 							
 							
@@ -251,7 +275,7 @@
 								<a href="{{route('admin.reviews')}}"><i class="fe fe-star-o"></i> <span>Reviews</span></a>
 							</li>
 							<li> 
-								<a href="#!"><i class="fe fe-activity"></i> <span>Transactions</span></a>
+								<a href="{{route('admin_payments')}}"><i class="fe fe-activity"></i> <span>Transactions</span></a>
 							</li>
 							<li> 
 								<a href="#!"><i class="fe fe-vector"></i> <span>Settings</span></a>
@@ -262,77 +286,6 @@
 									<li><a href="#!">Invoice Reports</a></li>
 								</ul>
 							</li>
-							<!--<li class="menu-title"> 
-								<span>Pages</span>
-							</li>
-							<li> 
-								<a href="profile.html"><i class="fe fe-user-plus"></i> <span>Profile</span></a>
-							</li>
-							<li class="submenu">
-								<a href="#"><i class="fe fe-document"></i> <span> Authentication </span> <span class="menu-arrow"></span></a>
-								<ul style="display: none;">
-									<li><a href="login.html"> Login </a></li>
-									<li><a href="register.html"> Register </a></li>
-									<li><a href="forgot-password.html"> Forgot Password </a></li>
-									<li><a href="lock-screen.html"> Lock Screen </a></li>
-								</ul>
-							</li>
-							<li class="submenu">
-								<a href="#"><i class="fe fe-warning"></i> <span> Error Pages </span> <span class="menu-arrow"></span></a>
-								<ul style="display: none;">
-									<li><a href="error-404.html">404 Error </a></li>
-									<li><a href="error-500.html">500 Error </a></li>
-								</ul>
-							</li>
-							<li> 
-								<a href="blank-page.html"><i class="fe fe-file"></i> <span>Blank Page</span></a>
-							</li>
-							<li class="menu-title"> 
-								<span>UI Interface</span>
-							</li>
-							<li> 
-								<a href="components.html"><i class="fe fe-vector"></i> <span>Components</span></a>
-							</li>
-							<li class="submenu">
-								<a href="#"><i class="fe fe-layout"></i> <span> Forms </span> <span class="menu-arrow"></span></a>
-								<ul style="display: none;">
-									<li><a href="form-basic-inputs.html">Basic Inputs </a></li>
-									<li><a href="form-input-groups.html">Input Groups </a></li>
-									<li><a href="form-horizontal.html">Horizontal Form </a></li>
-									<li><a href="form-vertical.html"> Vertical Form </a></li>
-									<li><a href="form-mask.html"> Form Mask </a></li>
-									<li><a href="form-validation.html"> Form Validation </a></li>
-								</ul>
-							</li>
-							<li class="submenu">
-								<a href="#"><i class="fe fe-table"></i> <span> Tables </span> <span class="menu-arrow"></span></a>
-								<ul style="display: none;">
-									<li><a href="tables-basic.html">Basic Tables </a></li>
-									<li><a href="data-tables.html">Data Table </a></li>
-								</ul>
-							</li>
-							<li class="submenu">
-								<a href="javascript:void(0);"><i class="fe fe-code"></i> <span>Multi Level</span> <span class="menu-arrow"></span></a>
-								<ul style="display: none;">
-									<li class="submenu">
-										<a href="javascript:void(0);"> <span>Level 1</span> <span class="menu-arrow"></span></a>
-										<ul style="display: none;">
-											<li><a href="javascript:void(0);"><span>Level 2</span></a></li>
-											<li class="submenu">
-												<a href="javascript:void(0);"> <span> Level 2</span> <span class="menu-arrow"></span></a>
-												<ul style="display: none;">
-													<li><a href="javascript:void(0);">Level 3</a></li>
-													<li><a href="javascript:void(0);">Level 3</a></li>
-												</ul>
-											</li>
-											<li><a href="javascript:void(0);"> <span>Level 2</span></a></li>
-										</ul>
-									</li>
-									<li>
-										<a href="javascript:void(0);"> <span>Level 1</span></a>
-									</li>
-								</ul>
-							</li>-->
 						</ul>
 					</div>
                 </div>
@@ -350,16 +303,15 @@
 			<!-- /Page Wrapper -->
 		
         </div>
+        <!-- jQuery -->
         <script src="{{asset('admin/assets/js/jquery-3.2.1.min.js') }}"></script>
 
-        <!-- Bootstrap Core JS -->
-        <script src="{{asset('admin/assets/js/popper.min.js') }}"></script>
+        <script src="{{ asset('ckeditor/ckeditor.js')}}"></script> 
 
-        <script src="{{asset('admin/assets/js/bootstrap.min.js') }}"></script>
+		<script> CKEDITOR.replace('article-ckeditor'); </script>
+		<script> CKEDITOR.replace('article-ckeditor1'); </script>
 
-        <script src="{{asset('js/star-rating.js') }}" type="text/javascript"></script>
-		<!-- /Main Wrapper -->
-		@stack('scripts')
+        @stack('scripts')
 		@stack('review')
 		@stack('user')
 		@stack('permission')
@@ -370,12 +322,21 @@
 		@stack('post')
 		@stack('patient')
 		@stack('doctor')
-		
-		<!-- jQuery -->
-        
+		@stack('edit_post')
+		@stack('add_post')
+		@stack('listing_post')
+		@stack('edit_disease')
+		@stack('add_disease')
+		@stack('listing_disease')
+		@stack('pending_post')
 
-		
-        
+        <!-- Bootstrap Core JS -->
+        <script src="{{asset('admin/assets/js/popper.min.js') }}"></script>
+
+        <script src="{{asset('admin/assets/js/bootstrap.min.js') }}"></script>
+
+        <script src="{{asset('js/star-rating.js') }}" type="text/javascript"></script>
+		<!-- /Main Wrapper -->
 		
 		<!-- Slimscroll JS -->
         <script src="{{asset('admin/assets/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>

@@ -109,7 +109,6 @@
 @push('doctor')
 
 <script>
-  $(function() {
     $('.check').change(function() {
         var status = $(this).prop('checked') == true ? 1 : 0; 
         var doctor_id = $(this).data('id'); 
@@ -124,7 +123,6 @@
             }
         });
     })
-  })
 </script>
 
 <script>

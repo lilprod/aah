@@ -21,8 +21,12 @@ use App\Education;
 use App\Experience;
 use App\Award;
 use App\Schedule;
+use App\Prescription;
+use App\DrugType;
+use App\PrecribedDrug;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Collection;
 
 
 class DoctorManagerController extends BaseController
@@ -54,6 +58,19 @@ class DoctorManagerController extends BaseController
         return $this->sendResponse($posts, 'Posts retrieved successfully.');
 
         //return $this->sendResponse(PostResource::collection($posts), 'Posts retrieved successfully.');
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+    public function myprescriptions()
+    {
+        $precriptions = auth()->user()->doctorprescriptions();
+
+        return $this->sendResponse($precriptions, 'Precriptions retrieved successfully.');
     }
 
     /**
@@ -285,29 +302,33 @@ class DoctorManagerController extends BaseController
 
         //$myschedules = auth()->user()->myschedules();
 
-        /*for ($i=1; $i <= 7 ; $i++) {
+        $day_nums = [1,2,3,4,5,6,7];
+        
+        $days = [   0 => '1',
+                    1 => '2',
+                    2 => '3', 
+                    3 => '4', 
+                    4 => '5', 
+                    5 => '6', 
+                    6 => '7'
+                ];
 
-            $myschedules['day'] = $i;
-            $myschedules['schedules'] = Schedule::where('day_num', $i)
-                                                ->where('doctor_userid', auth()->user()->id)
-                                                ->get();
-        }*/
+        $i = 0;
 
-        $days = [1,2,3,4,5,6,7];
-
-        $i = 1;
-
-        $myschedules = [];
-
-        foreach ($days as $day) {
+        foreach ($day_nums as $day_num) {
                 # code...
-                $myschedules['day'.$i] = $day;
-                $myschedules['schedules'.$i] = Schedule::where('day_num', $day)
-                                                        ->where('doctor_userid', auth()->user()->id)
-                                                        ->get();
-
-            $i++;
+                $schedules[$i] = Schedule::where('day_num', $day_num)
+                                    ->where('doctor_userid', auth()->user()->id)
+                                    ->get();
+                $i++;
         }
+        
+        $myschedules = collect($days)->zip($schedules)->transform(function ($values) {
+            return [
+                'day' => $values[0],
+                'schedules' => $values[1],
+            ];
+        });
         
         return $this->sendResponse($myschedules, 'Schedules retrieved successfully.');
     }
@@ -360,10 +381,12 @@ class DoctorManagerController extends BaseController
         $doctor->region = $request->input('region');
         $doctor->country = $request->input('country');
         $doctor->city = $request->input('city');
+        $doctor->exercice_place = $request->input('city');
         $doctor->birth_date = $request->input('birth_date');
         $doctor->place_birth = $request->input('place_birth');
         $doctor->biography = $request->input('biography');
         $doctor->speciality_id = $request->input('speciality_id');
+        $doctor->status = 1;
         //$doctor->nationality = $request->input('nationality');
         //$doctor->profession = $request->input('profession');
 
