@@ -47,7 +47,7 @@
 		@include('website.hearder')
 
 		<!-- Breadcrumb -->
-			<div class="breadcrumb-bar">
+			<!--<div class="breadcrumb-bar">
 				<div class="container-fluid">
 					<div class="row align-items-center">
 						<div class="col-md-8 col-12">
@@ -57,9 +57,10 @@
 									<li class="breadcrumb-item active" aria-current="page">Search</li>
 								</ol>
 							</nav>
-							<h2 class="breadcrumb-title">{{$nb}} match(es) found  <!--for your query--></h2>
+							<h2 class="breadcrumb-title">{{$nb}} match(es) found  for your query</h2>
 						</div>
-						<!--<div class="col-md-4 col-12 d-md-block d-none">
+
+						<div class="col-md-4 col-12 d-md-block d-none">
 							<div class="sort-by">
 								<span class="sort-title">Sort by</span>
 								<span class="sortby-fliter">
@@ -72,15 +73,29 @@
 									</select>
 								</span>
 							</div>
-						</div>-->
+						</div>
 					</div>
 				</div>
-			</div>
+			</div>-->
 			<!-- /Breadcrumb -->
 
 			<!-- Page Content -->
 			<div class="content">
 				<div class="container-fluid">
+
+					<div class="row">
+		            	<div class="col-md-12 col-lg-12">
+							<div class="row align-items-center mb-4">
+								<div class="col-md-6 col">
+									<h4>{{$nb}} match(es) found  for your query</h4>
+								</div>
+
+							</div>
+
+						</div>
+					</div>
+
+
 					<div class="row">
 
 						<div class="col-md-12 col-lg-4 col-xl-3 theiaStickySidebar">
@@ -170,16 +185,17 @@
 									<div class="doctor-widget">
 										<div class="doc-info-left">
 											<div class="doctor-img">
-												<a href="doctor-profile.html">
+												<a href="#">
 													<img src="{{url('/storage/profile_images/'.$doctor->profile_picture ) }}" class="img-fluid" alt="User Image">
 												</a>
 											</div>
 											<div class="doc-info-cont">
 												<h4 class="doc-name"><a href="#">Dr. {{$doctor->name}} {{$doctor->firstname}}</a></h4>
-												@if($doctor->speciality_id != '')
+												@if($doctor->speciality != '')
 												<p class="doc-speciality">{{$doctor->speciality->title}}</p>
-												@endif
+												
 												<h5 class="doc-department"><img src="{{url('/storage/cover_images/'.$doctor->speciality->cover_image ) }}" class="img-fluid" alt="Speciality">{{$doctor->speciality->title}}</h5>
+												@endif
 												<div class="rating">
 													<!--<i class="fas fa-star filled"></i>
 													<i class="fas fa-star filled"></i>

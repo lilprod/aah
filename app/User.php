@@ -30,7 +30,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','firstname','phone_number','username', 'address', 'profile_picture','role_id', 'firebase_token','lang', 'is_activated','provider', 'provider_id'
+        'name', 'email', 'password','google2fa_secret', 'google2fa_enable','firstname','phone_number','username', 'address', 'profile_picture','role_id', 'firebase_token','lang', 'is_activated','provider', 'provider_id'
     ];
 
     public function setPasswordAttribute($password)
@@ -44,8 +44,31 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'google2fa_secret',
     ];
+
+
+    /**
+     * Ecrypt the user's google_2fa secret.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function setGoogle2faSecretAttribute($value)
+    {
+         $this->attributes['google2fa_secret'] = encrypt($value);
+    }
+
+    /**
+     * Decrypt the user's google_2fa secret.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getGoogle2faSecretAttribute($value)
+    {
+        return decrypt($value);
+    }
 
     /**
      * The attributes that should be cast to native types.
@@ -55,6 +78,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function signature()
+    {
+        return $this->hasOne('App\Signature');
+    }
 
     public function messages(){
 
@@ -178,7 +206,7 @@ class User extends Authenticatable
         $date = Carbon::now()->toDateString();
 
         return Appointment::where('doctor_user_id', $this->id)
-                            //->whereNotIn('status', array(2))
+                            ->where('status' ,'=', 1)
                             ->where('date_apt', '>' , $date)
                             ->orderBy('id', 'DESC')
                             ->get();

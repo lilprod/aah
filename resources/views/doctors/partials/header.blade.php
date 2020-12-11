@@ -30,18 +30,14 @@
 						<a href="{{route('home')}}">Home</a>
 					</li>
 
-					<!--<li class="">
-						<a href="{{route('our_doctors')}}">Médecins</a>
-					</li>-->
-
 					<li class="">
 						<a href="#">Pharmacies</a>
 					</li>
 
-					<li class="has-submenu">
+					<!--<li class="has-submenu">
 						<a href="">Doctors <i class="fas fa-chevron-down"></i></a>
 						<ul class="submenu">
-							<li><a href="{{route('dashboard')}}">Doctor Dashboard</a></li>
+							<li><a href="{{route('doctor_dashboard')}}">Doctor Dashboard</a></li>
 							<li><a href="{{route('doctor_my_appointments')}}">Appointments</a></li>
 							<li class="has-submenu">
 								<a href="#">Schedule Timing</a>
@@ -72,7 +68,7 @@
 							</li>
 
 						</ul>
-					</li>
+					</li>-->
 
 
 					<li class="{{ Request::routeIs('blog') ? 'active' : '' }}">
@@ -111,13 +107,45 @@
 			</div>
 
 			<ul class="nav header-navbar-rht">
-				<li class="nav-item contact-item">
+				<!--<li class="nav-item contact-item">
 					<div class="header-contact-img">
 						<i class="far fa-hospital"></i>							
 					</div>
 					<div class="header-contact-detail">
 						<p class="contact-header">Contact</p>
 						<p class="contact-info-header"> +1 315 369 5943</p>
+					</div>
+				</li>-->
+
+				<li class="nav-item dropdown logged-item noti-dropdown">
+					<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+						<i class="fas fa-bell"></i> <span class="badge badge-pill">3</span>
+					</a>
+					<div class="dropdown-menu notifications dropdown-menu-right">
+						<div class="topnav-dropdown-header">
+							<span class="notification-title">Notifications</span>
+							<a href="javascript:void(0)" class="clear-noti"> Clear All </a>
+						</div>
+						<div class="noti-content">
+							<ul class="notification-list">
+								<li class="notification-message">
+									<a href="#">
+										<div class="media">
+											<span class="avatar avatar-sm">
+												<img class="avatar-img rounded-circle" alt="User Image" src="{{asset('assets/img/doctors/doctor-thumb-01.jpg') }}">
+											</span>
+											<div class="media-body">
+												<p class="noti-details"><span class="noti-title">Dr. Ruby Perrin</span> Schedule <span class="noti-title">her appointment</span></p>
+												<p class="noti-time"><span class="notification-time">4 mins ago</span></p>
+											</div>
+										</div>
+									</a>
+								</li>
+							</ul>
+						</div>
+						<div class="topnav-dropdown-footer">
+							<a href="#">View all Notifications</a>
+						</div>
 					</div>
 				</li>
 
@@ -138,8 +166,11 @@
 								<p class="text-muted mb-0">Doctor</p>
 							</div>
 						</div>
-						<a class="dropdown-item" href="{{route('dashboard')}}" target="_blank">Dashboard</a>
+
+						<a class="dropdown-item" href="{{route('doctor_dashboard')}}">Dashboard</a>
+
 						<a class="dropdown-item" href="{{route('doctor_profile_setting')}}">Profile Settings</a>
+						
 						<a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Logout</a>
 						 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf
@@ -150,4 +181,4 @@
 			</ul>
 		</nav>
 	</header>
-	<!-- /Header -->
+<!-- /Header -->

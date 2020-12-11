@@ -131,7 +131,7 @@
 						<div class="row">
 								<div class="col-md-7">
 									<div class="section-header text-center" style="margin-bottom: 0px;">
-										<h1 style="font-size: 12rem; font-weight: bolder; color: #fff; line-height:0.8; margin-left: -500px;">BETTER<br>
+										<h1 style="font-size: 12rem; font-weight: bolder; color: #fff; line-height:0.8; margin-left: -300px;">BETTER<br>
 											HEALTH<br>
 											FOR ALL
 										</h1>
@@ -199,7 +199,7 @@
 					<div class="row blog-grid-row">
 
 						@foreach($posts as $post)
-						<div class="col-md-6 col-lg-3 col-sm-12">
+						<div class="col-md-6 col-lg-4 col-sm-12">
 						
 							<!-- Blog Post -->
 							<div class="blog grid-blog">
@@ -216,7 +216,7 @@
 										<li><i class="far fa-clock"></i>  {{$post->created_at->format('m/d/Y')}}</li>
 									</ul>
 									<h3 class="blog-title"><a href="{{$post->getLink()}}"> {{$post->title}}</a></h3>
-									<p class="mb-0"> {!! \Illuminate\Support\Str::limit($post->body, 200, '...') !!}</p>
+									<p class="mb-0"> {!! \Illuminate\Support\Str::limit($post->body, 50, '...') !!}</p>
 								</div>
 							</div>
 							<!-- /Blog Post -->

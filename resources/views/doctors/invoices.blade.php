@@ -80,14 +80,14 @@
 												@foreach($payments as $payment)
 												<tr>
 													<td>
-														<a href="#">#INV-00{{$payment->id }}</a>
+														<a href="{{route('invoice.show', $payment->id)}}">#INV-00{{$payment->id }}</a>
 													</td>
 													<td>
 														<h2 class="table-avatar">
-															<a href="#" class="avatar avatar-sm mr-2">
+															<a href="{{route('patient.profile', $payment->patient->id)}}" class="avatar avatar-sm mr-2">
 																<img class="avatar-img rounded-circle" src="{{asset('assets/img/patients/patient.jpg') }}" alt="User Image">
 															</a>
-															<a href="#">{{$payment->patient->name }} {{$payment->patient->firstname}}  <span>#PT00{{$payment->patient->id }} </span></a>
+															<a href="{{route('patient.profile', $payment->patient->id)}}">{{$payment->patient->name }} {{$payment->patient->firstname}}  <span>#PT00{{$payment->patient->id }} </span></a>
 														</h2>
 													</td>
 													<td>${{$payment->apt_amount}}</td>

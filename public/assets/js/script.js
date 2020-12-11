@@ -130,24 +130,32 @@ Version      : 1.3
 					'<div class="col-12 col-md-6">' +
 						'<div class="form-group">' +
 							'<label>Start Time</label>' +
-							'<select class="form-control">' +
-								'<option>-</option>' +
-								'<option>12.00 am</option>' +
-								'<option>12.30 am</option>' + 
-								'<option>1.00 am</option>' +
-								'<option>1.30 am</option>' +
+							'<select class="form-control" name="begin_time[]" id="begin_time" required>' +
+								'<option value = "">-</option>' +
+								'<option value = "07:00">07:00</option>' +
+	                            '<option value = "08:00">08:00</option>' +
+	                            '<option value = "09:00">09:00</option>' +
+	                            '<option value = "10:00">10:00</option>' +
+	                            '<option value = "11:00">11:00</option>' +
+	                            '<option value = "14:00">14:00</option>' +
+	                            '<option value = "15:00">15:00</option>' +
+	                            '<option value = "16:00">16:00</option>' +
 							'</select>' +
 						'</div>' +
 					'</div>' +
 					'<div class="col-12 col-md-6">' +
 						'<div class="form-group">' +
 							'<label>End Time</label>' +
-							'<select class="form-control">' +
-								'<option>-</option>' +
-								'<option>12.00 am</option>' +
-								'<option>12.30 am</option>' +
-								'<option>1.00 am</option>' +
-								'<option>1.30 am</option>' +
+							'<select class="form-control" name="end_time[]" id="end_time" required>' +
+								'<option value = "">-</option>' +
+								'<option value="07:30">07:30</option>' +
+	                            '<option value="08:30">08:30</option>' +
+	                            '<option value="09:30">09:30</option>' +
+	                            '<option value="10:30">10:30</option>' +
+	                            '<option value="11:30">11:30</option>' +
+	                            '<option value="14:30">14:30</option>' +
+	                            '<option value="15:30">15:30</option>' +
+	                            '<option value="16:30">16:30</option>' +
 							'</select>' +
 						'</div>' +
 					'</div>' +

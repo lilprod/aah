@@ -31,13 +31,19 @@
         methods: {
             favorite(doctor) {
                 axios.post('/favorite/'+doctor)
-                    .then(response => this.isFavorited = true)
+                    .then((response) => {
+                        this.isFavorited = true;
+                        flash('This Doctor has been added to your favorites', 'success');
+                    })
                     .catch(response => console.log(response.data));
             },
 
             unFavorite(doctor) {
                 axios.post('/unfavorite/'+doctor)
-                    .then(response => this.isFavorited = false)
+                    .then((response) => {
+                        this.isFavorited = false;
+                        flash('This Doctor has been removed from your favorites', 'success');
+                    })
                     .catch(response => console.log(response.data));
             }
         }

@@ -23,7 +23,7 @@ class Doctor extends Model
             $query->where('name', 'LIKE', trim($params['name']) . '%');
         }
 
-        if ( isset($params['query']) && trim($params['query'] !== '') ) {
+        if ( isset($params['query']) && trim(!empty($params['query']))) {
             $query->where('name', 'LIKE', trim($params['query']) . '%')
                 ->orWhere('firstname', 'LIKE', trim($params['query']) . '%');
         }
@@ -42,7 +42,12 @@ class Doctor extends Model
         {
             $query->where('speciality_id', '=', trim($params['speciality_id']));
         }
-        return $query;
+        //return $query;
+    }
+
+    public function signature()
+    {
+        return $this->hasOne('App\Signature');
     }
 
     public function speciality()

@@ -44,7 +44,7 @@ class LoginController extends Controller
         $this->middleware('guest:admin')->except('logout');
     }
 
-    public function login(Request $request)
+    /*public function login(Request $request)
     {
         $this->validateLogin($request);
         if ($this->hasTooManyLoginAttempts($request)) {
@@ -73,7 +73,7 @@ class LoginController extends Controller
         $this->IncrementLoginAttempts($request);
 
         return $this->sendFailedLoginResponse($request);
-    }
+    }*/
 
     /*public function showPatientLoginForm()
     {

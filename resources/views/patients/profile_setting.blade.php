@@ -175,25 +175,39 @@
 													<input type="email" class="form-control" value="{{$patient->email}}" name="email">
 												</div>
 											</div>
+
 											<div class="col-12 col-md-6">
 												<div class="form-group">
 													<label>Mobile</label>
 													<input type="text" value="{{$patient->phone_number}}" class="form-control" name="phone_number">
 												</div>
 											</div>
+
+											<div class="col-12 col-md-6">
+												<div class="form-group">
+													<label>Country</label>
+
+													<input type="text" class="form-control" name="country" value="{{$patient->country}}">
+												</div>
+											</div>
+
+											<div class="col-12 col-md-6">
+												<div class="form-group">
+													<label>City</label>
+													<input type="text" class="form-control" name="city" value="{{$patient->city}}">
+												</div>
+											</div>
+
 											<div class="col-12">
 												<div class="form-group">
 												<label>Address</label>
-													<input type="text" class="form-control" value="{{$patient->address}}" name="address">
+													<textarea class="form-control" rows="5" name="address">{{$patient->address}}</textarea>
 												</div>
 											</div>
+
+											
+
 											<!--<div class="col-12 col-md-6">
-												<div class="form-group">
-													<label>City</label>
-													<input type="text" class="form-control" value="Old Forge">
-												</div>
-											</div>
-											<div class="col-12 col-md-6">
 												<div class="form-group">
 													<label>State</label>
 													<input type="text" class="form-control" value="Newyork">
@@ -205,12 +219,7 @@
 													<input type="text" class="form-control" value="13420">
 												</div>
 											</div>
-											<div class="col-12 col-md-6">
-												<div class="form-group">
-													<label>Country</label>
-													<input type="text" class="form-control" value="United States">
-												</div>
-											</div>
+											
 										</div>-->
 										<div class="submit-section">
 											<button class="btn btn-primary submit-btn">Save Changes</button>

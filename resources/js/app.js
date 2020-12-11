@@ -12,6 +12,12 @@ require('./bootstrap');
 window.Vue = require('vue');
 import Vue from 'vue'
 
+window.events = new Vue();
+   
+window.flash = function(message) {
+    window.events.$emit('flash',message);
+}
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -32,6 +38,8 @@ Vue.component('chat-component', require('./components/ChatComponent.vue').defaul
 Vue.component('favorite', require('./components/FavoriteComponent.vue').default);
 
 Vue.component('favourite', require('./components/FavouriteComponent.vue').default);
+
+Vue.component('flash', require('./components/FlashComponent.vue').default);
 
 Vue.use(VueChatScroll);
 // Vue.component('chat-room' , require('./components/laravel-video-chat/ChatRoom.vue').default);

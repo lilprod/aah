@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Input;
 
 use App\Doctor;
 use App\Disease;
-
 use App\Speciality;
 
 class SearchController extends Controller
@@ -22,13 +21,14 @@ class SearchController extends Controller
 
     public function postSearch(Request $request)
     {
+
     	$nb = 0;
     	
     	$specialities = Speciality::all();
         
         $params = $request->except('_token');
 
-        //$doctors = Doctor::filter($params)->->get();
+        //$doctors = Doctor::filter($params)->get();
 
         $doctors = Doctor::filter($params)->orderByDesc('id')->paginate(10,['*'],'page');
 

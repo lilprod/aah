@@ -87,7 +87,7 @@
 			</div>
 
 			<ul class="nav header-navbar-rht">
-				<li class="nav-item contact-item">
+				<!--<li class="nav-item contact-item">
 					<div class="header-contact-img">
 						<i class="far fa-hospital"></i>							
 					</div>
@@ -95,7 +95,7 @@
 						<p class="contact-header">Contact</p>
 						<p class="contact-info-header"> +1 315 369 5943</p>
 					</div>
-				</li>
+				</li>-->
 
 				<!-- User Menu -->
 				<li class="nav-item dropdown has-arrow logged-item">

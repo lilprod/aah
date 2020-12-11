@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->integer('role_id')->nullable();
+            $table->text('google2fa_secret')->nullable();
             $table->mediumText('firebase_token')->nullable();
             $table->string('code')->nullable();
             $table->boolean('is_activated')->default(0);

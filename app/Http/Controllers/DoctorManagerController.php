@@ -14,6 +14,9 @@ use App\ClinicImage;
 use App\Education;
 use App\Experience;
 use App\Award;
+use App\Prescription;
+use App\Payment;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -26,7 +29,24 @@ class DoctorManagerController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth', '2fa']);
+    }
+
+    public function index()
+    {
+        $upcomapts = auth()->user()->doctorUpcomingapts();
+
+        $todayapts = auth()->user()->doctorTodayapts();
+
+        $prescriptions = auth()->user()->doctorprescriptions();
+
+        $payments = auth()->user()->doctorpayments();
+
+        $doctor = Doctor::where('user_id', auth()->user()->id)->first();
+
+        $today = Carbon::today();
+
+        return view('doctors.dashboard' , compact('upcomapts', 'todayapts', 'prescriptions', 'payments', 'doctor', 'today'));
     }
 
     /**

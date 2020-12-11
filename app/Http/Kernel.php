@@ -67,6 +67,7 @@ class Kernel extends HttpKernel
         'patient' => \App\Http\Middleware\PatientMiddleware::class,
         'doctor' => \App\Http\Middleware\DoctorMiddleware::class,
         'cors' => \App\Http\Middleware\Cors::class, 
+        '2fa' => \App\Http\Middleware\LoginSecurityMiddleware::class,
         //'is_admin' => \App\Http\Middleware\IsAdmin::class,
     ];
 }

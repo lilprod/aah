@@ -78,16 +78,16 @@
                                         
 
                                         <div class="row form-row social-login">
-                                            <div class="col-4">
-                                                <a href="#" class="btn btn-facebook btn-block"><i class="fab fa-facebook-f mr-1"></i> </a>
+                                            <div class="col-6">
+                                                <a href="{{route('socialite.redirect', 'facebook')}}" class="btn btn-facebook btn-block"><i class="fab fa-facebook-f mr-1"></i> </a>
                                             </div>
-                                            <div class="col-4">
-                                                <a href="#" class="btn btn-google btn-block"><i class="fab fa-google mr-1"></i></a>
+                                            <div class="col-6">
+                                                <a href="{{route('socialite.redirect', 'google')}}" class="btn btn-google btn-block"><i class="fab fa-google mr-1"></i></a>
                                             </div>
 
-                                            <div class="col-4">
+                                           <!-- <div class="col-4">
                                                     <a href="#" class="btn btn-instagram btn-block"><i class="fab fa-instagram mr-1"></i></a>
-                                                </div>
+                                                </div>-->
 
                                         </div>
                                         <div class="login-or">
@@ -107,7 +107,7 @@
                                             @csrf
 
                                             <div class="form-group form-focus">
-                                                <input type="text" class="form-control floating @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                                <input type="text" class="form-control floating @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" id="name" autofocus>
                                                 <label class="focus-label">Nom<span class="text-danger">*</span></label>
 
                                                  @error('name')
@@ -118,7 +118,7 @@
                                             </div>
 
                                             <div class="form-group form-focus">
-                                                <input type="text" class="form-control floating @error('firstname') is-invalid @enderror" name="firstname" value="{{ old('firstname') }}" required autocomplete="firstname">
+                                                <input type="text" class="form-control floating @error('firstname') is-invalid @enderror" name="firstname" id="firstname" value="{{ old('firstname') }}" required autocomplete="firstname">
                                                 <label class="focus-label">Prénom(s)<span class="text-danger">*</span></label>
 
                                                 @error('firstname')
@@ -177,6 +177,46 @@
                                                 <input type="password" class="form-control floating" name="password_confirmation" required autocomplete="new-password">
                                                 <label class="focus-label">Confirmation mot de passe<span class="text-danger">*</span></label>
                                             </div>
+
+
+                                            <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group mb-3">
+                                                    <label>Region</label>
+                                                    <select class="form-control" id="region" name="region" required>
+                                                        <option value = "">--Select Region--</option>
+                                                        <option value="1">WEST AFRICA</option>
+                                                        <option value="2">EAST AFRICA</option>
+                                                        <option value="3">NORTHEN AFRICA</option>
+                                                        <option value="4">MIDDLE AFRICA</option>
+                                                        <option value="5">SOUTHERN AFRICA</option>
+                                                    </select>
+
+                                                    <!--<label class="focus-label">Nom</label>-->
+
+                                                    @error('region')
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                        @enderror
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-6">
+                                                <div class="form-group mb-3">
+                                                    <label>Country</label>
+                                                    <select class="form-control @error('country') is-invalid @enderror" name="country" id="country">
+                                                    </select>
+
+
+                                                    @error('country')
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
 
 
                                             <div class="text-right">
@@ -241,6 +281,75 @@
       
         <!-- jQuery -->
         <script src="{{asset('assets/js/jquery.min.js') }}"></script>
+
+
+
+
+         <script type="text/javascript">
+            $(document).ready(function() {
+
+                $('#name').keyup(function(){
+                    $(this).val($(this).val().toUpperCase());
+                });
+
+                $('#firstname').keyup(function() 
+                {
+                    var str = $('#firstname').val();
+                   
+                    
+                    var spart = str.split(" ");
+                    for ( var i = 0; i < spart.length; i++ )
+                    {
+                        var j = spart[i].charAt(0).toUpperCase();
+                        spart[i] = j + spart[i].substr(1);
+                    }
+
+                  $('#firstname').val(spart.join(" "));
+                
+                });
+
+                 $('#region').on('change', function () {
+
+                    var region_id = $(this).val();
+
+                    if(region_id){
+                        $.ajax({
+                            url: '{!!URL::route('getCountries')!!}',
+                            type: 'GET',
+                            data : { 'id' : region_id},
+                            dataType: 'json',
+
+                            success:function(data){
+                                //console.log('data');
+
+                                if(data) {
+                                    $('#country').empty();
+
+                                    $('#country').focus;
+
+                                    $('#country').append('<option value = "">--Select Country--</option>');
+
+                                    $.each(data, function(key, value){
+                                        $('select[name = "country"]').append('<option value= "'+ value.title +'">' + value.title + '</option>');
+                                    });
+
+                                    //$('select[name = "country"]').selectmenu('refresh', true);
+
+                                    //$('select[name = "country"]').refresh();
+
+                                    } else {
+                                        $('#country').empty();
+                                    } 
+                                }
+                                });
+                            }
+                            else{
+                                $('#country').empty();
+                            }
+                        
+                 });
+            });
+            </script>
         
         <!-- Bootstrap Core JS -->
         <script src="{{asset('assets/js/popper.min.js') }}"></script>

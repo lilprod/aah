@@ -6,6 +6,8 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Hash;
 use App\Admin;
+use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +19,13 @@ use App\Admin;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+
+//PDF
+
+Route::get('patient/{id}/prescriptionInvoice', ['as' => 'prescription.invoice', 'uses' => 'PatientManagerController@pdfexport']);
+
+Route::get('patient/{id}/invoice', ['as' => 'patient.invoice', 'uses' => 'PatientManagerController@pdfInvoice']);
 
 //Account Verification
 
@@ -74,7 +83,7 @@ Route::get('admin/posts/{id}/edit', 'AdminPostController@edit')->name('admin_pos
 
 Route::post('admin/posts', 'AdminPostController@store')->name('admin_posts_store');
 
-Route::put('admin/posts/upadte/{id}', 'AdminPostController@update')->name('admin_posts_update');
+Route::put('admin/posts/update/{id}', 'AdminPostController@update')->name('admin_posts_update');
 
 Route::get('postm/check_slug', 'AdminPostController@check_slug')->name('admin.post.check_slug');
 
@@ -98,13 +107,31 @@ Route::get('admin/create/diseases', 'AdminDiseaseController@create')->name('admi
 
 Route::delete('admin/diseases_delete/{id}', 'AdminDiseaseController@delete')->name('admin_diseases_delete');
 
-Route::put('admin/posts/upadte/{id}', 'AdminPostController@update')->name('admin_posts_update');
+Route::put('admin/posts/update/{id}', 'AdminPostController@update')->name('admin_posts_update');
 
 Route::get('admin/diseases/{id}/edit', 'AdminDiseaseController@edit')->name('admin_diseases_edit');
 
 Route::post('admin/diseases', 'AdminDiseaseController@store')->name('admin_diseases_store');
 
 Route::get('diseasem/check_slug', 'AdminDiseaseController@check_slug')->name('admin.disease.check_slug');
+
+//Admin Signature Approval
+
+Route::get('admin/active/signatures', 'AdminSignatureController@index')->name('admin.signatures');
+
+Route::get('admin/pending/signatures', 'AdminSignatureController@pending')->name('admin.pending_signatures');
+
+Route::get('admin/signatures/{id}', 'AdminSignatureController@show')->name('admin_signatures_show');
+
+Route::delete('admin/signatures_delete/{id}', 'AdminSignatureController@delete')->name('admin_signatures_delete');
+
+Route::get('admin/create/signatures', 'AdminSignatureController@create')->name('admin_signatures_create');
+
+Route::get('admin/signatures/{id}/edit', 'AdminSignatureController@edit')->name('admin_signatures_edit');
+
+Route::post('admin/signatures', 'AdminSignatureController@store')->name('admin_signatures_store');
+
+Route::put('admin/signatures/update/{id}', 'AdminSignatureController@update')->name('admin_signatures_update');
 
 //Admin Appointment
 
@@ -116,11 +143,35 @@ Route::get('admin/appointments', 'AdminAppointmentController@index')->name('admi
 
 //Route::post('/login/doctor', 'Auth\LoginController@doctorLogin');
 
+//2FA
+
+Route::group(['prefix'=>'2fa'], function(){
+   // Route::get('/','LoginSecurityController@show2faForm');
+   Route::post('/generateSecret','LoginSecurityController@generate2faSecret')->name('generate2faSecret');
+    Route::post('/enable2fa','LoginSecurityController@enable2fa')->name('enable2fa');
+    Route::post('/disable2fa','LoginSecurityController@disable2fa')->name('disable2fa');
+
+});
+
+Route::get('/get2fasetting','LoginSecurityController@get2fasetting')->name('get2fasetting');
+
+Route::post('/2fa', function () {
+
+    return redirect(URL()->previous());
+
+})->name('2fa')->middleware('2fa');
+
 Auth::routes();
+
+Route::get('/complete-registration', 'Auth\RegisterController@completeRegistration')->name('complete_registration');
+
+Route::get('/re-authenticate', 'LoginSecurityController@reauthenticate')->name('re_authenticate');
 
 Route::get('/register/doctor', 'Auth\RegisterController@showDoctorRegisterForm')->name('register_doctor');
 
-Route::post('/register/doctor', 'Auth\RegisterController@registerDoctor');
+//Route::post('/register/doctor', 'Auth\RegisterController@registerDoctor');
+
+Route::post('/register/doctor', 'Auth\RegisterController@createDoctor');
 
 Route::get('/getDoctors', 'PagesController@getDoctors')->name('getDoctors');
 
@@ -166,6 +217,8 @@ Route::resource('ratings', 'RatingController');
 
 // Admin Medical Ressources
 
+Route::resource('signatures', 'SignatureController');
+
 Route::resource('specialities', 'SpecialityController');
 
 Route::resource('services', 'ServiceController');
@@ -201,6 +254,7 @@ Route::resource('schedules', 'ScheduleController');
 Route::resource('appointments', 'AppointmentController');
 
 Route::post('verif/{id}','PaymentController@verif')->name('verif');
+
 //Patients Routes
 
 Route::get('/patient/profile_setting', 'PatientManagerController@setting')->name('patient_profile_setting');
@@ -227,7 +281,7 @@ Route::post('favorite/{doctor}', 'PatientManagerController@favoriteDoctor');
 
 Route::post('unfavorite/{doctor}', 'PatientManagerController@unFavoriteDoctor');
 
-Route::get('my_favourites', 'PatientManagerController@myFavorites')->middleware('auth');
+Route::get('my_favourites', 'PatientManagerController@myFavorites')->name('my_favourites')->middleware('auth');
 
 //Doctors Routes
 
@@ -252,6 +306,8 @@ Route::get('/doctor/my_invoices', 'DoctorManagerController@myInvoices')->name('d
 Route::get('/doctor/pending_posts', 'PostController@pending')->name('doctor_pending_posts');
 
 Route::get('/doctor/startapt/{id}', ['as' => 'appointment.start', 'uses' => 'DoctorManagerController@start']);
+
+Route::post('/bulk/schedules/store', 'ScheduleController@save')->name('bulk_schedules_store');
 
 
 //Website Pages
@@ -278,6 +334,8 @@ Route::get('/blog', 'PagesController@blog')->name('blog');
 
 Route::get('/our-doctors', 'PagesController@doctors')->name('our_doctors');
 
+Route::get('list/doctors', 'PagesController@listDoctor')->name('list_doctors');
+
 Route::get('/terms', 'PagesController@terms')->name('terms');
 
 Route::get('/policy', 'PagesController@policy')->name('policy');
@@ -288,13 +346,13 @@ Route::get('/getCountries', 'PagesController@getCountries')->name('getCountries'
 
 Route::post('/loadmore/load_data', 'PagesController@load_data')->name('loadmore.load_data');
 
-//Route::get('/blog-details', 'PagesController@blogDetail')->name('blogdetails');
-
 Route::get('post/{slug}', ['as' => 'blog.show', 'uses' => 'PagesController@postDetails']);
 
 Route::get('category/{slug}', ['as' => 'categoryPosts', 'uses' => 'PagesController@categoryPosts']);
 
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+
+Route::get('doctor/dashboard', 'DoctorManagerController@index')->name('doctor_dashboard');
 
 Route::get('categorie/check_slug', 'CategoryController@check_slug')->name('category.check_slug');
 
@@ -360,6 +418,23 @@ View:
 
 route('remindHelper',['event'=>$eventId,'user'=>$userId]);
     
+});*/
+
+/*Route::get('/test', function () {
+
+    $date = Carbon::today()->toDateString();
+
+    $timestamp = strtotime($date);
+
+    $month = date('m', $timestamp);
+
+    $name = Str::of('KOSSIGAN')->substr(0,3)->upper();
+
+    $firstname = Str::of('Prodige')->substr(0,1)->upper();
+
+    $matricule = 'TG'.date("y").$month.$name.$firstname;
+
+    dd($matricule);
 });*/
 
 /*Route::get('/create_role_permission', function () {

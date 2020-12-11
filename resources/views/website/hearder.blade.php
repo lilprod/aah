@@ -58,6 +58,10 @@
 										<a href="{{route('contact')}}">Contact</a>
 									</li>
 
+									<li class="nav-item">
+										<a class="nav-link header-login" href="{{route('login')}}">Login / Signup </a>
+									</li>
+
 									<li class="has-submenu">
 			                            <a href="">
 			                                Langue <i class="fas fa-chevron-down"></i>
@@ -68,7 +72,6 @@
 			                                <li><a class="dropdown-item" href="{{ URL::to('locale/sw') }}"><img src="{{asset('assets/img/sw.png')}}" width="20px" height="15x"> Swawili</a></li>
 			                            </ul>
 			                        </li>
-									
 
 									{{--@guest('admin') 
 																									
@@ -78,10 +81,6 @@
 	
 									@endguest--}}
 
-									
-
-
-
 								</ul>
 
 							</div>
@@ -89,6 +88,9 @@
 							@guest('admin') 
 
 							<ul class="nav header-navbar-rht">
+								<!--<li class="nav-item">
+									<a class="nav-link header-login" href="{{route('login')}}">Login / Signup </a>
+								</li>
 								<li class="nav-item contact-item">
 									<div class="header-contact-img">
 										<i class="far fa-hospital"></i>							
@@ -97,10 +99,8 @@
 										<p class="contact-header">Contact</p>
 										<p class="contact-info-header"> +1 315 369 5943</p>
 									</div>
-								</li>
-								<li class="nav-item">
-									<a class="nav-link header-login" href="{{route('login')}}">Login / Signup </a>
-								</li>
+								</li>-->
+								
 							</ul>
 
 							@endguest
@@ -108,7 +108,7 @@
 							@auth('admin')
 
 							 <ul class="nav header-navbar-rht">
-								<li class="nav-item contact-item">
+								<!--<li class="nav-item contact-item">
 									<div class="header-contact-img">
 										<i class="far fa-hospital"></i>							
 									</div>
@@ -116,7 +116,7 @@
 										<p class="contact-header">Contact</p>
 										<p class="contact-info-header"> +1 315 369 5943</p>
 									</div>
-								</li>
+								</li>-->
 
 								<li class="nav-item dropdown has-arrow logged-item">
 									<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
@@ -194,7 +194,7 @@
 									<li class="has-submenu">
 										<a href="">Doctors <i class="fas fa-chevron-down"></i></a>
 										<ul class="submenu">
-											<li><a href="{{route('dashboard')}}">Doctor Dashboard</a></li>
+											<li><a href="{{route('doctor_dashboard')}}">Doctor Dashboard</a></li>
 											<li><a href="{{route('doctor_my_appointments')}}">Appointments</a></li>
 											<li class="has-submenu">
 												<a href="#">Schedule Timing</a>
@@ -261,7 +261,7 @@
 							</div>
 
 							<ul class="nav header-navbar-rht">
-								<li class="nav-item contact-item">
+								<!--<li class="nav-item contact-item">
 									<div class="header-contact-img">
 										<i class="far fa-hospital"></i>							
 									</div>
@@ -269,7 +269,7 @@
 										<p class="contact-header">Contact</p>
 										<p class="contact-info-header"> +1 315 369 5943</p>
 									</div>
-								</li>
+								</li>-->
 								<!--<li class="nav-item">
 									<a class="nav-link header-login" href="{{route('login')}}">Login / Signup </a>
 								</li>-->

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Srmklive\PayPal\Services\ExpressCheckout;
 use App\Payment;
 use App\Appointment;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
 
 class PaypalController extends Controller
@@ -14,6 +15,7 @@ class PaypalController extends Controller
 	protected $provider;
 
 	public function __construct() {
+
 	    $this->provider = new ExpressCheckout();
 	}
 
@@ -35,23 +37,25 @@ class PaypalController extends Controller
         ];
 
         $payment = new Payment();
+
         $payment->amount = $request->input('amount');
+
         $payment->save();
   
         $data['invoice_id'] = $payment->id;
+
         $data['invoice_description'] = "Order #{$data['invoice_id']} Invoice";
+
         $data['return_url'] = route('payment.success');
+
         $data['cancel_url'] = route('payment.cancel');
+
         $data['total'] = $request->input('amount');
-  
-        //$provider = new ExpressCheckout();
   
         $response = $this->provider->setExpressCheckout($data);
   
         $response = $this->provider->setExpressCheckout($data, true);
 
-
-  
         return redirect($response['paypal_link']);
     }
    
@@ -62,8 +66,6 @@ class PaypalController extends Controller
      */
     public function cancel()
     {
-    	//dd($data);
-
         $invoice_id = Session::get('invoice_id');
 
         $apt_id = Session::get('apt_id');
@@ -113,18 +115,19 @@ class PaypalController extends Controller
         if (in_array(strtoupper($response['ACK']), ['SUCCESS', 'SUCCESSWITHWARNING'])) {
 
         	//$payment_status = $this->provider->doExpressCheckoutPayment($cart, $token, $PayerID);
+
         	//$status = $response['PAYMENTINFO_0_PAYMENTSTATUS'];
 
         	// set payment status
-        	//$payment->status = $status;
+
             $payment->status = 1;
+
+            $payment->date_payment = Carbon::now();
 
         	// save the payment
         	$payment->save();
 
         	return redirect('/dashboard')->with('success', 'Order ' . $payment->id . ' has been paid successfully!');
-
-            //dd('Your payment was successfully. You can create success page here.');
         }
 
         // if response ACK value is not SUCCESS or SUCCESSWITHWARNING
@@ -132,7 +135,7 @@ class PaypalController extends Controller
         // Delete the payment
         $payment->delete();
   
-        return redirect()->back()->with('error', 'Error processing PayPal payment for Order ' . $invoice->id . '!');
+        return redirect()->back()->with('error', 'Error processing PayPal payment for Order ' . $payment_id . '!');
     }
 
 	public function expressCheckoutSuccess(Request $request) {

@@ -46,7 +46,7 @@
 									<li class="breadcrumb-item active" aria-current="page">Change Password</li>
 								</ol>
 							</nav>
-							<h2 class="breadcrumb-title">Change Password</h2>
+							<h2 class="breadcrumb-title">Change Password <span style="color: #26a9e166">+</span></h2>
 						</div>
 					</div>
 				</div>

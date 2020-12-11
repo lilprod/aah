@@ -30,18 +30,20 @@
 		<div class="dashboard-widget">
 			<nav class="dashboard-menu">
 				<ul>
-					<li class="active">
+					<li class="{{ Request::routeIs('dashboard') ? 'active' : '' }}">
 						<a href="{{route('dashboard')}}">
 							<i class="fas fa-columns"></i>
 							<span>Dashboard</span>
 						</a>
 					</li>
-					<li>
+
+					<li class="{{ Request::routeIs('my_favourites') ? 'active' : '' }}">
 						<a href="{{ url('my_favourites') }}">
 							<i class="fas fa-bookmark"></i>
 							<span>Favourites</span>
 						</a>
 					</li>
+					
 					<li>
 						<a href="{{route('chat')}}">
 							<i class="fas fa-comments"></i>
@@ -52,22 +54,22 @@
 						</a>
 					</li>
 
-					<li>
+					<li class="{{ Request::routeIs('search_disease') ? 'active' : '' }}">
 						<a href="{{route('search_disease')}}">
 							<i class="fas fa-search"></i>
-							<span>Disease and Treatment</span>
+							<span>Search Disease</span>
 						</a>
 					</li>
 
 
-					<li>
+					<li class="{{ Request::routeIs('patient_profile_setting') ? 'active' : '' }}">
 						<a href="{{route('patient_profile_setting')}}">
 							<i class="fas fa-user-cog"></i>
 							<span>Profile Settings</span>
 						</a>
 					</li>
 					
-					<li>
+					<li class="{{ Request::routeIs('patient_change_password') ? 'active' : '' }}">
 						<a href="{{route('patient_change_password')}}">
 							<i class="fas fa-lock"></i>
 							<span>Change Password</span>

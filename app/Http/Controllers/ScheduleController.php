@@ -108,6 +108,51 @@ class ScheduleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function save(Request $request)
+    {
+
+        $data = $request->all();
+
+        $i = 0;
+
+        foreach($data['begin_time'] as $item){
+
+            $schedule = new Schedule();
+
+            $schedule->day_num = $request->input('day_num');
+
+            $schedule->begin_time = $item;
+            $schedule->end_time = $data['end_time'][$i];
+
+            $schedule->doctor_userid = auth()->user()->id;
+            $doctor = Doctor::where('user_id', auth()->user()->id)->first();
+            $schedule->doctor_id = $doctor->id;
+            $schedule->status = 1;
+
+            $historique = new History();
+            $historique->action = 'Create';
+            $historique->table = 'Schedule';
+            $historique->user_id = auth()->user()->id;
+
+            
+            $schedule->save();
+            $historique->save();
+
+            $i++;
+        }
+
+        return redirect()->route('schedules.index')
+            ->with('success',
+             'Schedule(s) added successfully.');
+
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
     {
 

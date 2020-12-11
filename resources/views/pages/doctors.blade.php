@@ -66,10 +66,10 @@
 
 							<div class="col-md-6 col-auto">
 								<div class="view-icons ">
-									<a href="#" class="grid-view active"><i class="fas fa-th-large"></i></a>
-									<a href="#" class="list-view"><i class="fas fa-bars"></i></a>
+									<a href="{{route('our_doctors')}}" class="grid-view active"><i class="fas fa-th-large"></i></a>
+									<a href="{{route('list_doctors')}}" class="list-view"><i class="fas fa-bars"></i></a>
 								</div>
-								<div class="sort-by d-sm-block d-none">
+								<!--<div class="sort-by d-sm-block d-none">
 									<span class="sortby-fliter">
 										<select class="select">
 											<option>Sort by</option>
@@ -79,11 +79,13 @@
 											<option class="sorting">Free</option>
 										</select>
 									</span>
-								</div>
+								</div>-->
 							</div>
 						</div>
+						<flash message=""></flash>
 
 							<div class="row">
+
 
 								@foreach($doctors as $doctor)
 
@@ -154,9 +156,9 @@
 								@endforeach
 						</div>
 							
-					<div class="load-more text-center">
+					<!--<div class="load-more text-center">
 						<a class="btn btn-primary btn-sm" href="javascript:void(0);">Load More</a>	
-					</div>
+					</div>-->
 	            </div>
 
 	            <!-- /content-left-->

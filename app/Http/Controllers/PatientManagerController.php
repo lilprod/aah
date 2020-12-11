@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+ini_set('max_execution_time', 300);
+
 use Illuminate\Http\Request;
 use App\User;
 use App\Patient;
@@ -10,10 +12,11 @@ use App\History;
 use App\Appointment;
 use App\Prescription;
 use App\Payment;
-use App\PrescribedDrug;
+use App\PrescribedDrugs;
 use App\PrescriptionExam;
 use App\Schedule;
 use Carbon\Carbon;
+use PDF;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
@@ -296,6 +299,8 @@ class PatientManagerController extends Controller
         $patient->address = $request->input('address');
         $patient->birth_date = $request->input('birth_date');
         $patient->place_birth = $request->input('place_birth');
+        $patient->country = $request->input('country');
+        $patient->city = $request->input('city');
         //$patient->nationality = $request->input('nationality');
         //$patient->ethnic_group = $request->input('ethnic_group');
         $patient->blood_group = $request->input('blood_group');
@@ -312,7 +317,7 @@ class PatientManagerController extends Controller
         //$user->gender = $request->input('gender');
         //$user->birth_date = $request->input('birth_date');
         $user->address = $request->input('address');
-        //$user->role_user = 1;
+        //$user->role_id = 1;
 
         $patient->save();
         $user->save();
@@ -329,28 +334,44 @@ class PatientManagerController extends Controller
 
     }
 
-     public function pdfexport($id)
+
+    public function pdfInvoice($id)
+    {
+
+        $payment = Payment::findOrFail($id);
+
+        $date = Carbon::now();
+
+        $pdf = PDF::loadView('patients.appointments.pdf', $payment);
+
+        //return $pdf->download('Invoice'.$date.'.pdf');
+
+        return $pdf->stream('Invoice'.$date.'.pdf'); 
+    }
+
+    public function pdfexport($id)
     {
         $prescription = Prescription::findOrFail($id); //Find prescription of id = $id
         $doctor = Doctor::findOrFail($prescription->doctor_id);
-        $service = $doctor->department_name;
-        $prescribeddrugs = PrescribedDrug::where('patient_id', '=', $prescription->patient_id)
+        $prescribeddrugs = PrescribedDrugs::where('patient_id', '=', $prescription->patient_id)
                                             ->where('prescription_id', '=', $prescription->id)
                                             ->get();
 
+        
+        
         $date = Carbon::now();
 
         $data = ['prescription' => $prescription,
                 'prescribeddrugs' => $prescribeddrugs,
-                'service' => $service,
+                //'service' => $service,
                 'date' => $date,
         ];
 
-        $pdf = PDF::loadView('prescriptions.pdf', $data);
+        $pdf = PDF::loadView('doctors.prescriptions.pdf', $data);
 
         //return $pdf->download('ordonnance'.$date.'.pdf');
 
-        return $pdf->stream('ordonnance'.$date.'.pdf');
+        return $pdf->stream('Prescription'.$date.'.pdf');
     }
 
     public function postResult(Request $request)

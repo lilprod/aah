@@ -96,13 +96,13 @@
                                             <form method="POST" action="{{ route('register') }}" aria-label="{{ __('Register') }}" enctype="multipart/form-data">
                                         @endisset
                                            
-                                            @csrf
+                                        @csrf
 
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label>Name</label>
-                                                <input type="text" class="form-control floating @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                                <input type="text" class="form-control floating @error('name') is-invalid @enderror" name="name" id="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
                                                 <!--<label class="focus-label">Nom</label>-->
 
                                                  @error('name')
@@ -116,7 +116,7 @@
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label>Firstname</label>
-                                                <input type="text" class="form-control floating @error('firstname') is-invalid @enderror" name="firstname" value="{{ old('firstname') }}" required autocomplete="firstname">
+                                                <input type="text" class="form-control floating @error('firstname') is-invalid @enderror" name="firstname" id="firstname" value="{{ old('firstname') }}" required autocomplete="firstname">
                                                 <!--<label class="focus-label">Prénom(s)</label>-->
 
                                                 @error('firstname')
@@ -240,12 +240,10 @@
                                                 </div>
                                             </div>-->
 
-                                    
-
                                             <div class="col-sm-12">
                                                 <div class="form-group mb-3">
                                                     <label>Organisation</label>
-                                                    <input type="text" class="form-control @error('exercice_place') is-invalid @enderror" name="exercice_place" value="{{ old('exercice_place') }}" required autocomplete="exercice_place" placeholder="Organisation">
+                                                    <input type="text" class="form-control @error('exercice_place') is-invalid @enderror" name="exercice_place" id="exercice_place" value="{{ old('exercice_place') }}" required autocomplete="exercice_place" placeholder="Organisation">
 
                                                     @error('exercice_place')
                                                         <span class="invalid-feedback" role="alert">
@@ -267,8 +265,6 @@
                                                         <option value="5">SOUTHERN AFRICA</option>
                                                     </select>
 
-                                                    <!--<label class="focus-label">Nom</label>-->
-
                                                     @error('region')
                                                             <span class="invalid-feedback" role="alert">
                                                                 <strong>{{ $message }}</strong>
@@ -283,7 +279,6 @@
                                                     <select class="form-control @error('country') is-invalid @enderror" name="country" id="country">
                                                     </select>
 
-
                                                     @error('country')
                                                         <span class="invalid-feedback" role="alert">
                                                             <strong>{{ $message }}</strong>
@@ -291,8 +286,6 @@
                                                     @enderror
                                                 </div>
                                             </div>
-
-                                            
 
                                            <!-- <div class="col-sm-6">
                                                 <div class="form-group mb-3">
@@ -302,8 +295,6 @@
                                             </div>-->
 
                                     </div>
-                                        
-                                            
 
                                             <!--<div class="form-group form-focus">
                                                 <input type="text" class="form-control floating @error('address') is-invalid @enderror" name="address" value="{{ old('address') }}" required autocomplete="address">
@@ -315,9 +306,6 @@
                                                     </span>
                                                 @enderror
                                             </div>-->
-
-                                            
-
 
                                             <div class="text-right">
                                                 <a class="forgot-link" href="{{ route('login') }}">Already have an account?</a>
@@ -343,44 +331,38 @@
                             </div>
                             <!-- /Register Content -->
                                 
-                                <!-- Download App-->
-                        <div class="row justify-content-center">
-                            <div class="col-md-8">
-                               <section class="section section-features">
-                                    <div class="container-fluid">
-                                       <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="section-header">    
-                                                   <!-- <h2 class="mt-2">DOWNLOAD <span style="color: #00A651;">AAH+</span> APP NOW!</h2>-->
-                                                    <p class="text-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</p>
+                            <!-- Download App-->
+                            <div class="row justify-content-center">
+                                <div class="col-md-8">
+                                   <section class="section section-features">
+                                        <div class="container-fluid">
+                                           <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="section-header">    
+                                                       <!-- <h2 class="mt-2">DOWNLOAD <span style="color: #00A651;">AAH+</span> APP NOW!</h2>-->
+                                                        <p class="text-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                       </div>
-                                    </div>
-                                </section>      
+                                           </div>
+                                        </div>
+                                    </section>      
+                                </div>
                             </div>
+                            <!-- /Download App -->
                         </div>
-                    <!-- /Download App -->
-                        </div>
-
-
                     </div>
-
                 </div>
-
             </div>      
             <!-- /Page Content -->
-   
             <!-- Footer -->
             @include('website.footer')
             <!-- /Footer -->
-           
         </div>
         <!-- /Main Wrapper -->
 
-         <script type="text/javascript" src="{{asset('assets/js/intlTelInput.js') }}"></script>
-          <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-          <script>
+        <script type="text/javascript" src="{{asset('assets/js/intlTelInput.js') }}"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script>
           var input = document.querySelector("#phone");
           output = document.querySelector("#output");
           var iti = window.intlTelInput(input, {
@@ -403,20 +385,37 @@
             output.appendChild(textNode);
             document.getElementById("output").value=text;
           };
-
           // listen to "keyup", but also "change" to update when the user selects a country
           input.addEventListener('change', handleChange);
           input.addEventListener('keyup', handleChange);
-          
-            
-          </script>
-      
+        </script>
+    
         
         <!-- jQuery -->
          <script src="{{asset('assets/js/jquery.min.js') }}"></script>
 
          <script type="text/javascript">
             $(document).ready(function() {
+
+                $('#name').keyup(function(){
+                    $(this).val($(this).val().toUpperCase());
+                });
+
+                $('#firstname').keyup(function() 
+                {
+                    var str = $('#firstname').val();
+                   
+                    
+                    var spart = str.split(" ");
+                    for ( var i = 0; i < spart.length; i++ )
+                    {
+                        var j = spart[i].charAt(0).toUpperCase();
+                        spart[i] = j + spart[i].substr(1);
+                    }
+
+                  $('#firstname').val(spart.join(" "));
+                
+                });
 
                  $('#region').on('change', function () {
 

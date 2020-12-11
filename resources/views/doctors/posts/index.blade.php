@@ -110,7 +110,7 @@
                                     <div class="col"><a href="{{ URL::to('posts/'.$post->id.'/edit') }}" class="text-success"><i class="far fa-edit"></i> Edit</a></div>
 
                                     <div class="col text-right"><a data-toggle="modal" href="javascript:void(0);" class="text-danger" data-target="#delete_post" onclick="deleteData({{ $post->id}})">
-                                                                <i class="far fa-trash-alt"></i> Delete</div>
+                                                                <i class="far fa-trash-alt"></i> Delete</a></div>
                                                                                                 
                                     <!--<div class="col text-right"><a href="javascript:void(0);" class="text-danger" data-toggle="modal" data-target="#deleteNotConfirmModal"><i class="far fa-trash-alt"></i> Inactive</a></div>-->
                                 </div>

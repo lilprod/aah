@@ -87,7 +87,9 @@
 											<input id="rating-system" type="number" class="rating" min="0" max="5" step="1" name="rating" value="{{ $doctor->averageRating }}" disabled>
 										</div>
 										<div class="clinic-details">
-											<p class="doc-location"><i class="fas fa-map-marker-alt"></i> Newyork, USA - <a href="javascript:void(0);">Get Directions</a></p>
+											@if($doctor->exercie_place != '')
+											<p class="doc-location"><i class="fas fa-map-marker-alt"></i> {{$doctor->exercie_place}} <!-- - <a href="javascript:void(0);">Get Directions</a></p>-->
+											@endif
 											<ul class="clinic-gallery">
 												<li>
 													<a href="{{asset('assets/img/features/feature-01.jpg') }}" data-fancybox="gallery">
@@ -134,10 +136,10 @@
 										        ></favourite>
 											@endif
 										
-										<a href="#" class="btn btn-white msg-btn">
+										<!--<a href="#" class="btn btn-white msg-btn">
 											<i class="far fa-comment-alt"></i>
 										</a>
-										<!--<a href="javascript:void(0)" class="btn btn-white fav-btn">
+										<a href="javascript:void(0)" class="btn btn-white fav-btn">
 											<i class="far fa-bookmark"></i>
 										</a>
 

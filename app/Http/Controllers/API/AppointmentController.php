@@ -49,7 +49,6 @@ class AppointmentController extends BaseController
     {
 
         $validator = Validator::make($request->all(), [
-            //'department_id' => 'required',
             'doctor_id' => 'required',
             'schedule_id' => 'required',
             'date_apt' => 'required',
@@ -81,12 +80,6 @@ class AppointmentController extends BaseController
 
         $appointment->identifier = $this->unique_code(9);
 
-        //$appointment->department_id = $request->input('department_id');
-        
-        //$department = Department::findOrFail($appointment->department_id);
-
-        //$appointment->department_name = $department->name;
-
         $appointment->apt_amount = 1;
 
         $appointment->doctor_id = $request->input('doctor_id');
@@ -110,14 +103,38 @@ class AppointmentController extends BaseController
 
         $historique->save();
 
-        $patient = $appointment->patient;
-        $patient['profile_picture'] = $_ENV['APP_URL'].'/storage/profile_images/'.$patient->profile_picture;
 
-        $doctor = $appointment->doctor;
-        $doctor['profile_picture'] = $_ENV['APP_URL'].'/storage/profile_images/'.$doctor->profile_picture;
-        $speciality = $doctor->speciality;
-        $doctor['speciality'] = $speciality;
-        $speciality['cover_image'] = $_ENV['APP_URL'].'/storage/cover_images/'.$speciality->cover_image;
+        $appointment['doctor_name'] = $appointment->doctor->name;
+
+        $appointment['doctor_firstname'] = $appointment->doctor->firstname;
+
+        $appointment['doctor_email'] = $appointment->doctor->email;
+
+        $appointment['doctor_phone_number'] = $appointment->doctor->phone_number;
+
+        $appointment['doctor_speciality'] = $appointment->doctor->speciality->title;
+
+        $appointment['doctor_profile_picture'] = $_ENV['APP_URL'].'/storage/profile_images/'.$appointment->doctor->profile_picture;
+
+
+        $appointment['patient_name'] = $appointment->patient->name;
+
+        $appointment['patient_firstname'] = $appointment->patient->firstname;
+
+        $appointment['patient_email'] = $appointment->patient->email;
+
+        $appointment['patient_phone_number'] = $appointment->patient->phone_number;
+
+        $appointment['patient_profile_picture'] = $_ENV['APP_URL'].'/storage/profile_images/'.$appointment->patient->profile_picture;
+
+        //$patient = $appointment->patient;
+        //$patient['profile_picture'] = $_ENV['APP_URL'].'/storage/profile_images/'.$patient->profile_picture;
+
+        //$doctor = $appointment->doctor;
+        //$doctor['profile_picture'] = $_ENV['APP_URL'].'/storage/profile_images/'.$doctor->profile_picture;
+        //$speciality = $doctor->speciality;
+        //$doctor['speciality'] = $speciality;
+        //$speciality['cover_image'] = $_ENV['APP_URL'].'/storage/cover_images/'.$speciality->cover_image;
 
         return $this->sendResponse($appointment, 'Appointment saved sucessfully!');
     }
@@ -136,14 +153,28 @@ class AppointmentController extends BaseController
             return $this->sendError('Appointment not found.');
         }
 
-        $patient = $appointment->patient;
-        $patient['profile_picture'] = $_ENV['APP_URL'].'/storage/profile_images/'.$patient->profile_picture;
+        $appointment['doctor_name'] = $appointment->doctor->name;
 
-        $doctor = $appointment->doctor;
-        $doctor['profile_picture'] = $_ENV['APP_URL'].'/storage/profile_images/'.$doctor->profile_picture;
-        $speciality = $doctor->speciality;
-        $doctor['speciality'] = $speciality;
-        $speciality['cover_image'] = $_ENV['APP_URL'].'/storage/cover_images/'.$speciality->cover_image;
+        $appointment['doctor_firstname'] = $appointment->doctor->firstname;
+
+        $appointment['doctor_email'] = $appointment->doctor->email;
+
+        $appointment['doctor_phone_number'] = $appointment->doctor->phone_number;
+
+        $appointment['doctor_speciality'] = $appointment->doctor->speciality->title;
+
+        $appointment['doctor_profile_picture'] = $_ENV['APP_URL'].'/storage/profile_images/'.$appointment->doctor->profile_picture;
+
+
+        $appointment['patient_name'] = $appointment->patient->name;
+
+        $appointment['patient_firstname'] = $appointment->patient->firstname;
+
+        $appointment['patient_email'] = $appointment->patient->email;
+
+        $appointment['patient_phone_number'] = $appointment->patient->phone_number;
+
+        $appointment['patient_profile_picture'] = $_ENV['APP_URL'].'/storage/profile_images/'.$appointment->patient->profile_picture;
    
         return $this->sendResponse(new PostResource($appointment), 'Appointment retrieved successfully.');
     }
@@ -204,12 +235,6 @@ class AppointmentController extends BaseController
 
             $appointment->end_time = $schedule->end_time; 
 
-            //$appointment->department_id = $request->input('department_id');
-            
-            //$department = Department::findOrFail($appointment->department_id);
-
-            //$appointment->department_name = $department->name;
-
             $appointment->apt_amount = 1;
 
             $appointment->doctor_id = $request->input('doctor_id');
@@ -233,14 +258,27 @@ class AppointmentController extends BaseController
 
             $historique->save();
 
-            $patient = $appointment->patient;
-            $patient['profile_picture'] = $_ENV['APP_URL'].'/storage/profile_images/'.$patient->profile_picture;
+            $appointment['doctor_name'] = $appointment->doctor->name;
 
-            $doctor = $appointment->doctor;
-            $doctor['profile_picture'] = $_ENV['APP_URL'].'/storage/profile_images/'.$doctor->profile_picture;
-            $speciality = $doctor->speciality;
-            $doctor['speciality'] = $speciality;
-            $speciality['cover_image'] = $_ENV['APP_URL'].'/storage/cover_images/'.$speciality->cover_image;
+            $appointment['doctor_firstname'] = $appointment->doctor->firstname;
+
+            $appointment['doctor_email'] = $appointment->doctor->email;
+
+            $appointment['doctor_phone_number'] = $appointment->doctor->phone_number;
+
+            $appointment['doctor_speciality'] = $appointment->doctor->speciality->title;
+
+            $appointment['doctor_profile_picture'] = $_ENV['APP_URL'].'/storage/profile_images/'.$appointment->doctor->profile_picture;
+
+            $appointment['patient_name'] = $appointment->patient->name;
+
+            $appointment['patient_firstname'] = $appointment->patient->firstname;
+
+            $appointment['patient_email'] = $appointment->patient->email;
+
+            $appointment['patient_phone_number'] = $appointment->patient->phone_number;
+
+            $appointment['patient_profile_picture'] = $_ENV['APP_URL'].'/storage/profile_images/'.$appointment->patient->profile_picture;
 
             return $this->sendResponse($appointment, 'Appointment updated sucessfully!');
         }

@@ -28,7 +28,7 @@ class PagesController extends Controller
         $posts = Post::with('category')
                         ->where('status', 1)
                         ->orderBy('created_at', 'desc')
-                        ->paginate(4);
+                        ->paginate(3);
 
         foreach ($posts as $post) {
             # code...
@@ -100,11 +100,19 @@ class PagesController extends Controller
 
     public function doctors()
     {
-        //$doctors = Doctor::all();
         $doctors = Doctor::where('status', 1)
-                        ->get();
+                          ->get();
 
         return view('pages.doctors',compact('doctors'));
+    }
+
+
+    public function listDoctor()
+    {
+        $doctors = Doctor::where('status', 1)
+                          ->get();
+
+        return view('pages.list_doctors',compact('doctors'));
     }
 
     function load_data(Request $request)

@@ -184,7 +184,7 @@
                                                                     </td>
                                                                     <td class="text-right">
                                                                         <div class="table-action">
-                                                                            <a href="javascript:void(0);" class="btn btn-sm bg-primary-light">
+                                                                            <a href="{{route('prescription.invoice', $prescription->id)}}" class="btn btn-sm bg-primary-light">
                                                                                 <i class="fas fa-print"></i> Print
                                                                             </a>
                                                                             <a href="{{route('prescriptions.show', $prescription->id)}}" class="btn btn-sm bg-info-light">

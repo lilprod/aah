@@ -9,29 +9,32 @@
 				</a>
 				<div class="profile-det-info">
 					<h3>Dr. {{ auth()->user()->name }} {{ auth()->user()->firstname }}</h3>
-					
+					@if(auth()->user()->doctor()->speciality != '')
 					<div class="patient-details">
 						<h5 class="mb-0">{{ auth()->user()->doctor()->speciality->title}}</h5>
 					</div>
+					@endif
 				</div>
 			</div>
 		</div>
 		<div class="dashboard-widget">
 			<nav class="dashboard-menu">
 				<ul>
-					<li>
+					<li class="{{ Request::routeIs('dashboard') ? 'active' : '' }}">
 						<a href="{{route('dashboard')}}">
 							<i class="fas fa-columns"></i>
 							<span>Dashboard</span>
 						</a>
 					</li>
-					<li>
+
+					<li class="{{ Request::routeIs('doctor_my_appointments') ? 'active' : '' }}">
 						<a href="{{route('doctor_my_appointments')}}">
 							<i class="fas fa-calendar-check"></i>
 							<span>Appointments</span>
 						</a>
 					</li>
-					<li>
+
+					<li class="{{ Request::routeIs('doctor_my_patients') ? 'active' : '' }}">
 						<a href="{{route('doctor_my_patients')}}">
 							<i class="fas fa-user-injured"></i>
 							<span>My Patients</span>
@@ -43,13 +46,15 @@
 							<span>Schedule Timings</span>
 						</a>
 					</li>
-					<li>
+
+					<li class="{{ Request::routeIs('doctor_my_invoices') ? 'active' : '' }}">
 						<a href="{{route('doctor_my_invoices')}}">
 							<i class="fas fa-file-invoice"></i>
 							<span>Invoices</span>
 						</a>
 					</li>
-					<li>
+
+					<li class="{{ Request::routeIs('doctor_reviews') ? 'active' : '' }}">
 						<a href="{{route('doctor_reviews')}}">
 							<i class="fas fa-star"></i>
 							<span>Reviews</span>
@@ -79,7 +84,7 @@
 						</a>
 					</li>
 
-					<li>
+					<li class="{{ Request::routeIs('doctor_profile_setting') ? 'active' : '' }}">
 						<a href="{{route('doctor_profile_setting')}}">
 							<i class="fas fa-user-cog"></i>
 							<span>Profile Settings</span>
@@ -91,12 +96,20 @@
 							<span>Social Media</span>
 						</a>
 					</li>-->
-					<li class="">
+					<li class="{{ Request::routeIs('doctor_change_password') ? 'active' : '' }}">
 						<a href="{{route('doctor_change_password')}}">
 							<i class="fas fa-lock"></i>
 							<span>Change Password</span>
 						</a>
 					</li>
+
+					<li class="">
+						<a href="{{route('signatures.index')}}">
+							<i class="fas fa-pen"></i>
+							<span>Signature</span>
+						</a>
+					</li>
+
 					<li>
 						<a href="{{route('logout')}}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
 							<i class="fas fa-sign-out-alt"></i>
