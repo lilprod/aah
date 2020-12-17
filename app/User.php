@@ -15,6 +15,8 @@ use Carbon\Carbon;
 use App\Post;
 use App\Prescription;
 use App\Payment;
+//use App\Alert;
+use App\Notification;
 use AgilePixels\Rateable\Traits\AddsRating;
 use Illuminate\Support\Facades\DB;
 
@@ -78,6 +80,27 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function reviews() 
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function mynotifications()
+    {
+        return Notification::where('receiver_id', $this->id)
+                            ->where('status', 0)
+                            ->orderBy('id', 'DESC')
+                            ->get();
+    }
+
+    public function myunreadnotifications()
+    {
+        return Notification::where('receiver_id', $this->id)
+                            ->where('status', 1)
+                            ->orderBy('id', 'DESC')
+                            ->get();
+    }
 
     public function signature()
     {

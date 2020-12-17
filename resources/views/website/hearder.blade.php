@@ -174,6 +174,10 @@
 										<a href="{{route('our_doctors')}}">Médecins</a>
 									</li>
 
+									@endif
+
+									{{-- @if(auth()->user()->role_id == 1)
+
 									<li class="has-submenu">
 										<a href="#!">Patients<i class="fas fa-chevron-down"></i></a>
 										<ul class="submenu">
@@ -188,9 +192,9 @@
 											<li><a href="{{route('patient_change_password')}}">Change Password</a></li>
 										</ul>
 									</li>
-									@endif
+									@endif --}}
 
-									@if(auth()->user()->role_id == 2)
+									{{-- @if(auth()->user()->role_id == 2)
 									<li class="has-submenu">
 										<a href="">Doctors <i class="fas fa-chevron-down"></i></a>
 										<ul class="submenu">
@@ -219,7 +223,7 @@
 											</li>
 										</ul>
 									</li>
-									@endif
+									@endif --}}
 
 									<li class="">
 										<a href="#">Pharmacies</a>
@@ -293,10 +297,45 @@
 												@endif
 											</div>
 										</div>
-										<a class="dropdown-item" href="{{route('dashboard')}}" target="_blank">Dashboard</a>
+										
 										@if(auth()->user()->role_id == 1)
+											<a class="dropdown-item" href="{{route('dashboard')}}" target="_blank">Dashboard</a>
+
+											<a class="dropdown-item" href="{{route('search')}}">Search Doctor</a>
+
+											<a class="dropdown-item" href="{{route('our_doctors')}}">Booking</a>
+
+											<a class="dropdown-item" href="{{ url('my_favourites') }}">Favourites</a>
+
+											<a class="dropdown-item" href="{{route('chat')}}">Chat</a>
+
+											<a class="dropdown-item" href="{{route('video_chat')}}">Video Chat</a>
+
+											<a class="dropdown-item" href="{{route('search_disease')}}">Disease and Treatment</a>
+
+											<a class="dropdown-item" href="{{route('patient_change_password')}}">Change Password</a>
 											<a class="dropdown-item" href="{{route('patient_profile_setting')}}">Profile Settings</a>
 										@else
+											<a class="dropdown-item" href="{{route('doctor_dashboard')}}" target="_blank">Dashboard</a>
+
+											<a class="dropdown-item" href="{{route('doctor_my_appointments')}}">Appointments</a>
+
+											<a class="dropdown-item" href="{{route('schedules.index')}}">Schedule Timing</a>
+
+											<a class="dropdown-item" href="{{route('doctor_my_patients')}}">Patients List</a>
+
+											<a class="dropdown-item" href="{{route('posts.index')}}">My Posts</a>
+
+											<a class="dropdown-item" href="{{route('doctor_my_invoices')}}">Invoices</a>
+
+											<a class="dropdown-item" href="{{route('doctor_reviews')}}">Reviews</a>
+
+											<a class="dropdown-item" href="{{route('diseases.index')}}">Diseases</a>
+
+											<a class="dropdown-item" href="{{route('chat')}}">Chat</a>
+
+											<a class="dropdown-item" href="{{route('video_chat')}}">Video Chat</a>
+
 											<a class="dropdown-item" href="{{route('doctor_profile_setting')}}">Profile Settings</a>
 										@endif
 										<a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();

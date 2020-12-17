@@ -145,27 +145,27 @@ Route::get('admin/appointments', 'AdminAppointmentController@index')->name('admi
 
 //2FA
 
-Route::group(['prefix'=>'2fa'], function(){
+/*Route::group(['prefix'=>'2fa'], function(){
    // Route::get('/','LoginSecurityController@show2faForm');
    Route::post('/generateSecret','LoginSecurityController@generate2faSecret')->name('generate2faSecret');
     Route::post('/enable2fa','LoginSecurityController@enable2fa')->name('enable2fa');
     Route::post('/disable2fa','LoginSecurityController@disable2fa')->name('disable2fa');
 
-});
+});*/
 
-Route::get('/get2fasetting','LoginSecurityController@get2fasetting')->name('get2fasetting');
+//Route::get('/get2fasetting','LoginSecurityController@get2fasetting')->name('get2fasetting');
 
-Route::post('/2fa', function () {
+/*Route::post('/2fa', function () {
 
     return redirect(URL()->previous());
 
-})->name('2fa')->middleware('2fa');
+})->name('2fa')->middleware('2fa');*/
 
 Auth::routes();
 
-Route::get('/complete-registration', 'Auth\RegisterController@completeRegistration')->name('complete_registration');
+//Route::get('/complete-registration', 'Auth\RegisterController@completeRegistration')->name('complete_registration');
 
-Route::get('/re-authenticate', 'LoginSecurityController@reauthenticate')->name('re_authenticate');
+//Route::get('/re-authenticate', 'LoginSecurityController@reauthenticate')->name('re_authenticate');
 
 Route::get('/register/doctor', 'Auth\RegisterController@showDoctorRegisterForm')->name('register_doctor');
 
@@ -309,7 +309,11 @@ Route::get('/doctor/startapt/{id}', ['as' => 'appointment.start', 'uses' => 'Doc
 
 Route::post('/bulk/schedules/store', 'ScheduleController@save')->name('bulk_schedules_store');
 
+Route::post('/bulk/schedules/update', 'ScheduleController@modif')->name('bulk_schedules_update');
 
+Route::post('/post/reviews/answers', 'RatingController@saveAnswer')->name('review_answers_store');
+
+Route::post('/post/answers/replies', 'RatingController@replyStore')->name('answers_replies_store');
 //Website Pages
 
 Route::get('/', 'PagesController@index')->name('home');
@@ -323,6 +327,8 @@ Route::get('/contact-us', 'PagesController@contact')->name('contact');
 Route::post('contact', 'ContactController@store')->name('postcontact');
 
 Route::get('/search', 'SearchController@search')->name('search');
+
+Route::get('/get/services', 'PagesController@search')->name('get_services');
 
 Route::post('/search', 'SearchController@postSearch')->name('search');
 

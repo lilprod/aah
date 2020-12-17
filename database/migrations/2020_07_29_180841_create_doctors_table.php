@@ -38,6 +38,7 @@ class CreateDoctorsTable extends Migration
             $table->string('state')->nullable();
             $table->string('postal_code')->nullable();
             $table->integer('status')->nullable();
+            $table->float('apt_fees')->nullable();
             $table->integer('user_id')->nullable();
             $table->integer('create_user_id')->nullable();
             $table->timestamps();

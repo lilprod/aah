@@ -126,6 +126,12 @@ Route::middleware('auth:api')->group( function () {
 
     Route::post('delete_picture', 'API\AuthController@delete_picture');
 
+    //Notifications
+
+    Route::resource('notifications', 'API\NotificationController');
+
+    Route::get('myunreadnotifications', 'API\NotificationController@unread');
+
     //Patient Routes
 
     Route::get('/patientPendingapts', 'API\PatientManagerController@patientPendingapts')->name('patientPendingapts');

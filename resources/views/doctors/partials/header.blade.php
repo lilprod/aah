@@ -117,6 +117,8 @@
 					</div>
 				</li>-->
 
+				<!-- Notifications -->
+
 				<li class="nav-item dropdown logged-item noti-dropdown">
 					<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
 						<i class="fas fa-bell"></i> <span class="badge badge-pill">3</span>
@@ -148,6 +150,7 @@
 						</div>
 					</div>
 				</li>
+				<!-- Notifications -->
 
 				<!-- User Menu -->
 				<li class="nav-item dropdown has-arrow logged-item">
@@ -168,6 +171,24 @@
 						</div>
 
 						<a class="dropdown-item" href="{{route('doctor_dashboard')}}">Dashboard</a>
+
+						<a class="dropdown-item" href="{{route('doctor_my_appointments')}}">Appointments</a>
+
+						<a class="dropdown-item" href="{{route('schedules.index')}}">Schedule Timing</a>
+
+						<a class="dropdown-item" href="{{route('doctor_my_patients')}}">Patients List</a>
+
+						<a class="dropdown-item" href="{{route('posts.index')}}">My Posts</a>
+
+						<a class="dropdown-item" href="{{route('doctor_my_invoices')}}">Invoices</a>
+
+						<a class="dropdown-item" href="{{route('doctor_reviews')}}">Reviews</a>
+
+						<a class="dropdown-item" href="{{route('diseases.index')}}">Diseases</a>
+
+						<a class="dropdown-item" href="{{route('chat')}}">Chat</a>
+
+						<a class="dropdown-item" href="{{route('video_chat')}}">Video Chat</a>
 
 						<a class="dropdown-item" href="{{route('doctor_profile_setting')}}">Profile Settings</a>
 						

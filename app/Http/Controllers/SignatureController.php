@@ -21,8 +21,6 @@ class SignatureController extends Controller
 
         $signature = $doctor->signature;
 
-        //dd($signature);
-
         return view('doctors.signatures.index')->with('signature', $signature); 
     }
 

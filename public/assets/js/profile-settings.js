@@ -35,19 +35,19 @@ Version      : 1.0
 					'<div class="col-12 col-md-6 col-lg-4">' +
 						'<div class="form-group">' +
 							'<label>Degree</label>' +
-							'<input type="text" class="form-control">' +
+							'<input type="text" class="form-control" name="degree[]">' +
 						'</div>' +
 					'</div>' +
 					'<div class="col-12 col-md-6 col-lg-4">' +
 						'<div class="form-group">' +
 							'<label>College/Institute</label>' +
-							'<input type="text" class="form-control">' +
+							'<input type="text" class="form-control" name="institute[]">' +
 						'</div>' +
 					'</div>' +
 					'<div class="col-12 col-md-6 col-lg-4">' +
 						'<div class="form-group">' +
 							'<label>Year of Completion</label>' +
-							'<input type="text" class="form-control">' +
+							'<input type="text" class="form-control" name="year_completion[]">' +
 						'</div>' +
 					'</div>' +
 				'</div>' +
@@ -74,25 +74,25 @@ Version      : 1.0
 					'<div class="col-12 col-md-6 col-lg-4">' +
 						'<div class="form-group">' +
 							'<label>Hospital Name</label>' +
-							'<input type="text" class="form-control">' +
+							'<input type="text" class="form-control" name="exercice_place[]">' +
 						'</div>' +
 					'</div>' +
 					'<div class="col-12 col-md-6 col-lg-4">' +
 						'<div class="form-group">' +
 							'<label>From</label>' +
-							'<input type="text" class="form-control">' +
+							'<input type="date" class="form-control" name="from[]">' +
 						'</div>' +
 					'</div>' +
 					'<div class="col-12 col-md-6 col-lg-4">' +
 						'<div class="form-group">' +
 							'<label>To</label>' +
-							'<input type="text" class="form-control">' +
+							'<input type="date" class="form-control" name="to[]">' +
 						'</div>' +
 					'</div>' +
 					'<div class="col-12 col-md-6 col-lg-4">' +
 						'<div class="form-group">' +
 							'<label>Designation</label>' +
-							'<input type="text" class="form-control">' +
+							'<input type="text" class="form-control" name="designation[]">' +
 						'</div>' +
 					'</div>' +
 				'</div>' +
@@ -117,13 +117,13 @@ Version      : 1.0
 			'<div class="col-12 col-md-5">' +
 				'<div class="form-group">' +
 					'<label>Awards</label>' +
-					'<input type="text" class="form-control">' +
+					'<input type="text" class="form-control" name="awards[]">' +
 				'</div>' +
 			'</div>' +
 			'<div class="col-12 col-md-5">' +
 				'<div class="form-group">' +
 					'<label>Year</label>' +
-					'<input type="text" class="form-control">' +
+					'<input type="text" class="form-control" name="year[]">' +
 				'</div>' +
 			'</div>' +
 			'<div class="col-12 col-md-2">' +

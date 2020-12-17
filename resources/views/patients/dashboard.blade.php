@@ -79,9 +79,9 @@
                                             <li class="nav-item">
                                                 <a class="nav-link" href="#pat_prescriptions" data-toggle="tab">Prescriptions</a>
                                             </li>
-                                            <li class="nav-item">
+                                            <!--<li class="nav-item">
                                                 <a class="nav-link" href="#pat_medical_records" data-toggle="tab"><span class="med-records">Medical Records</span></a>
-                                            </li>
+                                            </li>-->
                                             <li class="nav-item">
                                                 <a class="nav-link" href="#pat_billing" data-toggle="tab">Billing</a>
                                             </li>
@@ -203,7 +203,7 @@
                                         <!-- /Prescription Tab -->
                                             
                                         <!-- Medical Records Tab -->
-                                        <div id="pat_medical_records" class="tab-pane fade">
+                                        <!--<div id="pat_medical_records" class="tab-pane fade">
                                             <div class="card card-table mb-0">
                                                 <div class="card-body">
                                                     <div class="table-responsive">
@@ -248,7 +248,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div>-->
                                         <!-- /Medical Records Tab -->
                                         
                                         <!-- Billing Tab -->
@@ -270,7 +270,7 @@
                                                                 @foreach($payments as $payment)
                                                                 <tr>
                                                                     <td>
-                                                                        <a href="#">#INV-00{{$payment->id}}</a>
+                                                                        <a href="{{route('invoice.show', $payment->id)}}">#INV-00{{$payment->id}}</a>
                                                                     </td>
                                                                     <td>
                                                                         <h2 class="table-avatar">
@@ -287,7 +287,7 @@
                                                                             <a href="{{route('invoice.show', $payment->id)}}" class="btn btn-sm bg-info-light">
                                                                                 <i class="far fa-eye"></i> View
                                                                             </a>
-                                                                            <a href="javascript:void(0);" class="btn btn-sm bg-primary-light">
+                                                                            <a href="{{route('patient.invoice' , $payment->id)}}" class="btn btn-sm bg-primary-light">
                                                                                 <i class="fas fa-print"></i> Print
                                                                             </a>
                                                                         </div>

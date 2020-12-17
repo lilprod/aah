@@ -191,10 +191,10 @@
 										<div class="col-md-12 col-lg-9">
 										
 											<!-- About Details -->
-											@if($doctor->bibliography != '')
+											@if($doctor->biography != '')
 											<div class="widget about-widget">
 												<h4 class="widget-title">About Me</h4>
-												<p>{{$doctor->bibliography}}</p>
+												<p>{{$doctor->biography}}</p>
 											</div>
 											@endif
 											<!-- /About Details -->
@@ -379,23 +379,23 @@
 														<h5 class="clinic-direction"> <i class="fas fa-map-marker-alt"></i> 2286  Sundown Lane, Austin, Texas 78749, USA <br><a href="javascript:void(0);">Get Directions</a></h5>
 														<ul>
 															<li>
-																<a href="assets/img/features/feature-01.jpg" data-fancybox="gallery2">
-																	<img src="assets/img/features/feature-01.jpg" alt="Feature Image">
+																<a href="{{asset('assets/img/features/feature-01.jpg') }}" data-fancybox="gallery2">
+																	<img src="{{asset('assets/img/features/feature-01.jpg') }}" alt="Feature Image">
 																</a>
 															</li>
 															<li>
-																<a href="assets/img/features/feature-02.jpg" data-fancybox="gallery2">
-																	<img src="assets/img/features/feature-02.jpg" alt="Feature Image">
+																<a href="{{asset('assets/img/features/feature-02.jpg') }}" data-fancybox="gallery2">
+																	<img src="{{asset('assets/img/features/feature-02.jpg') }}" alt="Feature Image">
 																</a>
 															</li>
 															<li>
-																<a href="assets/img/features/feature-03.jpg" data-fancybox="gallery2">
-																	<img src="assets/img/features/feature-03.jpg" alt="Feature Image">
+																<a href="{{asset('assets/img/features/feature-03.jpg') }}" data-fancybox="gallery2">
+																	<img src="{{asset('assets/img/features/feature-03.jpg') }}" alt="Feature Image">
 																</a>
 															</li>
 															<li>
-																<a href="assets/img/features/feature-04.jpg" data-fancybox="gallery2">
-																	<img src="assets/img/features/feature-04.jpg" alt="Feature Image">
+																<a href="{{asset('assets/img/features/feature-04.jpg') }}" data-fancybox="gallery2">
+																	<img src="{{asset('assets/img/features/feature-04.jpg') }}" alt="Feature Image">
 																</a>
 															</li>
 														</ul>
@@ -436,87 +436,6 @@
 										</div>
 									</div>
 									<!-- /Location List -->
-									
-									<!-- Location List -->
-									<div class="location-list">
-										<div class="row">
-										
-											<!-- Clinic Content -->
-											<div class="col-md-6">
-												<div class="clinic-content">
-													<h4 class="clinic-name"><a href="#">The Family Dentistry Clinic</a></h4>
-													<p class="doc-speciality">MDS - Periodontology and Oral Implantology, BDS</p>
-													<div class="rating">
-														<i class="fas fa-star filled"></i>
-														<i class="fas fa-star filled"></i>
-														<i class="fas fa-star filled"></i>
-														<i class="fas fa-star filled"></i>
-														<i class="fas fa-star"></i>
-														<span class="d-inline-block average-rating">(4)</span>
-													</div>
-													<div class="clinic-details mb-0">
-														<p class="clinic-direction"> <i class="fas fa-map-marker-alt"></i> 2883  University Street, Seattle, Texas Washington, 98155 <br><a href="javascript:void(0);">Get Directions</a></p>
-														<ul>
-															<li>
-																<a href="assets/img/features/feature-01.jpg" data-fancybox="gallery2">
-																	<img src="assets/img/features/feature-01.jpg" alt="Feature Image">
-																</a>
-															</li>
-															<li>
-																<a href="assets/img/features/feature-02.jpg" data-fancybox="gallery2">
-																	<img src="assets/img/features/feature-02.jpg" alt="Feature Image">
-																</a>
-															</li>
-															<li>
-																<a href="assets/img/features/feature-03.jpg" data-fancybox="gallery2">
-																	<img src="assets/img/features/feature-03.jpg" alt="Feature Image">
-																</a>
-															</li>
-															<li>
-																<a href="assets/img/features/feature-04.jpg" data-fancybox="gallery2">
-																	<img src="assets/img/features/feature-04.jpg" alt="Feature Image">
-																</a>
-															</li>
-														</ul>
-													</div>
-
-												</div>
-											</div>
-											<!-- /Clinic Content -->
-											
-											<!-- Clinic Timing -->
-											<div class="col-md-4">
-												<div class="clinic-timing">
-													<div>
-														<p class="timings-days">
-															<span> Tue - Fri </span>
-														</p>
-														<p class="timings-times">
-															<span>11:00 AM - 1:00 PM</span>
-															<span>6:00 PM - 11:00 PM</span>
-														</p>
-													</div>
-													<div>
-														<p class="timings-days">
-															<span>Sat - Sun</span>
-														</p>
-														<p class="timings-times">
-															<span>8:00 AM - 10:00 AM</span>
-															<span>3:00 PM - 7:00 PM</span>
-														</p>
-													</div>
-												</div>
-											</div>
-											<!-- /Clinic Timing -->
-											
-											<div class="col-md-2">
-												<div class="consult-price">
-													$350
-												</div>
-											</div>
-										</div>
-									</div>
-									<!-- /Location List -->
 
 								</div>
 								<!-- /Locations Content -->
@@ -528,13 +447,14 @@
 									<div class="widget review-listing">
 										<ul class="comments-list">
 										
+										@foreach($reviews as $review)
 											<!-- Comment List -->
 											<li>
 												<div class="comment">
-													<img class="avatar avatar-sm rounded-circle" alt="User Image" src="assets/img/patients/patient.jpg">
+													<img class="avatar avatar-sm rounded-circle" alt="User Image" src="{{url('/storage/profile_images/'.$review->user->profile_picture ) }}">
 													<div class="comment-body">
 														<div class="meta-data">
-															<span class="comment-author">Richard Wilson</span>
+															<span class="comment-author">{{$review->user->name}} {{$review->user->firstname}}</span>
 															<span class="comment-date">Reviewed 2 Days ago</span>
 															<div class="review-count rating">
 																<i class="fas fa-star filled"></i>
@@ -544,38 +464,69 @@
 																<i class="fas fa-star"></i>
 															</div>
 														</div>
+
+														@if($review->recommend != '')
 														<p class="recommended"><i class="far fa-thumbs-up"></i> I recommend the doctor</p>
+														@endif
+
 														<p class="comment-content">
-															Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-															sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-															Ut enim ad minim veniam, quis nostrud exercitation.
-															Curabitur non nulla sit amet nisl tempus
+															{{$review->body}}
 														</p>
-														<div class="comment-reply">
-															<a class="comment-btn" href="#">
-																<i class="fas fa-reply"></i> Reply
-															</a>
-														   <p class="recommend-btn">
-															<span>Recommend?</span>
-															<a href="#" class="like-btn">
-																<i class="far fa-thumbs-up"></i> Yes
-															</a>
-															<a href="#" class="dislike-btn">
-																<i class="far fa-thumbs-down"></i> No
-															</a>
-														</p>
+
+														
+															<div class="comment-reply">
+																
+																<a class="comment-btn" href="#">
+																	<i class="fas fa-reply"></i> Reply
+																</a>
+
+															   <p class="recommend-btn">
+																	<span>Recommend?</span>
+																	<a href="#" class="like-btn">
+																		<i class="far fa-thumbs-up"></i> Yes
+																	</a>
+																	<a href="#" class="dislike-btn">
+																		<i class="far fa-thumbs-down"></i> No
+																	</a>
+																</p>
+															</div>
+														
+
+														<div class="write-review" id="review_comment" style="display: none;">
+															<form method="POST" action="{{route('review_answers_store')}}">
+																{{ csrf_field() }}
+															<div class="form-group">
+
+																<input type="hidden" name="review_id" value="{{$review->id}}">
+
+																<input type="hidden" name="doctor_id" value="{{$review->doctor->id}}">
+
+																<input type="hidden" name="patient_id" value="{{$review->patient->id}}">
+
+																<label>Your Comment</label>
+																<textarea id="review_desc" maxlength="100" class="form-control" name="body"></textarea>
+															  
+															  <div class="d-flex justify-content-between mt-3"><small class="text-muted"><span id="chars">100</span> characters remaining</small></div>
+															</div>
+
+															<div class="submit-section">
+																	<button type="submit" class="btn btn-primary submit-btn">Add Comment</button>
+																</div>
+															</form>
 														</div>
 													</div>
 												</div>
 												
 												<!-- Comment Reply -->
 												<ul class="comments-reply">
+
+													@foreach($review->answers as $answer)
 													<li>
 														<div class="comment">
-															<img class="avatar avatar-sm rounded-circle" alt="User Image" src="assets/img/patients/patient1.jpg">
+															<img class="avatar avatar-sm rounded-circle" alt="User Image" src="{{url('/storage/profile_images/'.$answer->user->profile_picture ) }}">
 															<div class="comment-body">
 																<div class="meta-data">
-																	<span class="comment-author">Charlene Reed</span>
+																	<span class="comment-author">{{$answer->user->name}} {{$answer->user->firstname}}</span>
 																	<span class="comment-date">Reviewed 3 Days ago</span>
 																	<div class="review-count rating">
 																		<i class="fas fa-star filled"></i>
@@ -586,10 +537,7 @@
 																	</div>
 																</div>
 																<p class="comment-content">
-																	Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-																	sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-																	Ut enim ad minim veniam.
-																	Curabitur non nulla sit amet nisl tempus
+																	{{$answer->body}}
 																</p>
 																<div class="comment-reply">
 																	<a class="comment-btn" href="#">
@@ -608,76 +556,46 @@
 															</div>
 														</div>
 													</li>
+													@endforeach
 												</ul>
 												<!-- /Comment Reply -->
 												
 											</li>
 											<!-- /Comment List -->
-											
-											<!-- Comment List -->
-											<li>
-												<div class="comment">
-													<img class="avatar avatar-sm rounded-circle" alt="User Image" src="assets/img/patients/patient2.jpg">
-													<div class="comment-body">
-														<div class="meta-data">
-															<span class="comment-author">Travis Trimble</span>
-															<span class="comment-date">Reviewed 4 Days ago</span>
-															<div class="review-count rating">
-																<i class="fas fa-star filled"></i>
-																<i class="fas fa-star filled"></i>
-																<i class="fas fa-star filled"></i>
-																<i class="fas fa-star filled"></i>
-																<i class="fas fa-star"></i>
-															</div>
-														</div>
-														<p class="comment-content">
-															Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-															sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-															Ut enim ad minim veniam, quis nostrud exercitation.
-															Curabitur non nulla sit amet nisl tempus
-														</p>
-														<div class="comment-reply">
-															<a class="comment-btn" href="#">
-																<i class="fas fa-reply"></i> Reply
-															</a>
-															<p class="recommend-btn">
-																<span>Recommend?</span>
-																<a href="#" class="like-btn">
-																	<i class="far fa-thumbs-up"></i> Yes
-																</a>
-																<a href="#" class="dislike-btn">
-																	<i class="far fa-thumbs-down"></i> No
-																</a>
-															</p>
-														</div>
-													</div>
-												</div>
-											</li>
-											<!-- /Comment List -->
+
+											@endforeach
 											
 										</ul>
 										
 										<!-- Show All -->
-										<div class="all-feedback text-center">
+										<!--<div class="all-feedback text-center">
 											<a href="#" class="btn btn-primary btn-sm">
 												Show all feedback <strong>(167)</strong>
 											</a>
-										</div>
+										</div>-->
 										<!-- /Show All -->
 										
 									</div>
 									<!-- /Review Listing -->
-								
+									
+									@auth
 									<!-- Write Review -->
 									<div class="write-review">
-										<h4>Write a review for <strong>Dr. Darren Elder</strong></h4>
+										<h4>Write a review for <strong>Dr. {{$doctor->name}} {{$doctor->firstname}}</strong></h4>
 										
 										<!-- Write Review Form -->
-										<form>
+										<form method="POST" action="{{ route('ratings.store') }}" enctype="multipart/form-data">
+                                		{{csrf_field()}}
+
 											<div class="form-group">
+
+												<input type="hidden" name="doctor_id" id="doctor" class="form-control" value="{{$doctor->id}}">
+
+                                        		<input type="hidden" name="user_id" id="patient" class="form-control" value="{{auth()->user()->id}}">
+
 												<label>Review</label>
 												<div class="star-rating">
-													<input id="star-5" type="radio" name="rating" value="star-5">
+													<!--<input id="star-5" type="radio" name="rating" value="star-5">
 													<label for="star-5" title="5 stars">
 														<i class="active fa fa-star"></i>
 													</label>
@@ -696,28 +614,29 @@
 													<input id="star-1" type="radio" name="rating" value="star-1">
 													<label for="star-1" title="1 star">
 														<i class="active fa fa-star"></i>
-													</label>
+													</label>-->
+													<input id="rating-system" type="number" class="rating" min="0" max="5" step="1" name="rating" value="{{ auth()->user()->userAverageRating($doctor->id) }}">
 												</div>
 											</div>
 											<div class="form-group">
 												<label>Title of your review</label>
-												<input class="form-control" type="text" placeholder="If you could say it in one sentence, what would you say?">
+												<input class="form-control" type="text" placeholder="If you could say it in one sentence, what would you say?" name="title">
 											</div>
 											<div class="form-group">
 												<label>Your review</label>
-												<textarea id="review_desc" maxlength="100" class="form-control"></textarea>
+												<textarea id="review_desc" maxlength="100" class="form-control" name="body"></textarea>
 											  
 											  <div class="d-flex justify-content-between mt-3"><small class="text-muted"><span id="chars">100</span> characters remaining</small></div>
 											</div>
 											<hr>
-											<div class="form-group">
+											<!--<div class="form-group">
 												<div class="terms-accept">
 													<div class="custom-checkbox">
 													   <input type="checkbox" id="terms_accept">
 													   <label for="terms_accept">I have read and accept <a href="#">Terms &amp; Conditions</a></label>
 													</div>
 												</div>
-											</div>
+											</div>-->
 											<div class="submit-section">
 												<button type="submit" class="btn btn-primary submit-btn">Add Review</button>
 											</div>
@@ -726,6 +645,7 @@
 										
 									</div>
 									<!-- /Write Review -->
+									@endauth
 						
 								</div>
 								<!-- /Reviews Content -->

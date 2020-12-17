@@ -114,6 +114,12 @@ Version      : 1.3
 	if($('[data-toggle="tooltip"]').length > 0 ){
 		$('[data-toggle="tooltip"]').tooltip();
 	}
+
+
+	$(".hours-info").on('click', '.btn_remove', function(){  
+           var button_id = $(this).attr("id");   
+           $('#row'+button_id+'').remove();
+      }); 
 	
 	// Add More Hours
 	

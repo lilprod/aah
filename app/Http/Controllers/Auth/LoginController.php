@@ -44,7 +44,7 @@ class LoginController extends Controller
         $this->middleware('guest:admin')->except('logout');
     }
 
-    /*public function login(Request $request)
+    public function login(Request $request)
     {
         $this->validateLogin($request);
         if ($this->hasTooManyLoginAttempts($request)) {
@@ -73,7 +73,7 @@ class LoginController extends Controller
         $this->IncrementLoginAttempts($request);
 
         return $this->sendFailedLoginResponse($request);
-    }*/
+    }
 
     /*public function showPatientLoginForm()
     {
@@ -142,10 +142,13 @@ class LoginController extends Controller
         $errors = [$this->username() => trans('auth.failed')];
  
         // Fetching user from database
+        
         $user = User::where($this->username(), $request->{$this->username()})->first();
-        //dd($user);
+
         // Checking if user is sucessfully logged in, if login is sucessfull
+
         // and status is false i.e. 0 w will override the default error message
+
         if($user && Hash::check($request->password, $user->password) && $user->is_activated !=1){
             
             $errors = [$this->username() => 'Your account is not activated.'];

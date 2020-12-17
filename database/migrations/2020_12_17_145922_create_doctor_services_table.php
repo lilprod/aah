@@ -15,9 +15,10 @@ class CreateDoctorServicesTable extends Migration
     {
         Schema::create('doctor_services', function (Blueprint $table) {
             $table->id();
-            $table->integer('speciality_id')->nullable();
-            $table->integer('service_id')->nullable();
             $table->integer('doctor_id')->nullable();
+            $table->integer('user_id')->nullable();
+            $table->integer('service_id')->nullable();
+            $table->string('service_title')->nullable();
             $table->timestamps();
         });
     }

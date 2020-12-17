@@ -18,9 +18,47 @@ use App\PrescriptionExam;
 use App\Schedule;
 use Carbon\Carbon;
 use App\Country;
+use App\Review;
+use App\Answer;
+use App\Service;
 
 class PagesController extends Controller
 {
+
+  public function search(Request $request)
+  {
+        // check if ajax request is coming or not
+        if($request->ajax()) {
+
+            // select service title from database
+            $data = Service::where('title', 'LIKE', $request->title.'%')
+                            ->get();
+            
+            // declare an empty array for output
+            $output = '';
+            
+            // if searched countries count is larager than zero
+            if (count($data)>0) {
+                // concatenate output to the array
+                $output = '<ul class="list-group" style="display: block; position: relative; z-index: 1">';
+                // loop through the result array
+                foreach ($data as $row){
+                    // concatenate output to the array
+                    $output .= '<li class="list-group-item">'.$row->title.'</li>';
+                }
+                // end of output
+                $output .= '</ul>';
+            }
+            else {
+                // if there's no matching results according to the input
+                $output .= '<li class="list-group-item">'.'No results'.'</li>';
+            }
+            // return output result array
+            return $output;
+        }
+    }
+
+
     public function index()
     {
         $specialities = Speciality::all();
@@ -61,7 +99,9 @@ class PagesController extends Controller
 
         $doctor = Doctor::findOrFail($id);
 
-        return view('doctors.profile', compact('doctor'));
+        $reviews = $doctor->reviews;
+
+        return view('doctors.profile', compact('doctor', 'reviews'));
     }
 
      /**

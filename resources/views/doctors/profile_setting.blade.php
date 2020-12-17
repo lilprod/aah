@@ -26,9 +26,12 @@
 		<link rel="stylesheet" href="{{asset('assets/plugins/bootstrap-tagsinput/css/bootstrap-tagsinput.css') }}">
 		
 		<link rel="stylesheet" href="{{asset('assets/plugins/dropzone/dropzone.min.css') }}">
+
+		<link rel="stylesheet" type="text/css" href="{{asset('css/btn.css') }}">
         
         <!-- Main CSS -->
         <link rel="stylesheet" href="{{asset('assets/css/style.css') }}">
+
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
             <script src="assets/js/html5shiv.min.js"></script>
@@ -120,13 +123,13 @@
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Name <span class="text-danger">*</span></label>
-												<input type="text" class="form-control" value="{{$doctor->name}}" name="name">
+												<input type="text" class="form-control" value="{{$doctor->name}}" name="name" id="name">
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>First Name <span class="text-danger">*</span></label>
-												<input type="text" class="form-control" value="{{$doctor->firstname}}" name="firstname">
+												<input type="text" class="form-control" value="{{$doctor->firstname}}" name="firstname" id="firstname">
 											</div>
 										</div>
 										<div class="col-md-6">
@@ -218,7 +221,7 @@
 									<h4 class="card-title">Contact Details</h4>
 									<div class="row form-row">
 
-										<div class="col-md-6">
+										<div class="col-md-12">
 											<div class="form-group">
 												<label>Address Line</label>
 												<input type="text" class="form-control" name="address" value="{{$doctor->address}}">
@@ -232,12 +235,42 @@
 											</div>
 										</div>-->
 
-										<div class="col-md-6">
-											<div class="form-group">
-												<label class="control-label">Region</label>
-												<input type="text" class="form-control" name="region" value="{{$doctor->region}}">
+										<div class="col-sm-6">
+                                                <div class="form-group mb-3">
+                                                    <label>Region</label>
+                                                    <select class="form-control" id="region" name="region" required>
+                                                        <option value="1" {{ ($doctor->region === 'WEST AFRICA') ? 'selected' : '' }}>WEST AFRICA</option>
+                                                        <option value="2" {{ ($doctor->region === 'EAST AFRICA') ? 'selected' : '' }}>EAST AFRICA</option>
+                                                        <option value="3" {{ ($doctor->region === 'NORTHEN AFRICA') ? 'selected' : '' }}>NORTHEN AFRICA</option>
+                                                        <option value="4" {{ ($doctor->region === 'MIDDLE AFRICA') ? 'selected' : '' }}>MIDDLE AFRICA</option>
+                                                        <option value="5" {{ ($doctor->region === 'SOUTHERN AFRICA') ? 'selected' : '' }}>SOUTHERN AFRICA</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-md-6" id="old_country">
+												<div class="form-group">
+													<label class="control-label">Country</label>
+													<input type="text" class="form-control" name="old_country"  value="{{$doctor->country}}">
+												</div>
 											</div>
-										</div>
+
+                                            <div class="col-sm-6" id="country_section" style="display: none;">
+                                                <div class="form-group mb-3">
+                                                    <label>Country</label>
+                                                    <select class="form-control" name="country" id="country">
+                                                    </select>
+                                                </div>
+                                            </div>
+										
+
+										<!--<div class="col-md-6">
+											<div class="form-group">
+												<label class="control-label">Country</label>
+												<input type="text" class="form-control" name="country" value="{{$doctor->country}}">
+											</div>
+										</div>-->
 
 										<!--<div class="col-md-6">
 											<div class="form-group">
@@ -245,13 +278,6 @@
 												<input type="text" class="form-control">
 											</div>
 										</div>-->
-
-										<div class="col-md-6">
-											<div class="form-group">
-												<label class="control-label">Country</label>
-												<input type="text" class="form-control" name="country" value="{{$doctor->country}}">
-											</div>
-										</div>
 
 										<div class="col-md-6">
 											<div class="form-group">
@@ -272,11 +298,11 @@
 							<!-- /Contact Details -->
 							
 							<!-- Pricing -->
-							<!--<div class="card">
+							<div class="card">
 								<div class="card-body">
 									<h4 class="card-title">Pricing</h4>
 									
-									<div class="form-group mb-0">
+									<!--<div class="form-group mb-0">
 										<div id="pricing_select">
 											<div class="custom-control custom-radio custom-control-inline">
 												<input type="radio" id="price_free" name="rating_option" class="custom-control-input" value="price_free" checked>
@@ -295,26 +321,57 @@
 											<input type="text" class="form-control" id="custom_rating_input" name="custom_rating_count" value="" placeholder="20">
 											<small class="form-text text-muted">Custom price you can add</small>
 										</div>
+									</div>-->
+									<div class="row form-row">
+										<div class="col-md-4">
+											<input type="number" class="form-control" id="apt_fees" name="apt_fees" value="{{$doctor->apt_fees}}" placeholder="20" min="20">
+											<small class="form-text text-muted">Custom price you can add</small>
+										</div>
 									</div>
 									
 								</div>
-							</div>-->
+							</div>
 							<!-- /Pricing -->
 							
 							<!-- Services and Specialization -->
 							<div class="card services-card">
 								<div class="card-body">
 									<h4 class="card-title">Services and Specialization</h4>
+									<div class="row form-row">
+										<div class="col-md-6">
+	                                        <div class="form-group">
+	                                            <label>Title</label>
+	                                            <select class="form-control" id="title" name="title">
+	                                                <option value="DR" {{ ($doctor->title === 'DR') ? 'selected' : '' }}>Doctor</option>
+	                                                <option value="PR" {{ ($doctor->title === 'PR') ? 'selected' : '' }}>Professor</option>
+	                                            </select>
+	                                        </div>
+	                                    </div>
+
+	                                    <div class="col-md-6">
+	                                        <div class="form-group">
+	                                            <label>Specialty</label>
+	                                            <select class="form-control" id="speciality_id" name="speciality_id">
+	                                                @foreach($specialities as $speciality)
+	                                                    <option value="{{$speciality->id}}" {{ ($doctor->speciality_id === $speciality->id) ? 'selected' : '' }}>{{$speciality->title}}</option>
+	                                                @endforeach
+	                                            </select>
+	                                        </div>
+	                                    </div>
+	                                </div>
+
 									<div class="form-group">
 										<label>Services</label>
-										<input type="text" data-role="tagsinput" class="input-tags form-control" placeholder="Enter Services" name="services" value="Tooth cleaning " id="services">
+										<input type="text" data-role="tagsinput" class="input-tags form-control" placeholder="Enter Services" name="services" value="@foreach($services as $service) {{$service->service_title}}, @endforeach" id="services">
 										<small class="form-text text-muted">Note : Type & Press enter to add new services</small>
 									</div> 
-									<div class="form-group mb-0">
+									<div id="services_list"></div>   
+									<!--<div class="form-group mb-0">
 										<label>Specialization </label>
 										<input class="input-tags form-control" type="text" data-role="tagsinput" placeholder="Enter Specialization" name="specialist" value="Children Care,Dental Care" id="specialist">
 										<small class="form-text text-muted">Note : Type & Press  enter to add new specialization</small>
-									</div> 
+									</div> -->
+
 								</div>              
 							</div>
 							<!-- /Services and Specialization -->
@@ -488,6 +545,7 @@
 			<!-- /Page Content -->
 
 			<!-- Footer -->
+			<button onclick="topFunction()" id="myBtn" title="Go to top"><i class="fa fa-chevron-up"></i></button>
                 @include('website.footer')
                 
             <!-- /Footer -->
@@ -513,6 +571,123 @@
 	          readURL(this)
 	      });
 	    </script>
+
+	    <script type="text/javascript">
+            $(document).ready(function() {
+
+                $('#name').keyup(function(){
+                    $(this).val($(this).val().toUpperCase());
+                });
+
+                $('#firstname').keyup(function() 
+                {
+                    var str = $('#firstname').val();
+                   
+                    
+                    var spart = str.split(" ");
+                    for ( var i = 0; i < spart.length; i++ )
+                    {
+                        var j = spart[i].charAt(0).toUpperCase();
+                        spart[i] = j + spart[i].substr(1);
+                    }
+
+                  $('#firstname').val(spart.join(" "));
+                
+                });
+
+                $('#services').keyup(function() {
+                    // the text typed in the input field is assigned to a variable 
+
+                    alert('ok');
+                    var query = $(this).val();
+                    // call to an ajax function
+                    $.ajax({
+                        // assign a controller function to perform search action - route name is search
+                        url:"{{ route('get_services') }}",
+                        // since we are getting data methos is assigned as GET
+                        type:"GET",
+                        // data are sent the server
+                        data:{'title':query},
+                        // if search is succcessfully done, this callback function is called
+                        success:function (data) {
+                            // print the search results in the div called services_list(id)
+                            $('#services_list').html(data);
+                        }
+                    })
+                    // end of ajax call
+                });
+
+               
+
+                 $('#region').on('change', function () {
+
+                    var region_id = $(this).val();
+
+                    if(region_id){
+                        $.ajax({
+                            url: '{!!URL::route('getCountries')!!}',
+                            type: 'GET',
+                            data : { 'id' : region_id},
+                            dataType: 'json',
+
+                            success:function(data){
+                                //console.log('data');
+
+                                if(data) {
+
+                                	$('#country_section').attr("style", "display:block");
+
+                                	$('#old_country').attr("style", "display:none");
+
+                                    $('#country').empty();
+
+                                    $('#country').focus;
+
+                                    $('#country').append('<option value = "">--Select Country--</option>');
+
+                                    $.each(data, function(key, value){
+                                        $('select[name = "country"]').append('<option value= "'+ value.title +'">' + value.title + '</option>');
+                                    });
+
+                                    //$('select[name = "country"]').selectmenu('refresh', true);
+
+                                    //$('select[name = "country"]').refresh();
+
+                                    } else {
+                                        $('#country').empty();
+                                    } 
+                                }
+                                });
+                            }
+                            else{
+                                $('#country').empty();
+                            }
+                        
+                 });
+            });
+            </script>
+
+	    <script type="text/javascript">
+			// When the user scrolls down 20px from the top of the document, show the button
+			window.onscroll = function() {scrollFunction()};
+
+			function scrollFunction() {
+			  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+			    document.getElementById("myBtn").style.display = "block";
+			  } else {
+			    document.getElementById("myBtn").style.display = "none";
+			  }
+			}
+
+			// When the user clicks on the button, scroll to the top of the document
+			function topFunction() {
+			  document.body.scrollTop = 0; // For Safari
+			  document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+			}
+		</script>
+
+		<!-- Chosen JS -->
+
         
         <!-- Bootstrap Core JS -->
         <script src="{{asset('assets/js/popper.min.js') }}"></script>

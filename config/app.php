@@ -168,6 +168,7 @@ return [
         Srmklive\PayPal\Providers\PayPalServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
 
         //PragmaRX\Countries\ServiceProvider::class,
         /*
@@ -240,6 +241,7 @@ return [
         'PayPal' => Srmklive\PayPal\Facades\PayPal::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'Image' => Intervention\Image\Facades\Image::class,
         //'Countries'=> PragmaRX\Countries\Facade::class,
 
     ],

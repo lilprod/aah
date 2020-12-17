@@ -139,7 +139,7 @@
 																	<h4 class="card-title d-flex justify-content-between">
 																		<span>Time Slots</span> 
 																		@if(count($schedulesSunday)>0)
-																		<a class="edit-link" data-toggle="modal" href="#edit_time_slot"><i class="fa fa-edit mr-1"></i>Edit</a>
+																		<a class="edit-link" data-toggle="modal" href="#edit_time_slot" data-attr="{{ route('schedules.edit', 7) }}" id="edit_time7"><i class="fa fa-edit mr-1"></i>Edit</a>
 																		@else
 																		<a class="edit-link" data-toggle="modal" href="#add_time_slot" data-id="7" id="add_time7"><i class="fa fa-plus-circle"></i> Add Slot</a>
 																		@endif
@@ -147,10 +147,10 @@
 																	</h4>
 																		@if(count($schedulesSunday)>0)
 																			<div class="doc-times">
-																				@foreach ($schedulesSunday as $schedule1)
+																				@foreach ($schedulesSunday as $schedule7)
 																				<div class="doc-slot-list">
-																					{{$schedule1->begin_time}} - {{$schedule1->begin_time}}
-																					<a href="javascript:void(0)" class="delete_schedule">
+																					{{$schedule7->begin_time}} - {{$schedule7->begin_time}}
+																					<a href="javascript:void(0)" class="delete_schedule" data-toggle="modal" data-target="#delete_time_slot" onclick="deleteData({{ $schedule7->id}})">
 																						<i class="fa fa-times"></i>
 																					</a>
 																				</div>
@@ -167,7 +167,7 @@
 																	<h4 class="card-title d-flex justify-content-between">
 																		<span>Time Slots</span> 
 																		@if(count($schedulesMonday)>0)
-																		<a class="edit-link" data-toggle="modal" href="#edit_time_slot"><i class="fa fa-edit mr-1"></i>Edit</a>
+																		<a class="edit-link" data-toggle="modal" href="#edit_time_slot" data-attr="{{ route('schedules.edit', 1) }}" id="edit_time1"><i class="fa fa-edit mr-1"></i>Edit</a>
 
 																		@else
 																		<a class="edit-link" data-toggle="modal" href="#add_time_slot" data-id="1" id="add_time1"><i class="fa fa-plus-circle"></i> Add Slot</a>
@@ -177,10 +177,10 @@
 																	<!-- Slot List -->
 																	@if(count($schedulesMonday)>0)
 																	<div class="doc-times">
-																		@foreach ($schedulesMonday as $schedule2)
+																		@foreach ($schedulesMonday as $schedule1)
 																			<div class="doc-slot-list">
-																				{{$schedule2->begin_time}} - {{$schedule2->end_time}}
-																				<a href="javascript:void(0)" class="delete_schedule" data-toggle="modal" data-target="#delete_time_slot" onclick="deleteData({{ $schedule2->id}})">
+																				{{$schedule1->begin_time}} - {{$schedule1->end_time}}
+																				<a href="javascript:void(0)" class="delete_schedule" data-toggle="modal" data-target="#delete_time_slot" onclick="deleteData({{ $schedule1->id}})">
 																					<i class="fa fa-times"></i>
 																				</a>
 																			</div>
@@ -199,7 +199,7 @@
 																	<h4 class="card-title d-flex justify-content-between">
 																		<span>Time Slots</span> 
 																		@if(count($schedulesTuesday)>0)
-																		<a class="edit-link" data-toggle="modal" href="#edit_time_slot"><i class="fa fa-edit mr-1"></i>Edit</a>
+																		<a class="edit-link" data-toggle="modal" href="#edit_time_slot" data-attr="{{ route('schedules.edit', 2) }}" id="edit_time2"><i class="fa fa-edit mr-1"></i>Edit</a>
 																		@else
 																		<a class="edit-link" data-toggle="modal" href="#add_time_slot" data-id="2" id="add_time2"><i class="fa fa-plus-circle"></i> Add Slot</a>
 																		@endif
@@ -208,10 +208,10 @@
 																	
 																		@if (count($schedulesTuesday)>0)
 																		<div class="doc-times">
-																			@foreach($schedulesTuesday as $schedule)
+																			@foreach($schedulesTuesday as $schedule2)
 																			<div class="doc-slot-list">
-																				{{$schedule->begin_time}} - {{$schedule->end_time}}
-																				<a href="javascript:void(0)" class="delete_schedule" data-toggle="modal" data-target="#delete_time_slot" onclick="deleteData({{ $schedule->id}})">
+																				{{$schedule2->begin_time}} - {{$schedule2->end_time}}
+																				<a href="javascript:void(0)" class="delete_schedule" data-toggle="modal" data-target="#delete_time_slot" onclick="deleteData({{ $schedule2->id}})">
 																					<i class="fa fa-times"></i>
 																				</a>
 																			</div>
@@ -229,7 +229,7 @@
 																	<h4 class="card-title d-flex justify-content-between">
 																		<span>Time Slots</span> 
 																		@if(count($schedulesWednesday)>0)
-																		<a class="edit-link" data-toggle="modal" href="#edit_time_slot"><i class="fa fa-edit mr-1"></i>Edit</a>
+																		<a class="edit-link" data-toggle="modal" href="#edit_time_slot" data-attr="{{ route('schedules.edit', 3) }}" id="edit_time3"><i class="fa fa-edit mr-1"></i>Edit</a>
 																		@else
 																		<a class="edit-link" data-toggle="modal" href="#add_time_slot" data-id="3" id="add_time3"><i class="fa fa-plus-circle"></i> Add Slot</a>
 																		@endif
@@ -237,11 +237,11 @@
 																	<!-- Slot List -->
 																	@if (count($schedulesWednesday)>0)
 																	<div class="doc-times">
-																		@foreach ($schedulesWednesday as $schedule)
+																		@foreach ($schedulesWednesday as $schedule3)
 																		
 																			<div class="doc-slot-list">
-																				{{$schedule->begin_time}} - {{$schedule->begin_time}}
-																				<a href="javascript:void(0)" class="delete_schedule" data-toggle="modal" data-target="#delete_time_slot" onclick="deleteData({{ $schedule->id}})">
+																				{{$schedule3->begin_time}} - {{$schedule3->end_time}}
+																				<a href="javascript:void(0)" class="delete_schedule" data-toggle="modal" data-target="#delete_time_slot" onclick="deleteData({{ $schedule3->id}})">
 																					<i class="fa fa-times"></i>
 																				</a>
 																			</div>
@@ -259,7 +259,7 @@
 																	<h4 class="card-title d-flex justify-content-between">
 																		<span>Time Slots</span> 
 																		@if(count($schedulesThursday)>0)
-																		<a class="edit-link" data-toggle="modal" href="#edit_time_slot"><i class="fa fa-edit mr-1"></i>Edit</a>
+																		<a class="edit-link" data-toggle="modal" href="#edit_time_slot" data-attr="{{ route('schedules.edit', 4) }}" id="edit_time4"><i class="fa fa-edit mr-1"></i>Edit</a>
 																		@else
 																		<a class="edit-link" data-toggle="modal" href="#add_time_slot" data-id="4" id="add_time4"><i class="fa fa-plus-circle"></i> Add Slot</a>
 																		@endif
@@ -267,11 +267,11 @@
 																	<!-- Slot List -->
 																	@if (count($schedulesThursday)>0)
 																	<div class="doc-times">
-																		@foreach($schedulesThursday as $schedule)
+																		@foreach($schedulesThursday as $schedule4)
 																		
 																			<div class="doc-slot-list">
-																				{{$schedule->begin_time}} - {{$schedule->begin_time}}
-																				<a href="javascript:void(0)" class="delete_schedule" data-toggle="modal" data-target="#delete_time_slot" onclick="deleteData({{ $schedule->id}})">
+																				{{$schedule4->begin_time}} - {{$schedule4->end_time}}
+																				<a href="javascript:void(0)" class="delete_schedule" data-toggle="modal" data-target="#delete_time_slot" onclick="deleteData({{ $schedule4->id}})">
 																					<i class="fa fa-times"></i>
 																				</a>
 																			</div>
@@ -289,7 +289,7 @@
 																	<h4 class="card-title d-flex justify-content-between">
 																		<span>Time Slots</span> 
 																		@if(count($schedulesFriday)>0)
-																		<a class="edit-link" data-toggle="modal" href="#edit_time_slot"><i class="fa fa-edit mr-1"></i>Edit</a>
+																		<a class="edit-link" data-toggle="modal" href="#edit_time_slot" data-attr="{{ route('schedules.edit', 5) }}" id="edit_time5"><i class="fa fa-edit mr-1"></i>Edit</a>
 																		@else
 																		<a class="edit-link" data-toggle="modal" href="#add_time_slot" data-id="5" id="add_time5"><i class="fa fa-plus-circle"></i> Add Slot</a>
 																		@endif
@@ -297,11 +297,11 @@
 																	<!-- Slot List -->
 																	@if (count($schedulesFriday)>0)
 																	<div class="doc-times">
-																		@foreach($schedulesFriday as $schedule)
+																		@foreach($schedulesFriday as $schedule5)
 																		
 																			<div class="doc-slot-list">
-																				{{$schedule->begin_time}} - {{$schedule->begin_time}}
-																				<a href="javascript:void(0)" class="delete_schedule">
+																				{{$schedule5->begin_time}} - {{$schedule5->end_time}}
+																				<a href="javascript:void(0)" class="delete_schedule" data-toggle="modal" data-target="#delete_time_slot" onclick="deleteData({{ $schedule5->id}})">
 																					<i class="fa fa-times"></i>
 																				</a>
 																			</div>
@@ -319,7 +319,7 @@
 																	<h4 class="card-title d-flex justify-content-between">
 																		<span>Time Slots</span> 
 																		@if(count($schedulesSaturday)>0)
-																		<a class="edit-link" data-toggle="modal" href="#edit_time_slot"><i class="fa fa-edit mr-1"></i>Edit</a>
+																		<a class="edit-link" data-toggle="modal" href="#edit_time_slot" data-attr="{{ route('schedules.edit', 6) }}" id="edit_time6"><i class="fa fa-edit mr-1"></i>Edit</a>
 																		@else
 																		<a class="edit-link" data-toggle="modal" href="#add_time_slot" data-id="6" id="add_time6"><i class="fa fa-plus-circle"></i> Add Slot</a>
 																		@endif
@@ -327,11 +327,11 @@
 																	<!-- Slot List -->
 																	@if (count($schedulesSaturday)>0)
 																	<div class="doc-times">
-																		@foreach($schedulesSaturday as $schedule)
+																		@foreach($schedulesSaturday as $schedule6)
 																		
 																			<div class="doc-slot-list">
-																				{{$schedule->begin_time}} - {{$schedule->begin_time}}
-																				<a href="javascript:void(0)" class="delete_schedule">
+																				{{$schedule6->begin_time}} - {{$schedule6->end_time}}
+																				<a href="javascript:void(0)" class="delete_schedule" data-toggle="modal" data-target="#delete_time_slot" onclick="deleteData({{ $schedule6->id}})">
 																					<i class="fa fa-times"></i>
 																				</a>
 																			</div>
@@ -484,114 +484,8 @@
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<div class="modal-body">
-						<form>
-							<div class="hours-info">
-								<div class="row form-row hours-cont">
-									<div class="col-12 col-md-10">
-
-										<div class="row form-row">
-											<div class="col-12 col-md-6">
-												<div class="form-group">
-													<label>Start Time</label>
-													<select class="form-control">
-														<option>-</option>
-														<option selected>12.00 am</option>
-														<option>12.30 am</option>  
-														<option>1.00 am</option>
-														<option>1.30 am</option>
-													</select>
-												</div> 
-											</div>
-											<div class="col-12 col-md-6">
-												<div class="form-group">
-													<label>End Time</label>
-													<select class="form-control">
-														<option>-</option>
-														<option>12.00 am</option>
-														<option selected>12.30 am</option>  
-														<option>1.00 am</option>
-														<option>1.30 am</option>
-													</select>
-												</div> 
-											</div>
-										</div>
-									</div>
-								</div>
-								
-								<div class="row form-row hours-cont">
-									<div class="col-12 col-md-10">
-										<div class="row form-row">
-											<div class="col-12 col-md-6">
-												<div class="form-group">
-													<label>Start Time</label>
-													<select class="form-control">
-														<option>-</option>
-														<option>12.00 am</option>
-														<option selected>12.30 am</option>
-														<option>1.00 am</option>
-														<option>1.30 am</option>
-													</select>
-												</div>
-											</div>
-											<div class="col-12 col-md-6">
-												<div class="form-group">
-													<label>End Time</label>
-													<select class="form-control">
-														<option>-</option>
-														<option>12.00 am</option>
-														<option>12.30 am</option>
-														<option selected>1.00 am</option>
-														<option>1.30 am</option>
-													</select>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="col-12 col-md-2"><label class="d-md-block d-sm-none d-none">&nbsp;</label><a href="#" class="btn btn-danger trash"><i class="far fa-trash-alt"></i></a></div>
-								</div>
-								
-								<div class="row form-row hours-cont">
-									<div class="col-12 col-md-10">
-										<div class="row form-row">
-											<div class="col-12 col-md-6">
-												<div class="form-group">
-													<label>Start Time</label>
-													<select class="form-control">
-														<option>-</option>
-														<option>12.00 am</option>
-														<option>12.30 am</option>
-														<option selected>1.00 am</option>
-														<option>1.30 am</option>
-													</select>
-												</div>
-											</div>
-											<div class="col-12 col-md-6">
-												<div class="form-group">
-													<label>End Time</label>
-													<select class="form-control">
-														<option>-</option>
-														<option>12.00 am</option>
-														<option>12.30 am</option>
-														<option>1.00 am</option>
-														<option selected>1.30 am</option>
-													</select>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="col-12 col-md-2"><label class="d-md-block d-sm-none d-none">&nbsp;</label><a href="#" class="btn btn-danger trash"><i class="far fa-trash-alt"></i></a></div>
-								</div>
-
-							</div>
-							
-							<div class="add-more mb-3">
-								<a href="javascript:void(0);" class="add-hours"><i class="fa fa-plus-circle"></i> Add More</a>
-							</div>
-							<div class="submit-section text-center">
-								<button type="submit" class="btn btn-primary submit-btn">Save Changes</button>
-							</div>
-						</form>
+					<div class="modal-body" id="edit_time_body">
+						<!-- the result to be displayed apply here -->
 					</div>
 				</div>
 			</div>
@@ -603,11 +497,145 @@
 
 		<script>
 
-			$("#begin_time").change(function(){          
+			
+			$("#edit_time1").click(function (event) {
+            event.preventDefault();
+            let href = $(this).attr('data-attr');
+            $.ajax({
+	                url: href,
+	                // return the result
+	                success: function(result) {
+	                    $('#edit_time_slot').modal("show");
+	                    $('#edit_time_body').html(result).show();
+	                },
+	                
+	                error: function(jqXHR, testStatus, error) {
+	                    console.log(error);
+	                    alert("Page " + href + " cannot open. Error:" + error);
+	                },
+	                timeout: 8000
+            	})
+        	});
+
+        	$("#edit_time2").click(function (event) {
+            event.preventDefault();
+            let href = $(this).attr('data-attr');
+            $.ajax({
+	                url: href,
+	                // return the result
+	                success: function(result) {
+	                    $('#edit_time_slot').modal("show");
+	                    $('#edit_time_body').html(result).show();
+	                },
+	                
+	                error: function(jqXHR, testStatus, error) {
+	                    console.log(error);
+	                    alert("Page " + href + " cannot open. Error:" + error);
+	                },
+	                timeout: 8000
+            	})
+        	});
+
+        	$("#edit_time3").click(function (event) {
+            event.preventDefault();
+            let href = $(this).attr('data-attr');
+            $.ajax({
+	                url: href,
+	                // return the result
+	                success: function(result) {
+	                    $('#edit_time_slot').modal("show");
+	                    $('#edit_time_body').html(result).show();
+	                },
+	                
+	                error: function(jqXHR, testStatus, error) {
+	                    console.log(error);
+	                    alert("Page " + href + " cannot open. Error:" + error);
+	                },
+	                timeout: 8000
+            	})
+        	});
+
+        	$("#edit_time4").click(function (event) {
+            event.preventDefault();
+            let href = $(this).attr('data-attr');
+            $.ajax({
+	                url: href,
+	                // return the result
+	                success: function(result) {
+	                    $('#edit_time_slot').modal("show");
+	                    $('#edit_time_body').html(result).show();
+	                },
+	                
+	                error: function(jqXHR, testStatus, error) {
+	                    console.log(error);
+	                    alert("Page " + href + " cannot open. Error:" + error);
+	                },
+	                timeout: 8000
+            	})
+        	});
+
+        	$("#edit_time5").click(function (event) {
+            event.preventDefault();
+            let href = $(this).attr('data-attr');
+            $.ajax({
+	                url: href,
+	                // return the result
+	                success: function(result) {
+	                    $('#edit_time_slot').modal("show");
+	                    $('#edit_time_body').html(result).show();
+	                },
+	                
+	                error: function(jqXHR, testStatus, error) {
+	                    console.log(error);
+	                    alert("Page " + href + " cannot open. Error:" + error);
+	                },
+	                timeout: 8000
+            	})
+        	});
+
+        	$("#edit_time6").click(function (event) {
+            event.preventDefault();
+            let href = $(this).attr('data-attr');
+            $.ajax({
+	                url: href,
+	                // return the result
+	                success: function(result) {
+	                    $('#edit_time_slot').modal("show");
+	                    $('#edit_time_body').html(result).show();
+	                },
+	                
+	                error: function(jqXHR, testStatus, error) {
+	                    console.log(error);
+	                    alert("Page " + href + " cannot open. Error:" + error);
+	                },
+	                timeout: 8000
+            	})
+        	});
+
+        	$("#edit_time7").click(function (event) {
+            event.preventDefault();
+            let href = $(this).attr('data-attr');
+            $.ajax({
+	                url: href,
+	                // return the result
+	                success: function(result) {
+	                    $('#edit_time_slot').modal("show");
+	                    $('#edit_time_body').html(result).show();
+	                },
+	                
+	                error: function(jqXHR, testStatus, error) {
+	                    console.log(error);
+	                    alert("Page " + href + " cannot open. Error:" + error);
+	                },
+	                timeout: 8000
+            	})
+        	});
+
+			/*$("#begin_time").change(function(){          
 			    var value = $("#begin_time option:selected").val();
-			    
+
 			    $("#begin_time option:selected").attr('disabled','disabled');
-			});
+			});*/
 
 		    $("#add_time1").click(function () {
 		     var day_num = $(this).attr('data-id');

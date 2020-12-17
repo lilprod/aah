@@ -17,6 +17,10 @@
 		
 		<!-- Main CSS -->
 		<link rel="stylesheet" href="{{asset('assets/css/style.css') }}">
+
+		<link rel="stylesheet" type="text/css" href="{{asset('css/btn.css') }}">
+
+		<link href="{{asset('css/star-rating.css') }}" media="all" rel="stylesheet" type="text/css" />
 		
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 		<!--[if lt IE 9]>
@@ -45,7 +49,7 @@
 									<li class="breadcrumb-item active" aria-current="page">Reviews</li>
 								</ol>
 							</nav>
-							<h2 class="breadcrumb-title">Reviews</h2>
+							<h2 class="breadcrumb-title">Reviews <span style="color: #26a9e166">+</span></h2>
 						</div>
 					</div>
 				</div>
@@ -61,18 +65,22 @@
 						@include('doctors.partials.profile_side')
 						
 						<div class="col-md-7 col-lg-8 col-xl-9">
+
+							@include('inc.messages')
+
 							<div class="doc-review review-listing">
 							
 								<!-- Review Listing -->
 								<ul class="comments-list">
-								
+
+									@foreach($reviews as $review)
 									<!-- Comment List -->
 									<li>
 										<div class="comment">
-											<img class="avatar rounded-circle" alt="User Image" src="{{asset('assets/img/patients/patient.jpg') }}">
+											<img class="avatar rounded-circle" alt="User Image" src="{{url('/storage/profile_images/'.$review->patient->profile_picture ) }}">
 											<div class="comment-body">
 												<div class="meta-data">
-													<span class="comment-author">Richard Wilson</span>
+													<span class="comment-author">{{$review->patient->name}} {{$review->patient->firstname}}</span>
 													<span class="comment-date">Reviewed 2 Days ago</span>
 													<div class="review-count rating">
 														<i class="fas fa-star filled"></i>
@@ -82,91 +90,20 @@
 														<i class="fas fa-star"></i>
 													</div>
 												</div>
+
+												@if($review->recommend != '')
 												<p class="recommended"><i class="far fa-thumbs-up"></i> I recommend the doctor</p>
+												@endif
+
 												<p class="comment-content">
-													Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-													sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-													Ut enim ad minim veniam, quis nostrud exercitation.
-													Curabitur non nulla sit amet nisl tempus
+													{{$review->body}}
 												</p>
+
 												<div class="comment-reply">
-													<a class="comment-btn" href="#">
+													<a class="comment-btn" href="#" id="comment_btn">
 														<i class="fas fa-reply"></i> Reply
 													</a>
 												   <p class="recommend-btn">
-													<span>Recommend?</span>
-													<a href="#" class="like-btn">
-														<i class="far fa-thumbs-up"></i> Yes
-													</a>
-													<a href="#" class="dislike-btn">
-														<i class="far fa-thumbs-down"></i> No
-													</a>
-												</p>
-												</div>
-											</div>
-										</div>
-										
-										<!-- Comment Reply -->
-										<ul class="comments-reply">
-										
-											<!-- Comment Reply List -->
-											<li>
-												<div class="comment">
-													<img class="avatar rounded-circle" alt="User Image" src="{{asset('assets/img/doctors/doctor-thumb-02.jpg') }}">
-													<div class="comment-body">
-														<div class="meta-data">
-															<span class="comment-author">Dr. Darren Elder</span>
-															<span class="comment-date">Reviewed 3 Days ago</span>
-														</div>
-														<p class="comment-content">
-															Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-															sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-															Ut enim ad minim veniam.
-															Curabitur non nulla sit amet nisl tempus
-														</p>
-														<div class="comment-reply">
-															<a class="comment-btn" href="#">
-																<i class="fas fa-reply"></i> Reply
-															</a>
-														</div>
-													</div>
-												</div>
-											</li>
-											<!-- /Comment Reply List -->
-											
-										</ul>
-										<!-- /Comment Reply -->
-										
-									</li>
-									<!-- /Comment List -->
-									
-									<!-- Comment List -->
-									<li>
-										<div class="comment">
-											<img class="avatar rounded-circle" alt="User Image" src="{{asset('assets/img/patients/patient2.jpg') }}">
-											<div class="comment-body">
-												<div class="meta-data">
-													<span class="comment-author">Travis Trimble</span>
-													<span class="comment-date">Reviewed 4 Days ago</span>
-													<div class="review-count rating">
-														<i class="fas fa-star filled"></i>
-														<i class="fas fa-star filled"></i>
-														<i class="fas fa-star filled"></i>
-														<i class="fas fa-star filled"></i>
-														<i class="fas fa-star filled"></i>
-													</div>
-												</div>
-												<p class="comment-content">
-													Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-													sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-													Ut enim ad minim veniam, quis nostrud exercitation.
-													Curabitur non nulla sit amet nisl tempus
-												</p>
-												<div class="comment-reply">
-													<a class="comment-btn" href="#">
-														<i class="fas fa-reply"></i> Reply
-													</a>
-													<p class="recommend-btn">
 														<span>Recommend?</span>
 														<a href="#" class="like-btn">
 															<i class="far fa-thumbs-up"></i> Yes
@@ -176,10 +113,90 @@
 														</a>
 													</p>
 												</div>
+
+												<div class="write-review" id="review_comment" style="display: none;">
+													<form method="POST" action="{{route('review_answers_store')}}">
+														{{ csrf_field() }}
+													<div class="form-group">
+
+														<input type="hidden" name="review_id" value="{{$review->id}}">
+
+														<input type="hidden" name="doctor_id" value="{{$review->doctor->id}}">
+
+														<input type="hidden" name="patient_id" value="{{$review->patient->id}}">
+
+														<label>Your Comment</label>
+														<textarea id="review_desc" maxlength="100" class="form-control" name="body"></textarea>
+													  
+													  <div class="d-flex justify-content-between mt-3"><small class="text-muted"><span id="chars">100</span> characters remaining</small></div>
+													</div>
+
+													<div class="submit-section">
+															<button type="submit" class="btn btn-primary submit-btn">Add Comment</button>
+														</div>
+													</form>
+												</div>
+
 											</div>
 										</div>
+
+										
+										
+										<!-- Comment Reply -->
+										<ul class="comments-reply">
+											@foreach($review->answers as $answer)
+											<!-- Comment Reply List -->
+											<li>
+												<div class="comment">
+													<img class="avatar rounded-circle" alt="User Image" src="{{url('/storage/profile_images/'.$answer->doctor->profile_picture ) }}">
+													<div class="comment-body">
+														<div class="meta-data">
+															<span class="comment-author">Dr. {{$answer->doctor->name }} {{$answer->doctor->firstname}}</span>
+															<span class="comment-date">Reviewed 3 Days ago</span>
+														</div>
+														<p class="comment-content">
+															{{$answer->body}}
+														</p>
+														<div class="comment-reply">
+															<a class="comment-btn" href="#" id="reply_btn">
+																<i class="fas fa-reply"></i> Reply
+															</a>
+														</div>
+
+														<div class="write-review" id="comment_reply" style="display: none;">
+														<form method="POST" action="{{route('answers_replies_store')}}">
+															{{ csrf_field() }}
+														<div class="form-group">
+
+															<input type="hidden" name="review_id" value="{{$review->id}}">
+
+															<input type="hidden" name="doctor_id" value="{{$answer->doctor->id}}">
+
+															<input type="hidden" name="patient_id" value="{{$answer->patient->id}}">
+
+															<label>Your Comment</label>
+															<textarea id="review_desc" maxlength="100" class="form-control" name="body"></textarea>
+														  
+														  <div class="d-flex justify-content-between mt-3"><small class="text-muted"><span id="chars">100</span> characters remaining</small></div>
+														</div>
+
+														<div class="submit-section">
+																<button type="submit" class="btn btn-primary submit-btn">Reply</button>
+															</div>
+														</form>
+													</div>
+													</div>
+												</div>
+											</li>
+											<!-- /Comment Reply List -->
+											@endforeach
+										</ul>
+										<!-- /Comment Reply -->
+										
 									</li>
 									<!-- /Comment List -->
+
+									@endforeach
 									
 								</ul>
 								<!-- /Comment List -->
@@ -193,6 +210,7 @@
 			<!-- /Page Content -->
    
 			<!-- Footer -->
+			<button onclick="topFunction()" id="myBtn" title="Go to top"><i class="fa fa-chevron-up"></i></button>
 				@include('website.footer')
 			<!-- /Footer -->
 		   
@@ -201,6 +219,39 @@
 	  
 		<!-- jQuery -->
 		<script src="{{asset('assets/js/jquery.min.js') }}"></script>
+
+		<script>
+			
+			$("#comment_btn").click(function () {
+		      $("#review_comment").css("display","block");
+		    });
+
+		    $("#reply_btn").click(function () {
+		      $("#comment_reply").css("display","block");
+		    });
+
+		</script>
+
+		<script src="{{asset('js/star-rating.js') }}" type="text/javascript"></script>
+
+		<script type="text/javascript">
+			// When the user scrolls down 20px from the top of the document, show the button
+			window.onscroll = function() {scrollFunction()};
+
+			function scrollFunction() {
+			  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+			    document.getElementById("myBtn").style.display = "block";
+			  } else {
+			    document.getElementById("myBtn").style.display = "none";
+			  }
+			}
+
+			// When the user clicks on the button, scroll to the top of the document
+			function topFunction() {
+			  document.body.scrollTop = 0; // For Safari
+			  document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+			}
+		</script>
 		
 		<!-- Bootstrap Core JS -->
 		<script src="{{asset('assets/js/popper.min.js') }}"></script>

@@ -15,8 +15,11 @@ use App\Payment;
 use App\PrescribedDrugs;
 use App\PrescriptionExam;
 use App\Schedule;
+use App\Region;
+use App\Country;
 use Carbon\Carbon;
 use PDF;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
@@ -266,7 +269,6 @@ class PatientManagerController extends Controller
             'firstname' => 'required|max:120',
             'email' => 'required|email|unique:users,email,'.$user->id,
             'phone_number' => 'required',
-            //'password' => 'required|min:6|confirmed',
         ]);
 
         if ($request->hasfile('profile_picture')) {
@@ -288,6 +290,25 @@ class PatientManagerController extends Controller
             $fileNameToStore = 'avatar.jpg';
         }
 
+
+        if($patient->matricule == ''){
+            
+            $country = Country::where('title' ,'=', $patient->country)->first();
+
+            $country_code = Str::upper($country->code);
+
+            $date = Carbon::parse($patient->created_at)->toDateString();
+
+            $timestamp = strtotime($date);
+
+            $month = date('m', $timestamp);
+
+            $name = Str::of($patient->name)->substr(0,3)->upper();
+
+            $firstname = Str::of($patient->firstname)->substr(0,1)->upper();
+
+            $patient->matricule = $country_code.date("y").$month.$name.$firstname;
+        }
         
         $patient->name = $request->input('name');
         $patient->firstname = $request->input('firstname');
@@ -317,7 +338,6 @@ class PatientManagerController extends Controller
         //$user->gender = $request->input('gender');
         //$user->birth_date = $request->input('birth_date');
         $user->address = $request->input('address');
-        //$user->role_id = 1;
 
         $patient->save();
         $user->save();
@@ -342,7 +362,11 @@ class PatientManagerController extends Controller
 
         $date = Carbon::now();
 
-        $pdf = PDF::loadView('patients.appointments.pdf', $payment);
+        $data = ['payment' => $payment,
+                'date' => $date,
+        ];
+
+        $pdf = PDF::loadView('patients.appointments.pdf', $data);
 
         //return $pdf->download('Invoice'.$date.'.pdf');
 
@@ -356,7 +380,6 @@ class PatientManagerController extends Controller
         $prescribeddrugs = PrescribedDrugs::where('patient_id', '=', $prescription->patient_id)
                                             ->where('prescription_id', '=', $prescription->id)
                                             ->get();
-
         
         
         $date = Carbon::now();

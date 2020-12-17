@@ -68,10 +68,39 @@ class Doctor extends Model
         return $this->belongsToMany(Patient::class, 'doctor_patient', 'doctor_id', 'patient_id', 'status')->withTimeStamps();
     }
 
+    public function services(){
+
+        return $this->hasMany(DoctorService::class);
+        
+    }
+
+    public function awards(){
+
+        return $this->hasMany(Award::class);
+        
+    }
+
+    public function experiences(){
+
+        return $this->hasMany(Experience::class);
+        
+    }
+
+    public function educations(){
+
+        return $this->hasMany(Education::class);
+        
+    }
+
     public function appointments(){
 
         return $this->hasMany(Appointment::class);
         
+    }
+
+    public function reviews() 
+    {
+        return $this->hasMany(Review::class);
     }
 
 }

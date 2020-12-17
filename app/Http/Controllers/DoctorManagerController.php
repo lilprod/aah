@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Doctor;
 use App\Drug;
+use App\Speciality;
+use App\Service;
 use App\Patient;
 use App\History;
 use App\Appointment;
@@ -16,9 +18,16 @@ use App\Experience;
 use App\Award;
 use App\Prescription;
 use App\Payment;
+use App\Review;
+use App\Answer;
+use App\Region;
+use App\Country;
+use App\DoctorService;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class DoctorManagerController extends Controller
 {	
@@ -27,9 +36,15 @@ class DoctorManagerController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    
+    /*public function __construct()
     {
         $this->middleware(['auth', '2fa']);
+    }*/
+
+    public function __construct()
+    {
+        $this->middleware(['auth']);
     }
 
     public function index()
@@ -56,7 +71,11 @@ class DoctorManagerController extends Controller
      */
     public function reviews(){
 
-        return view('doctors.reviews');
+        $doctor = Doctor::where('user_id', auth()->user()->id)->first();
+
+        $reviews = $doctor->reviews;
+
+        return view('doctors.reviews', compact('doctor', 'reviews'));
     }
 
     public function myInvoices(){
@@ -205,8 +224,12 @@ class DoctorManagerController extends Controller
     public function setting() {
 
         $doctor = Doctor::where('user_id',auth()->user()->id)->first();
+
+        $specialities = Speciality::all();
+
+        $services = $doctor->services;
     	
-    	return view('doctors.profile_setting', compact('doctor'));
+    	return view('doctors.profile_setting', compact('doctor', 'specialities', 'services'));
     }
 
     public function postSetting(Request $request) {
@@ -245,7 +268,32 @@ class DoctorManagerController extends Controller
             $fileNameToStore = 'avatar.jpg';
         }
 
-        
+        $old_services = DoctorService::where('doctor_id', $doctor->id)
+                                        ->get();
+    
+        if(!$old_services->isEmpty()){
+            
+            DB::table('doctor_services')->where('doctor_id', $doctor->id)
+                                        ->delete();
+        }
+
+        $services = [];
+
+        $services = explode(',' , $request->input('services'));
+
+        //dd($services);
+
+        foreach ($services as $item) {
+            # code...
+            $service = new DoctorService();
+
+            $service->doctor_id = $doctor->id;
+            $service->service_title = $item;
+            $service->user_id = $doctor->user_id;
+            $service->save();
+        }
+
+        $doctor->apt_fees = $request->input('apt_fees');
         $doctor->name = $request->input('name');
         $doctor->firstname = $request->input('firstname');
         //$doctor->email = $request->input('email');
@@ -254,14 +302,48 @@ class DoctorManagerController extends Controller
         if ($request->hasfile('profile_picture')) {
             $doctor->profile_picture = $fileNameToStore;
         }
+
         $doctor->phone_number = $request->input('phone_number');
         $doctor->address = $request->input('address');
-        $doctor->region = $request->input('region');
-        $doctor->country = $request->input('country');
+        //$doctor->region = $request->input('region');
+        $region = Region::findOrFail($request->input('region'));
+        $doctor->region = $region->title;
+
+        if($request->input('country') != ''){
+
+           $doctor->country = $request->input('country'); 
+
+        }else{
+
+            $doctor->country = $request->input('old_country'); 
+        }
+
+        if($doctor->matricule == ''){
+
+            $country = Country::where('title' ,'=', $doctor->country)->first();
+
+            $country_code = Str::upper($country->code);
+
+            $date = Carbon::parse($doctor->created_at)->toDateString();
+
+            $timestamp = strtotime($date);
+
+            $month = date('m', $timestamp);
+
+            $name = Str::of($doctor->name)->substr(0,3)->upper();
+
+            $firstname = Str::of($doctor->firstname)->substr(0,1)->upper();
+
+            $doctor->matricule = $country_code.date("y").$month.$name.$firstname;
+        }
+        
+
         $doctor->city = $request->input('city');
         $doctor->birth_date = $request->input('birth_date');
         $doctor->place_birth = $request->input('place_birth');
         $doctor->biography = $request->input('biography');
+        $doctor->title = $request->input('title');
+        $doctor->speciality_id = $request->input('speciality_id');
         //$doctor->nationality = $request->input('nationality');
         //$doctor->profession = $request->input('profession');
         //$doctor->status = $request->input('status');
@@ -277,8 +359,6 @@ class DoctorManagerController extends Controller
         //$user->gender = $request->input('gender');
         //$user->birth_date = $request->input('birth_date');
         $user->address = $request->input('address');
-
-        
 
         if($data['clinic_name'] != ''){
             $clinic = Clinic::where('doctor_id', $doctor->id)->first();

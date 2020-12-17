@@ -38,7 +38,7 @@
 						<a href="#">Pharmacies</a>
 					</li>
 
-					<li class="has-submenu">
+					<!--<li class="has-submenu">
 						<a href="">Patients<i class="fas fa-chevron-down"></i></a>
 						<ul class="submenu">
 							<li><a href="{{route('dashboard')}}">My Dashboard</a></li>
@@ -51,7 +51,7 @@
 							<li><a href="{{route('search_disease')}}">Disease and Treatment</a></li>
 							<li><a href="{{route('patient_change_password')}}">Change Password</a></li>
 						</ul>
-					</li>
+					</li>-->
 
 					<li class="{{ Request::routeIs('blog') ? 'active' : '' }}">
 						<a href="{{route('blog')}}">Blog</a>
@@ -97,6 +97,42 @@
 					</div>
 				</li>-->
 
+				<!-- Notifications -->
+
+				<!--<li class="nav-item dropdown logged-item noti-dropdown">
+					<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+						<i class="fas fa-bell"></i> <span class="badge badge-pill">3</span>
+					</a>
+					<div class="dropdown-menu notifications dropdown-menu-right">
+						<div class="topnav-dropdown-header">
+							<span class="notification-title">Notifications</span>
+							<a href="javascript:void(0)" class="clear-noti"> Clear All </a>
+						</div>
+						<div class="noti-content">
+							<ul class="notification-list">
+								<li class="notification-message">
+									<a href="#">
+										<div class="media">
+											<span class="avatar avatar-sm">
+												<img class="avatar-img rounded-circle" alt="User Image" src="{{asset('assets/img/doctors/doctor-thumb-01.jpg') }}">
+											</span>
+											<div class="media-body">
+												<p class="noti-details"><span class="noti-title">Dr. Ruby Perrin</span> Schedule <span class="noti-title">her appointment</span></p>
+												<p class="noti-time"><span class="notification-time">4 mins ago</span></p>
+											</div>
+										</div>
+									</a>
+								</li>
+							</ul>
+						</div>
+						<div class="topnav-dropdown-footer">
+							<a href="#">View all Notifications</a>
+						</div>
+					</div>
+				</li>-->
+
+				<!-- Notifications -->
+
 				<!-- User Menu -->
 				<li class="nav-item dropdown has-arrow logged-item">
 					<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
@@ -114,8 +150,25 @@
 								<p class="text-muted mb-0">Patient</p>
 							</div>
 						</div>
+
 						<a class="dropdown-item" href="{{route('dashboard')}}" target="_blank">Dashboard</a>
+
+						<a class="dropdown-item" href="{{route('search')}}">Search Doctor</a>
+
+						<a class="dropdown-item" href="{{route('our_doctors')}}">Booking</a>
+
+						<a class="dropdown-item" href="{{ url('my_favourites') }}">Favourites</a>
+
+						<a class="dropdown-item" href="{{route('chat')}}">Chat</a>
+
+						<a class="dropdown-item" href="{{route('video_chat')}}">Video Chat</a>
+
+						<a class="dropdown-item" href="{{route('search_disease')}}">Disease and Treatment</a>
+
+						<a class="dropdown-item" href="{{route('patient_change_password')}}">Change Password</a>
+
 						<a class="dropdown-item" href="{{route('patient_profile_setting')}}">Profile Settings</a>
+
 						<a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Logout</a>
 						 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf

@@ -157,8 +157,6 @@ class ScheduleController extends Controller
     {
 
         $this->validate($request, [
-            //'department_id' => 'required',
-            //'doctor_id' => 'required',
             'day_num'  => 'required',
             'begin_time' => 'required',
         ]);
@@ -215,9 +213,61 @@ class ScheduleController extends Controller
      */
     public function edit($id)
     {
-        $schedule = Schedule::findOrFail($id);
+        $schedules = Schedule::where('day_num', $id)
+                    ->where('doctor_userid', auth()->user()->id)
+                    ->get();
 
-        return view('doctors.schedules.edit', compact('schedule'));
+        return view('doctors.schedules.edit', compact('schedules', 'id'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function modif(Request $request)
+    {
+        $data = $request->all();
+
+        $i = 0;
+
+        $schedules = Schedule::where('day_num', $request->day_num)
+                              ->where('doctor_userid', auth()->user()->id)
+                              ->get();
+    
+        if(!$schedules->isEmpty()){
+            
+            DB::table('schedules')->where('day_num', $request->day_num)
+                                  ->where('doctor_userid', auth()->user()->id)
+                                  ->delete();
+        }
+
+        foreach($data['begin_time'] as $item){
+
+            $schedule = new Schedule();
+
+            $schedule->day_num = $request->input('day_num');
+
+            $schedule->begin_time = $item;
+
+            $schedule->end_time = $data['end_time'][$i];
+
+            $schedule->doctor_userid = auth()->user()->id;
+
+            $doctor = Doctor::where('user_id', auth()->user()->id)->first();
+
+            $schedule->doctor_id = $doctor->id;
+
+            $schedule->status = 1;
+            
+            $schedule->save();
+
+            $i++;
+        }
+
+        return redirect()->route('schedules.index')->with('success', 'Schedule(s) updated successfully.');
+
     }
 
     /**

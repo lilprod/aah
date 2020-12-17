@@ -136,12 +136,14 @@
     <!-- Footer -->
         @include('website.footer')
     <!-- /Footer -->
+
        
     </div>
 <!-- /Main Wrapper -->
 
-        <div class="modal fade" id="delete_post" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
+        
+    <div class="modal fade" id="delete_post" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
                 <form action="" id="deleteForm" method="post">
                     <div class="modal-content">
                         <div class="modal-header">
