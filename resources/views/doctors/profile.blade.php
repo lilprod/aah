@@ -90,7 +90,7 @@
 											@if($doctor->exercie_place != '')
 											<p class="doc-location"><i class="fas fa-map-marker-alt"></i> {{$doctor->exercie_place}} <!-- - <a href="javascript:void(0);">Get Directions</a></p>-->
 											@endif
-											<ul class="clinic-gallery">
+											<!--<ul class="clinic-gallery">
 												<li>
 													<a href="{{asset('assets/img/features/feature-01.jpg') }}" data-fancybox="gallery">
 														<img src="{{asset('assets/img/features/feature-01.jpg') }}" alt="Feature">
@@ -111,12 +111,15 @@
 														<img src="{{asset('assets/img/features/feature-04.jpg') }}" alt="Feature">
 													</a>
 												</li>
-											</ul>
+											</ul>-->
 										</div>
+										@if($services != '')
 										<div class="clinic-services">
-											<span>Dental Fillings</span>
-											<span>Teeth Whitneing</span>
+											@foreach($services as $service)
+											<span>{{$service->service_title}}</span>
+											@endforeach
 										</div>
+										@endif
 									</div>
 								</div>
 								<div class="doc-info-right">
@@ -376,7 +379,7 @@
 														<span class="d-inline-block average-rating">(4)</span>
 													</div>
 													<div class="clinic-details mb-0">
-														<h5 class="clinic-direction"> <i class="fas fa-map-marker-alt"></i> 2286  Sundown Lane, Austin, Texas 78749, USA <br><a href="javascript:void(0);">Get Directions</a></h5>
+														<h5 class="clinic-direction"> <i class="fas fa-map-marker-alt"></i> 2286  Sundown Lane, Austin, Texas 78749, USA <!--<br><a href="javascript:void(0);">Get Directions</a></h5>-->
 														<ul>
 															<li>
 																<a href="{{asset('assets/img/features/feature-01.jpg') }}" data-fancybox="gallery2">
@@ -660,7 +663,7 @@
 												<div class="widget-content">
 													<div class="listing-hours">
 														<div class="listing-day current">
-															<div class="day">Today <span>5 Nov 2019</span></div>
+															<div class="day">Today <span>{{$date->format('d M Y')}}</span></div>
 															<div class="time-items">
 																<span class="open-status"><span class="badge bg-success-light">Open Now</span></span>
 																<span class="time">07:00 AM - 09:00 PM</span>

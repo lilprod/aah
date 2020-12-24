@@ -101,10 +101,10 @@
                                                 <a href="#"><img src="{{url('/storage/profile_images/'.auth()->user()->profile_picture ) }}" alt="Post Author"> <span>Dr. Ruby Perrin</span></a>
                                             </div>
                                         </li>
-                                        <li><i class="far fa-clock"></i> {{ $post->created_at->format('F d, Y h:ia') }}</li>
+                                        <li><i class="far fa-clock"></i> {{ $post->created_at->format('m/d/Y') }}</li>
                                     </ul>
                                     <h3 class="blog-title"><a href="#">{{$post->title}}</a></h3>
-                                    <p class="mb-0">{{$post->body}}</p>
+                                    <p class="mb-0">{!! \Illuminate\Support\Str::limit($post->body, 50, '...') !!}</p>
                                 </div>
                                 <div class="row pt-3">
                                     <div class="col"><a href="{{ URL::to('posts/'.$post->id.'/edit') }}" class="text-success"><i class="far fa-edit"></i> Edit</a></div>

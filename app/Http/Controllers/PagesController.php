@@ -101,7 +101,13 @@ class PagesController extends Controller
 
         $reviews = $doctor->reviews;
 
-        return view('doctors.profile', compact('doctor', 'reviews'));
+        $specialities = Speciality::all();
+
+        $services = $doctor->services;
+
+        $date = Carbon::today();
+
+        return view('doctors.profile', compact('doctor', 'reviews', 'specialities', 'services', 'date'));
     }
 
      /**

@@ -36,11 +36,11 @@ return [
     'mailers' => [
         'smtp' => [
             'transport' => 'smtp',
-            'host' => env('MAIL_HOST', 'smtp.mailtrap.io'),
-            'port' => env('MAIL_PORT', 2525),
+            'host' => env('MAIL_HOST', 'smtp.gmail.com'),
+            'port' => env('MAIL_PORT', 587),
             'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-            'username' => env('MAIL_USERNAME', '9c94a1a0d42dc5'),
-            'password' => env('MAIL_PASSWORD', '382a81ee9966d3'),
+            'username' => env('MAIL_USERNAME', 'aahafricahealthcare@gmail.com'),
+            'password' => env('MAIL_PASSWORD', 'aah@care2020'),
             'timeout' => null,
             'auth_mode' => null,
         ],
@@ -84,7 +84,7 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
+        'address' => env('MAIL_FROM_ADDRESS', 'aahafricahealthcare@gmail.com'),
         'name' => env('MAIL_FROM_NAME', 'AAH+'),
     ],
 

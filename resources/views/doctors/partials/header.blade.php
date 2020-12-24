@@ -119,7 +119,7 @@
 
 				<!-- Notifications -->
 
-				<li class="nav-item dropdown logged-item noti-dropdown">
+				<!--<li class="nav-item dropdown logged-item noti-dropdown">
 					<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
 						<i class="fas fa-bell"></i> <span class="badge badge-pill">3</span>
 					</a>
@@ -149,7 +149,7 @@
 							<a href="#">View all Notifications</a>
 						</div>
 					</div>
-				</li>
+				</li>-->
 				<!-- Notifications -->
 
 				<!-- User Menu -->

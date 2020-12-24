@@ -180,7 +180,7 @@
 										<div class="col-md-12 text-right">
 											<div class="signature-wrap">
 												<div class="signature">
-													<!--Click here to sign-->
+													<img class="img-fluid" src="{{url('/storage/signatures/'.$payment->doctor->signature->signature_file ) }}" alt="Signature Image">
 												</div>
 												<div class="sign-name">
 													<p class="mb-0">( Dr. {{$payment->doctor->name}} {{$payment->doctor->firstname}} )</p>

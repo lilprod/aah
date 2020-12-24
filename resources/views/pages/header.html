@@ -18,3 +18,187 @@
 </div>
 </div>
 </div>
+
+-------------------++
+
+<div class="card">
+	<div class="card-header">
+		<h4 class="card-title">Users</h4>
+		<p class="card-text">Chat with <code>users</code>online.</p>
+	</div>
+	<div class="card-body">
+		<div class="row row-sm align-items-center">
+			<div class="col-6 col-sm-4 col-md-2 col-xl mb-3 mb-xl-0" 
+				v-for="user in allusers"
+	            :key="user.id">
+
+				<button
+	              type="button"
+	              class="btn btn-block btn-outline-primary"
+	              @click="placeVideoCall(user.id, user.name)"
+	            >
+	              Call {{ user.name }}
+	              <span class="badge badge-light">{{
+	                getUserOnlineStatus(user.id)
+	              }}</span>
+	            </button>
+			</div>
+		</div>
+		
+	</div>
+</div>
+
+<!-- Incoming Call  -->
+	<div class="modal fade call-modal" id="voice_call" v-if="incomingCallDialog">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-body">
+					<!-- Outgoing Call -->
+					<div class="call-box incoming-box">
+						<div class="call-wrapper">
+							<div class="call-inner">
+								<div class="call-user">
+									<!--<img alt="User Image" src="assets/img/doctors/doctor-thumb-02.jpg" class="call-avatar">-->
+									<h4>Incoming Call From <strong>{{ callerDetails.name }}</strong></h4>
+									<span>Connecting...</span>
+								</div>							
+								<div class="call-items">
+
+									<button
+						              type="button"
+						              class="btn call-item call-end"
+						              data-dismiss="modal"
+						              @click="declineCall"
+						            >
+						              <i class="material-icons">call_end</i>
+						            </button>
+
+						            <button
+						              type="button"
+						              class="btn call-item call-start"
+						              data-dismiss="modal"
+						              @click="acceptCall"
+						            >
+						              <i class="material-icons">call</i>
+						            </button>
+				
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Outgoing Call -->
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- End of Incoming Call  -->
+
+<!--Placing Video Call-->
+
+
+
+
+<!-- Call Wrapper -->
+	<div class="call-wrapper">
+		<div class="call-main-row">
+			<div class="call-main-wrapper" >
+				<div class="call-view">
+					<div class="call-window">
+					
+						
+						
+						<!-- Call Contents -->
+						<div class="call-contents" v-if="callPlaced">
+							<div class="call-content-wrap">
+
+								<div class="user-video">
+									
+
+							          <video
+							            ref="partnerVideo"
+							            playsinline
+							            autoplay
+							            class="cursor-pointer"
+							            :class="isFocusMyself === true ? 'partner-video' : 'user-video'"
+							            @click="toggleCameraArea"
+							            v-if="videoCallParams.callAccepted"
+							          />
+								</div>
+
+								<div class="my-video">
+									<ul>
+										<li>
+											<video
+							            ref="userVideo"
+							            muted
+							            playsinline
+							            autoplay
+							            class="cursor-pointer"
+							            :class="isFocusMyself === true ? 'user-video' : 'partner-video'"
+							            @click="toggleCameraArea"
+							          />
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<!-- Call Contents -->
+
+
+						<!-- Call Contents -->
+						<div class="call-contents" v-else>
+							<div class="call-content-wrap">
+
+								<!-- Incoming Call -->
+								<div class="call-box incoming-box" v-if="callPartner">
+									<div class="call-wrapper">
+										<div class="call-inner">
+											<div class="call-user">
+												<!--<img class="call-avatar" src="assets/img/doctors/doctor-thumb-02.jpg" alt="User Image">-->
+												<h4>{{ callPartner }}</h4>
+												<span>Calling ...</span>
+											</div>	
+										</div>
+									</div>
+								</div>
+								<!-- /Incoming Call -->
+							</div>
+						</div>
+						<!-- Call Contents -->
+						
+						<!-- Call Footer -->
+						<div class="call-footer">
+							<div class="call-icons">
+								<ul class="call-items">
+
+									<li class="call-item">
+										<a href="" title="Enable Video" data-placement="top" data-toggle="tooltip" @click="toggleMuteVideo">
+
+											{{ mutedVideo ? "<i class="fas fa-video camera"></i>" : "<i class="fas fa-video-slash"></i>" }}
+										</a>
+									</li>
+
+									<li class="call-item">
+										<a href="" title="Mute Audio" data-placement="top" data-toggle="tooltip" @click="toggleMuteAudio">
+											{{ mutedAudio ? "<i class="fa fa-microphone microphone"></i>" : "<i class="fa fa-microphone-slash"></i>" }}
+										</a>
+									</li>
+
+								</ul>
+
+								<div class="end-call">
+									<a href="javascript:void(0);" @click="endCall">
+										<i class="material-icons">call_end</i>
+									</a>
+								</div>
+							</div>
+						</div>
+						<!-- /Call Footer -->
+						
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	<!-- /Call Wrapper -->

@@ -104,7 +104,13 @@ class DoctorManagerController extends Controller
 
         $doctor = Doctor::findOrFail($id);
 
-        return view('doctors.profile', compact('doctor'));
+        $specialities = Speciality::all();
+
+        $services = $doctor->services;
+
+        //dd($services);
+
+        return view('doctors.profile', compact('doctor', 'specialities', 'services'));
     }
 
     public function updatePassword(Request $request)
@@ -230,6 +236,40 @@ class DoctorManagerController extends Controller
         $services = $doctor->services;
     	
     	return view('doctors.profile_setting', compact('doctor', 'specialities', 'services'));
+    }
+
+
+    public function uploadCropImage(Request $request)
+    {
+        $doctor = Doctor::findOrFail($request->input('doctor_id'));
+
+        $user = User::findOrFail($doctor->user_id);
+
+        $folderPath = public_path('storage/profile_images/');
+ 
+        $image_parts = explode(";base64,", $request->image);
+
+        $image_type_aux = explode("image/", $image_parts[0]);
+
+        $image_type = $image_type_aux[1];
+
+        $image_base64 = base64_decode($image_parts[1]);
+ 
+        $fileNameToStore = uniqid().'.png';
+ 
+        $imageFullPath = $folderPath.$fileNameToStore;
+ 
+        file_put_contents($imageFullPath, $image_base64);
+         
+        $doctor->profile_picture = $fileNameToStore;
+
+        $user->profile_picture = $fileNameToStore;
+
+        $doctor->save();
+
+        $user->save();
+
+        return response()->json(['success'=>'Crop Image Uploaded Successfully']);
     }
 
     public function postSetting(Request $request) {

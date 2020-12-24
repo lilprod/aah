@@ -32,10 +32,11 @@ class CreatePatientsTable extends Migration
             $table->string('profession')->nullable();
             $table->string('profile_picture')->nullable();
             $table->integer('status');
+            $table->string('region')->nullable();
+            $table->string('country')->nullable();
             $table->string('city')->nullable();
             $table->string('state')->nullable();
-            $table->string('postal_code')->nullable();
-            $table->string('country')->nullable();
+            $table->string('postal_code')->nullable();     
             $table->integer('doctor_id')->nullable();
             $table->string('doctor_user_id')->nullable();
             $table->integer('user_id')->nullable();

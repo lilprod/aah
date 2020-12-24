@@ -124,7 +124,7 @@
                                     <span aria-hidden="true">×</span>
                                 </button>
                             </div>
-                            @endif --}} 
+                        @endif --}} 
 
                     </div>
 
@@ -132,13 +132,14 @@
             </div>
 
         </div>
-           
+    </div>    
     <!-- Footer -->
         @include('website.footer')
     <!-- /Footer -->
 
        
-    </div>
+    
+</div>
 <!-- /Main Wrapper -->
 
         

@@ -74,7 +74,9 @@
 												<h3>{{$patient->name}} {{$patient->firstname}}</h3>
 												
 												<div class="patient-details">
-													<h5><b>Patient ID :</b> PT00{{$patient->id}}</h5>
+													@if($patient->matricule != '')
+													<h5><b>Patient ID :</b> {{$patient->matricule}}</h5>
+													@endif 
 													@if($patient->address != '')
 													<h5 class="mb-0"><i class="fas fa-map-marker-alt"></i> {{$patient->address}}</h5>
 													@endif 
@@ -153,9 +155,9 @@
 											<li class="nav-item">
 												<a class="nav-link" href="#pres" data-toggle="tab"><span>Prescription</span></a>
 											</li>
-											<li class="nav-item">
+											<!--<li class="nav-item">
 												<a class="nav-link" href="#medical" data-toggle="tab"><span class="med-records">Medical Records</span></a>
-											</li>
+											</li>-->
 											<li class="nav-item">
 												<a class="nav-link" href="#billing" data-toggle="tab"><span>Billing</span></a>
 											</li> 
@@ -279,7 +281,7 @@
 										<!-- /Prescription Tab -->
 
 										<!-- Medical Records Tab -->
-										<div class="tab-pane fade" id="medical">
+										<!--<div class="tab-pane fade" id="medical">
 											<div class="text-right">		
 												<a href="#" class="add-new-btn" data-toggle="modal" data-target="#add_medical_records">Add Medical Records</a>
 											</div>
@@ -328,7 +330,7 @@
 													</div>
 												</div>
 											</div>
-										</div>
+										</div>-->
 										<!-- /Medical Records Tab -->
 										
 										<!-- Billing Tab -->

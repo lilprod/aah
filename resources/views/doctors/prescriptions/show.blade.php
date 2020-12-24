@@ -177,6 +177,7 @@
 											<div class="signature-wrap">
 												<div class="signature">
 													<!--Click here to sign-->
+													<img class="img-fluid" src="{{url('/storage/signatures/'.$prescription->doctor->signature->signature_file ) }}" alt="Signature Image">
 												</div>
 												<div class="sign-name">
 													<p class="mb-0">( Dr. {{$prescription->doctor->name}} {{$prescription->doctor->firstname}} )</p>

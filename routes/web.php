@@ -6,6 +6,7 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Hash;
 use App\Admin;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 
@@ -19,6 +20,33 @@ use Illuminate\Support\Str;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+//Video Chat
+
+Route::get('/video-chat', function () {
+
+    // fetch all users apart from the authenticated user
+
+    $users = User::where('id', '<>', Auth::id())
+                  ->where('role_id', '<>', auth()->user()->role_id)
+                  ->where('role_id', '<>', 3)
+                  ->get();
+
+    return view('video_chat.index', ['users' => $users]);
+})->name('video_chat')->middleware('auth');
+
+// Endpoints to call or receive calls.
+
+Route::post('/video/call-user', 'VideoChatController@callUser');
+
+Route::post('/video/accept-call', 'VideoChatController@acceptCall');
+
+/*Route::group(['middleware' => 'auth'], function(){
+
+  Route::get('video_chat', 'VideoChatController@index')->name('video_chat');
+
+  Route::post('auth/video_chat', 'VideoChatController@auth');
+});*/
 
 
 //PDF
@@ -35,11 +63,11 @@ Route::post('/verify', 'VerifyController@postVerify')->name('verify');
 
 //Paypal
 
-Route::post('paypal/payment', 'PayPalController@payment')->name('payment');
+Route::post('paypal/payment', 'PaypalController@payment')->name('payment');
 
-Route::get('paypal/cancel', 'PayPalController@cancel')->name('payment.cancel');
+Route::get('paypal/cancel', 'PaypalController@cancel')->name('payment.cancel');
 
-Route::get('paypal/success', 'PayPalController@success')->name('payment.success');
+Route::get('paypal/success', 'PaypalController@success')->name('payment.success');
 
 //Stripe
 
@@ -169,9 +197,9 @@ Auth::routes();
 
 Route::get('/register/doctor', 'Auth\RegisterController@showDoctorRegisterForm')->name('register_doctor');
 
-//Route::post('/register/doctor', 'Auth\RegisterController@registerDoctor');
+Route::post('/register/doctor', 'Auth\RegisterController@registerDoctor');
 
-Route::post('/register/doctor', 'Auth\RegisterController@createDoctor');
+//Route::post('/register/doctor', 'Auth\RegisterController@createDoctor');
 
 Route::get('/getDoctors', 'PagesController@getDoctors')->name('getDoctors');
 
@@ -257,6 +285,8 @@ Route::post('verif/{id}','PaymentController@verif')->name('verif');
 
 //Patients Routes
 
+Route::post('/patient/crop-image-upload', 'PatientManagerController@uploadCropImage')->name('patient_crop_image');
+
 Route::get('/patient/profile_setting', 'PatientManagerController@setting')->name('patient_profile_setting');
 
 Route::post('/patient/post_setting', 'PatientManagerController@postSetting')->name('post_patient_setting');
@@ -284,6 +314,8 @@ Route::post('unfavorite/{doctor}', 'PatientManagerController@unFavoriteDoctor');
 Route::get('my_favourites', 'PatientManagerController@myFavorites')->name('my_favourites')->middleware('auth');
 
 //Doctors Routes
+
+Route::post('/doctor/crop-image-upload', 'DoctorManagerController@uploadCropImage')->name('doctor_crop_image');
 
 Route::get('/doctor/profile_setting', 'DoctorManagerController@setting')->name('doctor_profile_setting');
 
@@ -382,14 +414,7 @@ Route::post('/send', 'MessagesController@postSendMessage');
 
 Route::get('/fetch-old-messages', 'MessagesController@getOldMessages');
 
-//Video Chat
-
-Route::group(['middleware' => 'auth'], function(){
-
-  Route::get('video_chat', 'VideoChatController@index')->name('video_chat');
-
-  Route::post('auth/video_chat', 'VideoChatController@auth');
-});
+//Localisation
 
 Route::get('locale/{locale}', function ($locale) {
     Session::put('locale', $locale);

@@ -119,6 +119,40 @@ class PatientManagerController extends Controller
     }
 
 
+    public function uploadCropImage(Request $request)
+    {
+        $patient = Patient::findOrFail($request->input('patient_id'));
+
+        $user = User::findOrFail($patient->user_id);
+
+        $folderPath = public_path('storage/profile_images/');
+ 
+        $image_parts = explode(";base64,", $request->image);
+
+        $image_type_aux = explode("image/", $image_parts[0]);
+
+        $image_type = $image_type_aux[1];
+
+        $image_base64 = base64_decode($image_parts[1]);
+ 
+        $fileNameToStore = uniqid().'.png';
+ 
+        $imageFullPath = $folderPath.$fileNameToStore;
+ 
+        file_put_contents($imageFullPath, $image_base64);
+         
+        $patient->profile_picture = $fileNameToStore;
+
+        $user->profile_picture = $fileNameToStore;
+
+        $patient->save();
+
+        $user->save();
+
+        return response()->json(['success'=>'Crop Image Uploaded Successfully']);
+    }
+
+
     /**
      * Show the application dashboard.
      *
@@ -267,8 +301,8 @@ class PatientManagerController extends Controller
             'patient_id' => 'required|max:120',
             'name' => 'required|max:120',
             'firstname' => 'required|max:120',
-            'email' => 'required|email|unique:users,email,'.$user->id,
-            'phone_number' => 'required',
+            //'email' => 'required|email|unique:users,email,'.$user->id,
+            //'phone_number' => 'required',
         ]);
 
         if ($request->hasfile('profile_picture')) {
@@ -291,6 +325,33 @@ class PatientManagerController extends Controller
         }
 
 
+        
+        
+        $patient->name = $request->input('name');
+        $patient->firstname = $request->input('firstname');
+        //$patient->email = $request->input('email');
+        $patient->gender = $request->input('gender');
+        $patient->marital_status = $request->input('marital_status');
+        if ($request->hasfile('profile_picture')) {
+            $patient->profile_picture = $fileNameToStore;
+        }
+        $patient->phone_number = $request->input('phone_number');
+        $patient->address = $request->input('address');
+        $patient->birth_date = $request->input('birth_date');
+        $patient->place_birth = $request->input('place_birth');
+
+        $region = Region::findOrFail($request->input('region'));
+        $patient->region = $region->title;
+
+        if($request->input('country') != ''){
+
+           $patient->country = $request->input('country'); 
+
+        }else{
+
+            $patient->country = $request->input('old_country'); 
+        }
+
         if($patient->matricule == ''){
             
             $country = Country::where('title' ,'=', $patient->country)->first();
@@ -309,18 +370,7 @@ class PatientManagerController extends Controller
 
             $patient->matricule = $country_code.date("y").$month.$name.$firstname;
         }
-        
-        $patient->name = $request->input('name');
-        $patient->firstname = $request->input('firstname');
-        $patient->email = $request->input('email');
-        $patient->gender = $request->input('gender');
-        $patient->marital_status = $request->input('marital_status');
-        $patient->profile_picture = $fileNameToStore;
-        $patient->phone_number = $request->input('phone_number');
-        $patient->address = $request->input('address');
-        $patient->birth_date = $request->input('birth_date');
-        $patient->place_birth = $request->input('place_birth');
-        $patient->country = $request->input('country');
+        //$patient->country = $request->input('country');
         $patient->city = $request->input('city');
         //$patient->nationality = $request->input('nationality');
         //$patient->ethnic_group = $request->input('ethnic_group');
@@ -332,8 +382,10 @@ class PatientManagerController extends Controller
 
         $user->name = $request->input('name');
         $user->firstname = $request->input('firstname');
-        $user->email = $request->input('email');
-        $user->profile_picture = $fileNameToStore;
+        //$user->email = $request->input('email');
+        if ($request->hasfile('profile_picture')) {
+            $user->profile_picture = $fileNameToStore;
+        }
         $user->phone_number = $request->input('phone_number');
         //$user->gender = $request->input('gender');
         //$user->birth_date = $request->input('birth_date');

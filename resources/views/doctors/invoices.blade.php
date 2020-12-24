@@ -87,7 +87,11 @@
 															<a href="{{route('patient.profile', $payment->patient->id)}}" class="avatar avatar-sm mr-2">
 																<img class="avatar-img rounded-circle" src="{{asset('assets/img/patients/patient.jpg') }}" alt="User Image">
 															</a>
-															<a href="{{route('patient.profile', $payment->patient->id)}}">{{$payment->patient->name }} {{$payment->patient->firstname}}  <span>#PT00{{$payment->patient->id }} </span></a>
+															<a href="{{route('patient.profile', $payment->patient->id)}}">{{$payment->patient->name }} {{$payment->patient->firstname}}
+															@if($payment->patient->matricule != '')
+															  <span>{{$payment->patient->matricule }} </span>
+															 @endif 
+															</a>
 														</h2>
 													</td>
 													<td>${{$payment->apt_amount}}</td>

@@ -75,7 +75,10 @@
 														<h3><a href="{{route('patient.profile', $patient->id)}}">{{$patient->name}} {{$patient->firstname}}</a></h3>
 														
 														<div class="patient-details">
-															<h5><b>Patient ID :</b> PT00{{$patient->id}}</h5>
+															@if($patient->matricule != '')
+															<h5><b>Patient ID :</b> {{$patient->matricule}}</h5>
+															@endif 
+
 															@if($patient->address != '')
 															<h5 class="mb-0"><i class="fas fa-map-marker-alt"></i> {{$patient->address}}</h5>
 															@endif 

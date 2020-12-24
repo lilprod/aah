@@ -186,7 +186,7 @@ class RegisterController extends Controller
             'phone_number' => $data['phone_number'],
             'address' => $data['address'],
             'profile_picture' => 'avatar.jpg',
-            'google2fa_secret' => $data['google2fa_secret'],
+            //'google2fa_secret' => $data['google2fa_secret'],
             'role_id' => 1,
             'is_activated' => 0,
             'lang' => 'FR',
@@ -269,7 +269,7 @@ class RegisterController extends Controller
 
     protected function createDoctor(array $data)
     {
-        $this->validatorDoctor($request->all())->validate();
+        //$this->validatorDoctor($request->all())->validate();
 
         $fileNameToStore = 'avatar.jpg';
 

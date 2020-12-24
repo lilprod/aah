@@ -47,10 +47,10 @@
 							<nav aria-label="breadcrumb" class="page-breadcrumb">
 								<ol class="breadcrumb">
 									<li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
-									<li class="breadcrumb-item active" aria-current="page">Video Chat Page</li>
+									<li class="breadcrumb-item active" aria-current="page">Video Chat</li>
 								</ol>
 							</nav>
-							<h2 class="breadcrumb-title">Video Chat Page</h2>
+							<h2 class="breadcrumb-title">Video Chat</h2>
 						</div>
 					</div>
 				</div>
@@ -61,8 +61,10 @@
 			<div class="content">
 				<div class="container-fluid">
 
+					<video-chat :allusers="{{ $users }}" :authUserId="{{ auth()->id() }}" turn_url="{{ env('TURN_SERVER_URL') }}" turn_username="{{ env('TURN_SERVER_USERNAME') }}" turn_credential="{{ env('TURN_SERVER_CREDENTIAL') }}"/>
+
 					<!-- Call Wrapper -->
-					<div class="call-wrapper">
+					{{--<div class="call-wrapper">
 						<div class="call-main-row">
 							<div class="call-main-wrapper">
 								<div class="call-view">
@@ -96,8 +98,10 @@
 										<!-- /Call Header -->
 										
 										<!-- Call Contents -->
-										<video-chat :user="{{ $user }}" :others="{{ $others }}" pusher-key="{{ config('broadcasting.connections.pusher.key') }}" pusher-cluster="{{ config('broadcasting.connections.pusher.options.cluster') }}">
-										</video-chat>
+										<!--<video-chat :user="{{ $user }}" :others="{{ $others }}" pusher-key="{{ config('broadcasting.connections.pusher.key') }}" pusher-cluster="{{ config('broadcasting.connections.pusher.options.cluster') }}">
+										</video-chat>-->
+
+
 										<!-- Call Contents -->
 										
 										<!-- Call Footer -->
@@ -140,7 +144,7 @@
 								
 							</div>
 						</div>
-					</div>
+					</div>--}}
 					<!-- /Call Wrapper -->
 
 				</div>
